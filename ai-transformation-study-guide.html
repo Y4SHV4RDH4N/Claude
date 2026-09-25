@@ -1,0 +1,1676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Transformation Study Guide</title>
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#000000;
+  --surface:#0c0c0c;
+  --ink:#ffffff;
+  --ink-2:#d0d0d0;
+  --ink-3:#949494;
+  --rule:#262626;
+  --rule-2:#404040;
+  --g1:#000000;
+  --g2:#1c1c1c;
+  --g3:#4d4d4d;
+  --g4:#b3b3b3;
+  --g5:#ffffff;
+  --font: Helvetica, "Helvetica Neue", Arial, sans-serif;
+}
+html{background:var(--bg);}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth;}}
+*,*::before,*::after{box-sizing:border-box;}
+h1,h2,h3,h4{font-family:var(--font);font-weight:700;line-height:1.1;letter-spacing:-0.02em;text-wrap:balance;margin:0;}
+p{margin:0;}
+a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;}
+a:hover{text-decoration-thickness:2px;}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+[id]{scroll-margin-top:24px;}
+ul,ol{margin:0;padding-left:1.25em;display:grid;gap:8px;}
+li::marker{color:var(--ink-3);}
+strong,b{font-weight:700;}
+small{font-size:13px;}
+
+.eyebrow{display:block;font-size:12px;line-height:1.3;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3);}
+.muted{color:var(--ink-2);}
+.src{font-size:13px;color:var(--ink-3);}
+
+.page{max-width:1200px;margin-inline:auto;padding-inline:20px;padding-block:0 96px;}
+.layout{display:block;}
+.toc-side{display:none;}
+main{max-width:780px;min-width:0;}
+@media (min-width:1080px){
+  .layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;}
+  .toc-side{display:flex;flex-direction:column;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;max-height:calc(100vh - 48px);overflow:auto;padding-block:40px;}
+}
+.toc-side a{color:var(--ink-3);text-decoration:none;font-size:14px;line-height:1.35;padding-block:5px;}
+.toc-side a:hover,.toc-side a[aria-current="true"]{color:var(--ink);}
+.toc-side a.mod{color:var(--ink);font-weight:700;margin-top:14px;}
+.toc-side .eyebrow{margin-bottom:4px;}
+
+/* hero */
+.hero{padding-block:56px 40px;display:grid;gap:22px;border-bottom:1px solid var(--ink);}
+.hero h1{font-size:clamp(44px,8.5vw,92px);letter-spacing:-0.045em;line-height:.95;}
+.hero .lede{font-size:clamp(18px,2.2vw,21px);line-height:1.5;color:var(--ink-2);max-width:62ch;}
+.facts{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums;}
+.facts b{color:var(--ink);font-size:22px;letter-spacing:-0.02em;margin-right:6px;}
+
+.overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);margin-top:40px;}
+.ov{background:var(--bg);padding:20px;display:grid;gap:10px;align-content:start;}
+.ov .n{font-size:56px;font-weight:700;letter-spacing:-0.05em;line-height:.9;}
+.ov h2{font-size:18px;letter-spacing:-0.01em;}
+.ov ul{list-style:none;padding:0;gap:6px;font-size:15px;line-height:1.4;}
+.ov a{text-decoration:none;color:var(--ink-2);}
+.ov a:hover{color:var(--ink);text-decoration:underline;}
+
+.intro{display:grid;gap:20px;padding-block:48px 0;}
+.intro h2{font-size:26px;}
+
+/* modules and topics */
+.module-head{margin-top:88px;padding-top:28px;border-top:4px solid var(--ink);display:grid;gap:14px;}
+.module-head .n{font-size:clamp(88px,15vw,160px);font-weight:700;letter-spacing:-0.06em;line-height:.8;}
+.module-head h2{font-size:clamp(28px,4.2vw,42px);letter-spacing:-0.03em;}
+.module-head p{color:var(--ink-2);max-width:62ch;}
+.topic{padding-top:56px;display:flex;flex-direction:column;gap:20px;}
+.topic > h3{font-size:clamp(25px,3.2vw,32px);letter-spacing:-0.025em;}
+.topic h4{font-size:19px;letter-spacing:-0.01em;margin-top:14px;}
+.topic h5{font-size:15px;margin:0;letter-spacing:0;}
+.stack{display:flex;flex-direction:column;gap:12px;}
+
+.oneline{border:1px solid var(--ink);padding:18px 20px;display:grid;gap:8px;}
+.oneline p{font-size:19px;line-height:1.45;}
+.chip{display:inline-block;justify-self:start;background:var(--ink);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;}
+.tip{border:1px dashed var(--ink-3);padding:16px 20px;display:grid;gap:8px;}
+.tip p,.tip li{font-size:16px;}
+.note{border-left:1px solid var(--rule-2);padding-left:16px;color:var(--ink-2);font-size:15px;display:grid;gap:6px;}
+blockquote{margin:0;padding-left:18px;border-left:3px solid var(--ink);font-size:19px;line-height:1.45;}
+blockquote cite{display:block;font-size:13px;color:var(--ink-3);font-style:normal;margin-top:8px;line-height:1.4;}
+
+.defs{display:grid;gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);}
+.defs > div{background:var(--bg);padding:16px 18px;display:grid;gap:6px;}
+.defs dt{font-weight:700;font-size:18px;}
+.defs dd{margin:0;color:var(--ink-2);}
+dl{margin:0;}
+
+/* tables */
+.table-wrap{overflow-x:auto;border-top:1px solid var(--ink);}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45;min-width:580px;}
+th{text-align:left;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700;padding:12px 14px 10px 0;border-bottom:1px solid var(--rule-2);vertical-align:bottom;}
+td{padding:12px 14px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:700;}
+td.plain{font-weight:400;color:var(--ink-2);}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+table.compact{min-width:520px;}
+
+/* figures */
+.fig{margin:0;border:1px solid var(--rule-2);padding:20px;display:grid;gap:14px;background:var(--surface);}
+.fig figcaption{font-size:13px;color:var(--ink-3);line-height:1.45;}
+.fig-scroll{overflow-x:auto;}
+
+.ladder{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;}
+.rung{border:1px solid var(--ink);padding:16px;display:grid;gap:8px;align-content:start;}
+.rung h4{margin:0;font-size:20px;}
+.rung p{font-size:14.5px;line-height:1.45;}
+.rung .ex{font-size:13.5px;border-top:1px solid currentColor;padding-top:8px;opacity:.9;}
+.r1{min-height:190px;background:var(--g1);}
+.r2{min-height:240px;background:var(--g2);}
+.r3{min-height:290px;background:var(--g5);color:var(--bg);}
+.r3 .eyebrow{color:var(--g3);}
+@media (max-width:680px){.ladder{grid-template-columns:1fr;}.r1,.r2,.r3{min-height:0;}}
+
+.matrix{display:grid;grid-template-columns:30px minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;gap:0;}
+.m-y{grid-row:1 / span 2;grid-column:1;display:flex;align-items:center;justify-content:center;}
+.m-y span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);white-space:nowrap;}
+.m-x{grid-column:2 / span 2;grid-row:3;text-align:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);padding-top:10px;}
+.m-cell{border:1px solid var(--ink);margin:-1px 0 0 -1px;padding:14px;display:grid;gap:6px;align-content:start;font-size:14px;line-height:1.4;}
+.m-cell b{font-size:18px;letter-spacing:-0.01em;}
+.m-cell q{color:var(--ink-2);}
+.m-cell small{color:var(--ink-3);font-size:12px;}
+.m-cell.inv{background:var(--ink);color:var(--bg);}
+.m-cell.inv q,.m-cell.inv small{color:var(--g3);}
+
+.cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);}
+.cells > div{background:var(--bg);padding:18px;display:grid;gap:8px;align-content:start;}
+.cells > div.inv{background:var(--ink);color:var(--bg);}
+.cells > div.inv .eyebrow{color:var(--g3);}
+.cells > div.inv p{color:var(--bg);}
+.cells h4,.cells h5{margin:0;font-size:18px;}
+.cells p{font-size:15px;line-height:1.5;color:var(--ink-2);}
+.cells ul{font-size:15px;line-height:1.45;color:var(--ink-2);gap:6px;}
+
+.lm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:0;align-items:stretch;}
+.lm > div{padding:16px;display:grid;gap:6px;align-content:center;text-align:center;font-weight:700;font-size:16px;}
+.lm small{font-weight:400;font-size:13px;color:var(--ink-3);}
+.lm-a{border:1px solid var(--ink);}
+.lm-gap{border-block:1px dashed var(--ink);letter-spacing:.12em;text-transform:uppercase;font-size:14px !important;}
+.lm-b{background:var(--ink);color:var(--bg);}
+.lm-b small{color:var(--g3);}
+@media (max-width:600px){.lm{grid-template-columns:1fr;}.lm-gap{border-block:0;border-inline:1px dashed var(--ink);}}
+
+.flow{display:grid;gap:0;justify-items:stretch;}
+.flow .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
+.flow .box{border:1px solid var(--ink);padding:14px 16px;display:grid;gap:6px;font-size:15px;line-height:1.45;}
+.flow .box.inv{background:var(--ink);color:var(--bg);font-weight:700;text-align:center;letter-spacing:.04em;}
+.flow .box.dash{border-style:dashed;}
+.flow .arrow{text-align:center;font-size:20px;line-height:1;padding-block:6px;color:var(--ink-3);}
+.flow .loopnote{text-align:center;font-size:14px;color:var(--ink-2);padding-top:10px;}
+
+.anatomy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);}
+.anatomy > div{background:var(--bg);padding:14px;display:grid;gap:4px;align-content:start;}
+.anatomy b{font-size:15.5px;}
+.anatomy span{font-size:13.5px;line-height:1.4;color:var(--ink-2);}
+.anatomy .core{background:var(--ink);color:var(--bg);align-content:center;text-align:center;}
+.anatomy .core span{color:var(--g3);}
+@media (max-width:640px){.anatomy{grid-template-columns:1fr;}.anatomy .core{order:-1;}}
+
+.spectrum{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--ink);}
+.lvl{padding:14px 12px;display:grid;gap:6px;align-content:start;font-size:13.5px;line-height:1.4;}
+.lvl .ln{font-size:28px;font-weight:700;letter-spacing:-0.04em;line-height:1;}
+.lvl b{font-size:15px;}
+.lvl .who{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;opacity:.75;}
+.l1{background:var(--g1);color:var(--g5);}
+.l2{background:var(--g2);color:var(--g5);}
+.l3{background:var(--g3);color:var(--g5);}
+.l4{background:var(--g4);color:var(--g1);}
+.l5{background:var(--g5);color:var(--g1);}
+.spec-axis{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);}
+@media (max-width:720px){.spectrum{grid-template-columns:1fr;}}
+
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 16px;}
+.legend div{display:flex;align-items:center;gap:10px;font-size:14px;line-height:1.3;color:var(--ink-2);}
+.legend svg.fc{flex:none;width:58px;height:32px;}
+
+svg.fc{width:100%;height:auto;display:block;color:var(--ink);}
+.fc .shape{fill:var(--bg);stroke:var(--ink);stroke-width:1.5;}
+.fc .ai{fill:var(--ink);stroke:var(--ink);stroke-width:1.5;}
+.fc .human{fill:var(--bg);stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;}
+.fc .line{fill:none;stroke:var(--ink);stroke-width:1.5;}
+.fc .loop{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:4 4;}
+.fc .head{fill:var(--ink);}
+.fc text{font-family:var(--font);font-size:12.5px;fill:var(--ink);text-anchor:middle;dominant-baseline:middle;}
+.fc text.on{fill:var(--bg);}
+.fc text.lbl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-anchor:start;fill:var(--ink-2);}
+.fc text.big{font-size:15px;font-weight:700;letter-spacing:.06em;}
+.fc-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:start;}
+.outline{font-size:14.5px;line-height:1.5;color:var(--ink-2);}
+.outline li b{color:var(--ink);}
+
+/* quiz */
+.quiz{margin-top:56px;border:1px solid var(--ink);padding:24px 20px 8px;display:grid;gap:4px;}
+.quiz-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 20px;padding-bottom:14px;border-bottom:1px solid var(--rule-2);}
+.quiz-head h3{font-size:clamp(22px,3vw,28px);}
+.quiz-tools{display:flex;flex-wrap:wrap;align-items:center;gap:14px;}
+.score{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;}
+.verdict{font-size:15px;color:var(--ink-2);padding-top:12px;}
+.verdict:empty{display:none;}
+.q{padding-block:22px;border-bottom:1px solid var(--rule);display:grid;gap:12px;}
+.q:last-child{border-bottom:0;}
+.q-text{font-weight:700;font-size:17px;line-height:1.45;}
+.opts{display:grid;gap:8px;}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:1px solid var(--rule-2);border-radius:0;padding:11px 14px;font-family:var(--font);font-size:16px;line-height:1.45;cursor:pointer;}
+.opt:hover:not(:disabled){border-color:var(--ink);}
+.opt .k{font-weight:700;min-width:1.1em;}
+.opt:disabled{cursor:default;}
+.opt.correct{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.opt.wrong{border-style:dashed;border-color:var(--ink-3);color:var(--ink-3);}
+.opt.wrong .t{text-decoration:line-through;}
+.opt.correct::after{content:"✓";margin-left:auto;font-weight:700;}
+.opt.wrong::after{content:"✕";margin-left:auto;font-weight:700;}
+.fb{font-size:15px;line-height:1.5;color:var(--ink-2);}
+.fb strong{color:var(--ink);}
+.btn{background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;padding:8px 14px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;}
+.btn:hover{background:var(--ink);color:var(--bg);}
+
+/* practice */
+.practice-item{border-top:1px solid var(--rule-2);}
+.practice-item:last-child{border-bottom:1px solid var(--rule-2);}
+.practice-item summary{cursor:pointer;list-style:none;padding-block:18px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:baseline;}
+.practice-item summary::-webkit-details-marker{display:none;}
+.practice-item summary .pn{font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink-3);}
+.practice-item summary .pq{font-weight:700;font-size:17px;line-height:1.4;}
+.practice-item summary::after{content:"Show answer";font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3);white-space:nowrap;}
+.practice-item[open] summary::after{content:"Hide";}
+.practice-item .ans{padding:0 0 22px;display:grid;gap:12px;font-size:15.5px;line-height:1.55;color:var(--ink-2);}
+.practice-item .ans b{color:var(--ink);}
+@media (max-width:520px){.practice-item summary{grid-template-columns:auto minmax(0,1fr);}.practice-item summary::after{grid-column:2;}}
+
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 32px;}
+.glossary > div{border-top:1px solid var(--rule);padding-block:12px;display:grid;gap:4px;}
+.glossary dt{font-weight:700;}
+.glossary dd{margin:0;font-size:15px;line-height:1.5;color:var(--ink-2);}
+
+.sources{display:grid;gap:10px;font-size:15px;line-height:1.5;color:var(--ink-2);}
+footer.end{margin-top:72px;padding-top:20px;border-top:1px solid var(--rule-2);font-size:13px;color:var(--ink-3);display:grid;gap:6px;}
+</style>
+</head>
+<body>
+
+<div class="page">
+<header class="hero">
+  <span class="eyebrow">Study guide · Exam portion: Modules 1, 2 and 4</span>
+  <h1>AI Transformation Study Guide</h1>
+  <p class="lede">Every topic in the exam portion, explained from the five assigned HBR readings and cross-checked against Gartner, SHRM, Deloitte, the World Economic Forum, the OECD and Microsoft's documentation. Each module ends with a self-marking quiz. The last sections hold written exam practice with model answers, the numbers worth memorising, and a glossary.</p>
+  <div class="facts">
+    <span><b>5</b>core readings</span>
+    <span><b>9</b>topics</span>
+    <span><b>44</b>quiz questions</span>
+    <span><b>8</b>written practice answers</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="toc-side" aria-label="Contents">
+  <span class="eyebrow">Contents</span>
+  <a href="#start" class="mod">How to use this guide</a>
+  <a href="#m1" class="mod">1 · Digital transformation with AI</a>
+  <a href="#t11">1.1 Digitization vs digitalization</a>
+  <a href="#t12">1.2 AI as a strategic game-changer</a>
+  <a href="#t13">1.3 The last-mile problem</a>
+  <a href="#q1">Module 1 quiz</a>
+  <a href="#m2" class="mod">2 · Understanding AI and its impact</a>
+  <a href="#t21">2.1 The paradigm-shifting role of AI</a>
+  <a href="#t22">2.2 Prompt engineering and workslop</a>
+  <a href="#t23">2.3 No-code AI agents</a>
+  <a href="#q2">Module 2 quiz</a>
+  <a href="#m4" class="mod">4 · Impact of AI on work</a>
+  <a href="#t41">4.1 Future of work (SHRM)</a>
+  <a href="#t42">4.2 Shifting competencies</a>
+  <a href="#t43">4.3 From automation to autonomy</a>
+  <a href="#q4">Module 4 quiz</a>
+  <a href="#practice" class="mod">Written exam practice</a>
+  <a href="#numbers" class="mod">Key numbers</a>
+  <a href="#glossary" class="mod">Glossary</a>
+  <a href="#sources" class="mod">Sources</a>
+</nav>
+
+<main>
+<div class="overview" aria-label="Exam portion">
+  <div class="ov">
+    <span class="n">1</span>
+    <h2>Strategic Digital Transformation with AI</h2>
+    <ul>
+      <li><a href="#t11">1.1 Digitization vs. digitalization: implications</a></li>
+      <li><a href="#t12">1.2 AI as a strategic game-changer</a></li>
+      <li><a href="#t13">1.3 The last-mile problem: issues and strategies</a></li>
+    </ul>
+  </div>
+  <div class="ov">
+    <span class="n">2</span>
+    <h2>Understanding AI and Its Impact</h2>
+    <ul>
+      <li><a href="#t21">2.1 The paradigm-shifting role of AI</a></li>
+      <li><a href="#t22">2.2 The paradox of prompt engineering: workslop</a></li>
+      <li><a href="#t23">2.3 Building AI agents on no-code platforms</a></li>
+    </ul>
+  </div>
+  <div class="ov">
+    <span class="n">4</span>
+    <h2>Impact of AI on Work</h2>
+    <ul>
+      <li><a href="#t41">4.1 Future of work (SHRM): three key aspects</a></li>
+      <li><a href="#t42">4.2 Shifting competency requirements</a></li>
+      <li><a href="#t43">4.3 From automation to autonomy: workflows</a></li>
+    </ul>
+  </div>
+</div>
+
+<section class="intro" id="start">
+  <h2>How to use this guide</h2>
+  <ol>
+    <li>Read each topic. The boxed <b>In one line</b> summary is the sentence to open an exam answer with.</li>
+    <li>Learn the examples. Examiners reward named cases from the readings (Moderna, Atos, NTT Data, Anterior, the Frontier Firm summit).</li>
+    <li>Take the quiz at the end of each module. It marks itself and explains every answer.</li>
+    <li>Write out the <a href="#practice">practice answers</a> before you open the model answers. Two of them rehearse the non-lab skills: narrating an agent and drawing a workflow outline.</li>
+  </ol>
+  <p class="muted">Module 3 is not in this exam portion, so it is not covered here.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Reading</th><th>Authors and date</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td>Developing a Digital Mindset</td><td class="plain">Tsedal Neeley and Paul Leonardi · HBR, May–June 2022</td><td class="plain">1.1, 4.2</td></tr>
+        <tr><td>The “Last Mile” Problem Slowing AI Transformation</td><td class="plain">Karim R. Lakhani, Jared Spataro and Jen Stave · HBR.org, 9 March 2026</td><td class="plain">1.3, 4.2, 4.3</td></tr>
+        <tr><td>AI-Generated “Workslop” Is Destroying Productivity</td><td class="plain">Kate Niederhoffer, Gabriella Rosen Kellerman, Angela Lee, Alex Liebscher, Kristina Rapuano and Jeffrey T. Hancock · HBR.org, 22 Sept 2025</td><td class="plain">2.2</td></tr>
+        <tr><td>Why People Create AI “Workslop” and How to Stop It</td><td class="plain">Kate Niederhoffer, Alexi Robichaux and Jeffrey T. Hancock · HBR.org, 16 Jan 2026</td><td class="plain">2.2</td></tr>
+        <tr><td>How Agentic AI Supercharges Startups and Threatens Incumbents</td><td class="plain">Vivian S. Lee, Linda Mantia and Jon McNeill · HBR, July–Aug 2026</td><td class="plain">1.2, 2.1, 2.3, 4.3</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ MODULE 1 ============ -->
+<header class="module-head" id="m1">
+  <span class="n">1</span>
+  <span class="eyebrow">Module 1</span>
+  <h2>Strategic Digital Transformation with AI</h2>
+  <p>How converting, using and transforming with digital technology differ, why AI changes the strategic game, and why most AI pilots stall before they change the enterprise.</p>
+</header>
+
+<section class="topic" id="t11">
+  <span class="eyebrow">Topic 1.1</span>
+  <h3>Digitization vs. digitalization (digital transformation): implications</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>Digitization changes the format of information. Digitalization changes how the business works and earns money. Digital transformation changes the whole organization, including its people and culture, so that it can keep changing.</p>
+  </div>
+
+  <h4>The three terms</h4>
+  <dl class="defs">
+    <div>
+      <dt>Digitization</dt>
+      <dd>To “change from analog into digital form” (Gartner IT Glossary). Scanning paper files, turning a paper form into a PDF, recording meter readings with a sensor. The data becomes digital, but the process stays the same.</dd>
+    </div>
+    <div>
+      <dt>Digitalization</dt>
+      <dd>“The use of digital technologies to change a business model and provide new revenue and value-producing opportunities; it is the process of moving to a digital business” (Gartner IT Glossary). The digital data is now used to run processes differently: e-invoicing that matches orders automatically, mobile banking, predictive maintenance.</dd>
+    </div>
+    <div>
+      <dt>Digital transformation</dt>
+      <dd>Organization-wide change in strategy, structure, processes, culture and skills, built on digitalization. Neeley and Leonardi stress that it depends on people having a <b>digital mindset</b>, and that it never finishes: “Digital transformation is not a goal that one achieves; it is the means to achieve one's unique goals.”</dd>
+    </div>
+  </dl>
+  <p class="note">The syllabus writes “Digitalization (Digital transformation)” because many writers use the two words loosely. In the exam, show all three as a ladder of widening scope and say that digital transformation is the broadest.</p>
+
+  <figure class="fig">
+    <div class="ladder">
+      <div class="rung r1">
+        <span class="eyebrow">Changes the format</span>
+        <h4>Digitization</h4>
+        <p>Convert analog information to digital.</p>
+        <p class="ex">Supplier invoices are scanned into PDFs.</p>
+      </div>
+      <div class="rung r2">
+        <span class="eyebrow">Changes the process</span>
+        <h4>Digitalization</h4>
+        <p>Use digital data and tools to change how work is done and how value is created.</p>
+        <p class="ex">E-invoicing matches invoices to purchase orders and pays suppliers automatically.</p>
+      </div>
+      <div class="rung r3">
+        <span class="eyebrow">Changes the organization</span>
+        <h4>Digital transformation</h4>
+        <p>Rebuild strategy, structure, culture and skills around data, algorithms and AI.</p>
+        <p class="ex">Finance becomes a data-driven partner to the business. Roles, skills and decision rights change.</p>
+      </div>
+    </div>
+    <figcaption>Scope widens from left to right. Each level depends on the one before it, but reaching one level does not guarantee the next.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Digitization</th><th>Digitalization</th><th>Digital transformation</th></tr></thead>
+      <tbody>
+        <tr><td>Core question</td><td class="plain">How do we store this digitally?</td><td class="plain">How can digital tools change how we work and earn?</td><td class="plain">What kind of organization must we become?</td></tr>
+        <tr><td>What changes</td><td class="plain">Format of information</td><td class="plain">Processes and the business model</td><td class="plain">Strategy, structure, culture and skills</td></tr>
+        <tr><td>Scope</td><td class="plain">A record or task</td><td class="plain">A process or function</td><td class="plain">The whole enterprise and its ecosystem</td></tr>
+        <tr><td>Bank example</td><td class="plain">Scanning account-opening forms</td><td class="plain">App-based account opening and instant loan approval</td><td class="plain">Rebuilding the bank around data and AI, with agile teams and new roles</td></tr>
+        <tr><td>Usually led by</td><td class="plain">IT or operations</td><td class="plain">Function or business-unit heads</td><td class="plain">CEO and top team, with every manager</td></tr>
+        <tr><td>Main risk</td><td class="plain">Digital copies of bad processes</td><td class="plain">Islands of improvement that never scale</td><td class="plain">Change fatigue; people left behind</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Cases from the reading</h4>
+  <div class="cells">
+    <div>
+      <span class="eyebrow">Atos · IT services</span>
+      <p>CEO Thierry Breton (from 2008) doubled the workforce to 100,000 and launched the <b>Digital Transformation Factory</b> to certify 35,000 staff in digital skills and AI. The programme was voluntary, backed by internal marketing, peer and manager nominations and rewards. Over 70,000 people certified within three years. Revenue grew from $6.2 billion to close to $13 billion by 2019.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Moderna · biotech</span>
+      <p>A “tech company that happens to do biology.” Three components: huge access to data, cloud computing, and the ability to build AI algorithms for R&amp;D. Data flows freely across teams. Within months of the Covid-19 outbreak it had built about 20 algorithms for vaccine and therapeutic work.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Unilever · consumer goods</span>
+      <p>400+ brands in 190 countries. Rahul Welde set up 300 remote, global agile teams of 10 people. Three parts: enabling technology and tools, redesigning processes for them, and making sure people had access, skills and motivation to use them.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Philips · health technology</span>
+      <p>Moved from supplying health products to digital solutions. Built an AI-powered learning platform with Cornerstone OnDemand where staff share “playlists” of lessons and find mentors. Leaders act as teachers.</p>
+    </div>
+  </div>
+
+  <h4>Implications for managers</h4>
+  <div class="stack">
+    <p><b>Redesign the process before you digitize it.</b> Moderna CEO Stéphane Bancel: “Digitization only makes sense once the processes are done. If you have crappy analog processes, you'll get crappy digital processes.” He deliberately did not separate digital from operational excellence. The same idea returns in Topics 1.2, 1.3 and 4.3.</p>
+    <p><b>Mindset matters as much as tools.</b> A digital mindset is “a set of attitudes and behaviors that enable people and organizations to see how data, algorithms, and AI open up new possibilities and to chart a path for success.” Employees who build one are more successful, more satisfied, more likely to be promoted, and have more portable skills.</p>
+    <p><b>Adoption depends on buy-in and confidence.</b> Managers should place each team member on the Adoption Matrix below and move them toward “inspired.”</p>
+    <p><b>Pair a bold stroke with a long march.</b> A bold stroke gets attention: a major reorganisation, an acquisition, reallocating resources, hiring a digital transformation czar who reports to the CEO, or announcing a legacy system's retirement. The long march follows: assess how people feel, build buy-in and confidence, keep training.</p>
+    <p><b>Upskill the people you have.</b> Hiring enough digital talent is nearly impossible, so upskilling must supplement recruitment. Recruit internal influencers with a digital mindset as champions.</p>
+    <p><b>Business leaders, not only IT, choose tools.</b> Most transformation tools are cloud-based (SaaS) and teams can buy them directly. Leaders should pick tools based on which local activities drive larger goals, then remove obstacles to adoption.</p>
+    <p><b>Treat change as constant.</b> Classic change theory moves from current state to transition to future state. In a digital world the transition never ends. “A leader's task is not simply to adapt; it is to be adaptive.”</p>
+  </div>
+
+  <figure class="fig">
+    <span class="eyebrow">The Adoption Matrix (Neeley and Leonardi)</span>
+    <div class="matrix">
+      <div class="m-y"><span>Buy-in: low → high</span></div>
+      <div class="m-cell"><b>Frustrated</b><q>My company and I would benefit if I learned digital content, but I don't think I can do it.</q><small>High buy-in · low confidence</small></div>
+      <div class="m-cell inv"><b>Inspired</b><q>I am capable of learning digital content, and I believe that doing so would be good for me and my company.</q><small>High buy-in · high confidence · the goal</small></div>
+      <div class="m-cell"><b>Oppressed</b><q>I don't think I am capable of learning digital content, and I don't see the benefit.</q><small>Low buy-in · low confidence</small></div>
+      <div class="m-cell"><b>Indifferent</b><q>I can learn digital content, but I don't see the benefit to me or my company.</q><small>Low buy-in · high confidence</small></div>
+      <div class="m-x">Confidence in own ability to learn: low → high</div>
+    </div>
+    <figcaption>Buy-in is the belief that the change will benefit the person and the organization. Confidence is the belief that one can gain enough digital literacy.</figcaption>
+  </figure>
+
+  <div class="cells">
+    <div>
+      <h5>Promote buy-in (bottom row)</h5>
+      <p>For the oppressed and indifferent. Stress that digital is a critical frontier for the company, run an internal marketing campaign so people can picture a digitally powered company, and help people see themselves as important contributors.</p>
+    </div>
+    <div>
+      <h5>Promote confidence (left column)</h5>
+      <p>For the oppressed and frustrated, once buy-in exists. Give hands-on experience with digital tools, share stories of peers who learned (people build confidence vicariously), and keep encouraging and reinforcing.</p>
+    </div>
+  </div>
+
+  <h4>Six practices of a successful training programme</h4>
+  <ol>
+    <li>Set a company-wide goal for training.</li>
+    <li>Design learning for all functional roles, not only technical ones.</li>
+    <li>Prioritise virtual delivery so learning scales.</li>
+    <li>Motivate people through campaigns, awards and incentives.</li>
+    <li>Make sure managers understand the offerings so they can guide their teams.</li>
+    <li>Encourage projects with digital components and hands-on learning.</li>
+  </ol>
+
+  <div class="note">
+    <p><b>From the authors' book, <i>The Digital Mindset</i> (2022):</b> the “30% rule.” You do not need to become a programmer. About 30% fluency in data, algorithms and AI, like knowing 30% of a language's words, is enough to ask good questions and work with technical experts. The book organises the mindset into three approaches: collaboration, computation and change.</p>
+  </div>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Define all three terms, give one example at each level, then state the implication. The strongest single line: “Digitize a process only after you have redesigned it.” Support it with the Moderna quote and the Atos upskilling result.</p>
+  </div>
+</section>
+
+<section class="topic" id="t12">
+  <span class="eyebrow">Topic 1.2</span>
+  <h3>AI as a strategic game-changer: transformation with AI</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>AI changes the economics of building and running a firm. The cost, time and head count needed to learn, build, sell and operate are collapsing, so AI reshapes strategy and competition, not just efficiency.</p>
+  </div>
+
+  <h4>Why AI is different from earlier IT</h4>
+  <div class="stack">
+    <p>Earlier software followed rules that people wrote. AI systems <b>infer</b> how to produce predictions, content, recommendations or decisions from the data they receive (OECD definition, see Topic 2.1). Newer agentic systems also <b>act</b>.</p>
+    <p>Iansiti and Lakhani (<i>Competing in the Age of AI</i>, 2020) show that firms rebuilt around data and AI run an “AI factory” of data pipelines, algorithms, experimentation platforms and infrastructure. This removes the traditional limits on <b>scale, scope and learning</b> that constrained firms for centuries.</p>
+    <p>Lee, Mantia and McNeill (HBR, 2026) name five converging trends: LLMs mature enough to reason and plan; LLMs that act as agents when given data and permission; frameworks that let multiple agents coordinate; low-cost APIs connecting IT systems; and falling cloud costs. Together they produce a <b>“second great compression of entrepreneurship”</b>: the cost, time and head count needed to build a prototype, test it and improve it have all collapsed.</p>
+  </div>
+
+  <h4>From tools to teammates</h4>
+  <div class="cells">
+    <div>
+      <span class="eyebrow">Tool</span>
+      <h5>Large language model</h5>
+      <p>A tutor and assistant (ChatGPT, Claude). Compresses months of learning about an industry, market or regulation into days. Helps founders write business plans and pitch decks.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Worker</span>
+      <h5>AI agent</h5>
+      <p>Performs complex tasks when given context and connected to tools. A financial-analyst agent given the business plan and market research, with spreadsheet access, builds five-year projections.</p>
+    </div>
+    <div class="inv">
+      <span class="eyebrow">Team</span>
+      <h5>Agentic AI system</h5>
+      <p>A network of specialised agents, coordinated by a digital manager, that plan, reason, adapt and pursue outcomes. At NTT Data it spots bugs across thousands of support tickets, writes and tests fixes, and creates help articles. Ema's onboarding assistant orders the badge, assigns a desk, stages the laptop, activates payroll, enrols benefits and books introductions, work that spans HR, IT and three managers.</p>
+    </div>
+  </div>
+
+  <h4>The five forces of disruptive change</h4>
+  <p>These forces reinforce one another, so the advantage compounds over time.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Force</th><th>What it means</th><th>Evidence in the reading</th></tr></thead>
+      <tbody>
+        <tr><td>1. Zero-latency iteration</td><td class="plain">Each version of a digital product can change instantly after customer feedback.</td><td class="plain">A SaaS startup traditionally needed 12–18 months and $1 million+ to reach product-market fit. Atomic built a working front end with vibe-coding tools in days and won paying customers. At Anterior, UX designers change interface code without engineers and ship updates every two weeks.</td></tr>
+        <tr><td>2. Automated go-to-market</td><td class="plain">Agents run marketing, sales and onboarding at a scale once limited to big firms.</td><td class="plain">Agents test thousands of image and copy combinations and shift spend to the best channels. Atomic gives live demos on customer data within hours and completes implementations in about a quarter of the usual time. Agents act as forward-deployed engineers.</td></tr>
+        <tr><td>3. Autonomous business functions</td><td class="plain">Agentic systems plan, execute and optimise activities end to end with little human involvement.</td><td class="plain">A classic MVP team is six to eight people for six to twelve months. The AI-native minimum is two: a domain expert and an AI engineer. At Tactix one engineer does the work of ten, with a “manager” agent supervising the others. Anterior cut legal costs about 90%, so 30 of its 40 staff build product. Its “AI librarian” indexes all company knowledge.</td></tr>
+        <tr><td>4. Radical capital efficiency</td><td class="plain">Less capital is needed to launch and become profitable, and it is raised faster.</td><td class="plain">LangChain raised a $25 million Series A in 10 months instead of 2+ years. Delve raised $32 million six months after its seed round. DVx Ventures launched 12 startups in four years; its AI-native companies used about $2 million to reach Series A, 80% less than earlier startups, and got there 20–40% faster.</td></tr>
+        <tr><td>5. The AI-driven flywheel</td><td class="plain">A self-reinforcing loop in which the system learns from its own actions and outcomes.</td><td class="plain">Anterior built “the best medical-record ingestion engine,” structuring about 600 pages of unstructured patient data per prior-authorisation case. Deep workflow integration creates high switching costs, which block competitors.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="fig">
+    <svg class="fc" viewBox="0 0 400 268" role="img" aria-label="The AI-driven flywheel: more usage leads to more insights, which lead to better agents and engagement, which lead to more usage.">
+      <circle class="line" cx="200" cy="150" r="100"/>
+      <path class="head" d="M-7,-6 L7,0 L-7,6 Z" transform="translate(286.6,100) rotate(60)"/>
+      <path class="head" d="M-7,-6 L7,0 L-7,6 Z" transform="translate(200,250) rotate(180)"/>
+      <path class="head" d="M-7,-6 L7,0 L-7,6 Z" transform="translate(113.4,100) rotate(300)"/>
+      <rect class="shape" x="132" y="28" width="136" height="44"/>
+      <text x="200" y="50">More usage</text>
+      <rect class="shape" x="218.6" y="178" width="136" height="44"/>
+      <text x="286.6" y="193">More insights</text>
+      <text x="286.6" y="209">and data</text>
+      <rect class="shape" x="45.4" y="178" width="136" height="44"/>
+      <text x="113.4" y="193">Better agents</text>
+      <text x="113.4" y="209">and engagement</text>
+      <text class="big" x="200" y="128">AI-DRIVEN</text>
+      <text class="big" x="200" y="148">FLYWHEEL</text>
+    </svg>
+    <figcaption>Force 5. The loop builds proprietary workflow knowledge, raises switching costs and compounds the startup's advantage, much as data did for earlier SaaS firms.</figcaption>
+  </figure>
+
+  <h4>Why incumbents are threatened</h4>
+  <ul>
+    <li><b>Structural mismatch.</b> Startups form around clean workflows, tight learning loops and data models built for continuous learning. Incumbents evolved for stability, specialisation and control.</li>
+    <li><b>Roles and incentives.</b> Staff who mastered stable processes are unprepared for AI-augmented roles. Middle managers whose authority comes from controlling information resist changes to their span of control. Christensen warned that processes serving core markets “work so well that they blind those companies.”</li>
+    <li><b>Technical debt.</b> Undocumented workflows, siloed data, brittle integrations and manual exceptions. The most common mistake is to automate before re-architecting. Michael Hammer (1990): “stop paving the cow paths … obliterate them and start over.”</li>
+    <li><b>Economics.</b> When a rival gets five times the output from the same resources, or traction with one-fifth of the capital, the cost curve of a sector shifts. Incumbents must cut prices (risking stability) or hold them (risking slow erosion).</li>
+  </ul>
+
+  <h4>Where incumbents still have an edge</h4>
+  <p>AI-native startups carry quality, reliability and compliance risk. Agents do not always give the same result twice, so startups must build audit trails, compliance reporting, incident response, root-cause analysis and postmortems that incumbents have refined for decades. Agentic AI also raises demand for top-tier employees with deep industry knowledge, and incumbents already employ them. As LLMs become commodities, the differentiators are <b>proprietary data, the ability to re-engineer workflows around AI, and expertise in blending AI speed with human judgment</b>.</p>
+
+  <h4>What incumbents should do now</h4>
+  <ol>
+    <li><b>Run a vulnerability audit against the five forces.</b> Find workflows that slow down, rely on too many handoffs, or force decisions without good information: claims, referrals, loan operations, HR onboarding, supply-chain coordination. That is where an AI-native rival would attack first.</li>
+    <li><b>Start with a bounded, high-friction process</b> that matters, not an easy pilot. NTT Data's proposal agent writes a first draft of an RFP response in 20 minutes instead of hundreds of staff hours, and raised both response volume and win rate.</li>
+    <li><b>Re-architect before you automate.</b> Remove steps that no longer matter, clarify who makes each decision, simplify the flow. An agent in a messy process reproduces its flaws faster.</li>
+    <li><b>Partner with AI-native ventures</b> to see how a clean workflow runs. The U.S. Army's 18th Airborne Corps built the Maven Smart System with industry field engineers working directly with soldiers.</li>
+    <li><b>Strengthen data quality and make handoffs to humans explicit.</b> Exceptions should be visible, not buried in email. Human-in-the-loop is a vital part of agentic governance.</li>
+    <li><b>Prepare people for shifting roles.</b> Humans take judgment, edge cases and empathy; agents take setup, coordination and monitoring. Tampa General Hospital's call-centre agent “Aimee” handles routine inquiries and escalates complex cases, while staff control her knowledge base and logic.</li>
+  </ol>
+  <blockquote>“History suggests that waiting until the threat becomes undeniable is waiting too long.”<cite>Lee, Mantia and McNeill, HBR, July–August 2026</cite></blockquote>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Structure “game-changer” answers in three moves: what changed (the second great compression), how it works (the five forces, one example each), and so what (the threat to incumbents and the six responses).</p>
+  </div>
+</section>
+
+<section class="topic" id="t13">
+  <span class="eyebrow">Topic 1.3</span>
+  <h3>The last-mile problem: key issues and strategies to resolve them</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>AI pilots succeed on their own, but the gains do not scale, because the organization around them (processes, governance, roles and professional identity) has not been redesigned. “The bottleneck simply shifts.”</p>
+  </div>
+
+  <h4>Background</h4>
+  <p>The Frontier Firm Initiative (FFI) at Harvard Business School was founded by the Digital Data Design (D^3) Institute and Microsoft. It held a closed-door summit with senior leaders from about a dozen global organizations in healthcare, banking and industrial manufacturing. These firms were enthusiastic adopters, with hundreds of AI deployments and near-universal use of M365 Copilot, ChatGPT Enterprise or GitHub Copilot. Yet their tools formed <b>“islands of productivity.”</b> An agent could draft a complex contract in seconds, and the contract then sat in manual legal review for two weeks because risk and governance had not been redesigned for an agentic pace.</p>
+
+  <figure class="fig">
+    <div class="lm">
+      <div class="lm-a">Pilot works<small>Contract drafted in seconds</small></div>
+      <div class="lm-gap">The last mile<small>Technical capability must meet organizational design</small></div>
+      <div class="lm-b">Enterprise value<small>A new AI-native operating model</small></div>
+    </div>
+    <figcaption>Leaders at the summit said the main obstacle is rarely model quality or data availability. It is this last mile.</figcaption>
+  </figure>
+
+  <h4>The seven frictions</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Friction</th><th>What goes wrong</th><th>Example from the summit</th></tr></thead>
+      <tbody>
+        <tr><td>1. Proliferation of pilots</td><td class="plain">Firms are “pilot-rich but transformation-poor.” There is no repeatable path from proof of concept to a standard operating model.</td><td class="plain">A bank with 250+ applications linking LLMs to its systems; a food and beverage firm with pilots across 185 countries; an apparel firm that automated 18,000+ finance processes.</td></tr>
+        <tr><td>2. Productivity gap</td><td class="plain">Individual gains never reach the balance sheet. Saved time is re-absorbed into meetings and email unless roles and budgets are redesigned to capture it.</td><td class="plain">A payments network where 99%+ of staff use copilots; a manufacturer with double-digit gains for thousands of engineers. Finance still cannot find headcount shifts or shorter cycle times.</td></tr>
+        <tr><td>3. Process debt</td><td class="plain">AI exposes brittle, exception-ridden processes built up over decades. The workflow itself must be re-architected, which needs techno-functional leaders who understand business logic and technical limits.</td><td class="plain">A healthcare insurer where AI surfaced inconsistencies faster than it could resolve them; a professional-services firm in 170+ countries running the same process dozens of ways.</td></tr>
+        <tr><td>4. Identity problem of tribal knowledge</td><td class="plain">Critical tacit knowledge lives in long-tenured employees' heads and confers status. Asking experts to encode their judgment threatens their identity, so they resist.</td><td class="plain">An engineering consultancy framed this as an identity problem, not a reskilling issue.</td></tr>
+        <tr><td>5. Governance in an agentic world</td><td class="plain">When agents take actions, traditional governance becomes a bottleneck. Human-in-the-loop controls that work for single cases collapse under multi-agent systems, leaving an accountability gap.</td><td class="plain">An asset servicer running 100+ agents is planning for tens of thousands. Leaders now ask HR-style questions: how to onboard, evaluate, secure and retire a digital worker.</td></tr>
+        <tr><td>6. Architectural complexity</td><td class="plain">A patchwork of AI across hyperscalers and application stacks. Tension between one platform (speed) and many vendors (flexibility). Platforms evolve faster than projects.</td><td class="plain">An apparel firm spent months making agents talk across SAP, Microsoft and Google. A manufacturer is tempted to reset projects each time a new model appears.</td></tr>
+        <tr><td>7. Efficiency trap</td><td class="plain">Framing AI as cost-cutting, like “a new form of offshoring,” makes middle managers defensive, narrows ambition, and risks hollowing out judgment and storytelling.</td><td class="plain">A data and analytics advisory firm warned of this. The biggest gains come from rethinking value creation, not shaving minutes off tasks.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>The blueprint for the AI-native (“frontier”) firm</h4>
+  <p>The article presents its pillars as “direct structural counterweights” to the frictions and says they form one operating model, not a menu of tactics. Firms may start with their most painful friction, but long-term success needs a synchronised effort.</p>
+  <div class="cells">
+    <div>
+      <span class="eyebrow">Pillar</span>
+      <h5>Clean-sheet process redesign</h5>
+      <p>Stop bolting AI onto legacy workflows. Ask: “If we were building this process today with modern AI agents, how would we do it?” Map the <b>outer loop</b> (strategic planning) and the <b>inner loop</b> (execution tasks) before writing code. Use agent-centric mapping to decide where an agent is the worker and where a human is the orchestrator.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Pillar</span>
+      <h5>Strategic knowledge capture</h5>
+      <p>Treat tribal knowledge as a strategic asset. Capture <b>pre-harvest context</b> (rules and logic needed before a task starts) and <b>execution context</b> (nuanced data passed between agents during a task). Pair senior experts with designers and frame it as “legacy building.” New higher-status roles: AI process architects and knowledge stewards.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Pillar</span>
+      <h5>Managing the digital workforce</h5>
+      <p>Move from model governance to <b>agent governance</b>. Control planes define who can create agents, what actions they may take, and where accountability sits. <b>Agentic control planes</b> are central dashboards that track agent performance, security permissions and accuracy, much like HR performance management.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Pillar</span>
+      <h5>Role redesign and career pathing</h5>
+      <p>Human roles shift toward design, orchestration and interpretation, so AI feels like career evolution, not erosion. Job descriptions ask for “learning agility,” “domain depth” and ownership of “agent orchestration.” Engineering firms add assurance and systems-thinking roles, advisory firms formalise storytellers, and banks assign managers to digital workers.</p>
+    </div>
+  </div>
+  <p class="note">The article refers to “seven strategic pillars,” but the course-pack version describes four of them under their own headings. Learn these four by name. If your lecture notes list more, add them to the mapping below.</p>
+
+  <h4>Matching each friction to a strategy</h4>
+  <p class="src">Study aid: this mapping is our synthesis of the Last Mile article and the agentic AI article, not a table from either source.</p>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead><tr><th>Friction</th><th>Strategy to resolve it</th></tr></thead>
+      <tbody>
+        <tr><td>Proliferation of pilots</td><td class="plain">Clean-sheet redesign to create a repeatable path from pilot to operating model; choose a bounded, high-friction process that matters (Lee et al.).</td></tr>
+        <tr><td>Productivity gap</td><td class="plain">Role redesign: reclassify roles and move budgets so reclaimed time shifts to higher-value work.</td></tr>
+        <tr><td>Process debt</td><td class="plain">Clean-sheet redesign led by techno-functional leaders; re-architect before you automate.</td></tr>
+        <tr><td>Tribal knowledge</td><td class="plain">Strategic knowledge capture framed as legacy building and amplification of expertise.</td></tr>
+        <tr><td>Agentic governance</td><td class="plain">Manage agents as a digital workforce through agentic control planes.</td></tr>
+        <tr><td>Architectural complexity</td><td class="plain">No named pillar in the course-pack text. Choose a deliberate platform strategy, clean up data, and make handoffs explicit so agents work across systems.</td></tr>
+        <tr><td>Efficiency trap</td><td class="plain">Reframe AI around value creation; redesign roles so judgment and storytelling grow instead of being hollowed out.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote>“The AI last mile is not blocked by technology. It is blocked by unresolved questions regarding operating models, governance, and human identity.”<cite>Lakhani, Spataro and Stave, HBR.org, 9 March 2026</cite></blockquote>
+  <p>What remains scarce is the leadership ability to imagine and commit to a different way of running the enterprise, so that it can finally realise the value of technology it has already bought.</p>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>For each friction you discuss, give the name, one sentence of explanation, a summit example, and the matching pillar. Four frictions done this way beat seven listed without examples.</p>
+  </div>
+</section>
+
+<section class="quiz" id="q1" data-quiz="m1" aria-labelledby="q1-title">
+  <div class="quiz-head">
+    <div><span class="eyebrow">Self-check</span><h3 id="q1-title">Module 1 quiz</h3></div>
+    <div class="quiz-tools"><span class="score" aria-live="polite"></span><button type="button" class="btn reset" id="reset-m1">Reset quiz</button></div>
+  </div>
+  <p class="verdict"></p>
+  <div class="q-list"></div>
+</section>
+
+<!-- ============ MODULE 2 ============ -->
+<header class="module-head" id="m2">
+  <span class="n">2</span>
+  <span class="eyebrow">Module 2</span>
+  <h2>Understanding AI and Its Impact</h2>
+  <p>What AI is and why it shifts the paradigm, why effortless AI output creates “workslop,” and how agents are assembled on no-code platforms.</p>
+</header>
+
+<section class="topic" id="t21">
+  <span class="eyebrow">Topic 2.1</span>
+  <h3>Understanding AI and its impact: the paradigm-shifting role of AI</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>AI moves computers from following instructions to inferring outputs and now to acting on goals. Value therefore moves from doing tasks to designing, directing and checking work.</p>
+  </div>
+
+  <h4>What AI is</h4>
+  <blockquote>“An AI system is a machine-based system that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments. Different AI systems vary in their levels of autonomy and adaptiveness after deployment.”<cite>OECD definition, revised November 2023 (also the basis of the EU AI Act definition)</cite></blockquote>
+  <p>Three words carry the meaning: <b>infers</b> (it works out the output instead of following a fixed rule), <b>autonomy</b> (how much it acts without a human) and <b>adaptiveness</b> (whether it keeps learning after deployment).</p>
+
+  <h4>How AI has evolved</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Wave</th><th>What it does</th><th>Business example</th><th>Human role</th></tr></thead>
+      <tbody>
+        <tr><td>Rule-based automation</td><td class="plain">Follows explicit if-then rules written by people.</td><td class="plain">Expert systems, macros, RPA bots</td><td class="plain">Writes the rules, handles exceptions</td></tr>
+        <tr><td>Machine learning (predictive AI)</td><td class="plain">Learns patterns from data to classify or predict.</td><td class="plain">Credit scoring, demand forecasting, fraud detection</td><td class="plain">Supplies data, acts on predictions</td></tr>
+        <tr><td>Generative AI (LLMs)</td><td class="plain">Generates text, images and code from prompts.</td><td class="plain">Drafting reports, summarising, coding with Copilot or ChatGPT</td><td class="plain">Frames the problem, edits and verifies</td></tr>
+        <tr><td>Agentic AI</td><td class="plain">Plans and takes multi-step actions with tools toward a goal.</td><td class="plain">Ema's onboarding assistant; NTT Data's support system</td><td class="plain">Sets goals and guardrails, orchestrates, handles exceptions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Why AI is called paradigm-shifting</h4>
+  <p>A paradigm shift changes the underlying assumptions of how something works. For each shift, state the old assumption and the new one.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>From</th><th>To</th><th>Where it comes from</th></tr></thead>
+      <tbody>
+        <tr><td>Software as a tool</td><td class="plain">AI as a teammate that plans and acts</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+        <tr><td>Expensive prediction and drafting</td><td class="plain">Cheap prediction, which makes human judgment the scarce complement</td><td class="plain">Agrawal, Gans and Goldfarb, <i>Prediction Machines</i>, 2018</td></tr>
+        <tr><td>Limits on scale, scope and learning</td><td class="plain">AI factories that scale and learn with each use</td><td class="plain">Iansiti and Lakhani, 2020</td></tr>
+        <tr><td>Incumbents win through resources</td><td class="plain">Two-person startups compete through speed and capital efficiency</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+        <tr><td>Automating existing tasks</td><td class="plain">Redesigning work from a clean sheet</td><td class="plain">Last Mile article; Hammer, 1990</td></tr>
+        <tr><td>Individual productivity</td><td class="plain">Organizational value, which requires redesign to capture</td><td class="plain">Last Mile article (productivity gap)</td></tr>
+        <tr><td>People who do the work</td><td class="plain">People who design, orchestrate, interpret and verify work</td><td class="plain">Last Mile article (role redesign)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Impact at four levels</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Level</th><th>Opportunity</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>Individual</td><td class="plain">Faster drafting, coding and learning. SHRM (2026) finds 41% of U.S. workers use AI for work.</td><td class="plain">Only about half of those workers feel confident in AI outputs; deskilling; creating workslop.</td></tr>
+        <tr><td>Team</td><td class="plain">Shared knowledge (Anterior's “AI librarian”), human-AI collaboration.</td><td class="plain">Workslop erodes trust and respect between colleagues.</td></tr>
+        <tr><td>Organization</td><td class="plain">A new operating model with agents as a digital workforce.</td><td class="plain">Islands of productivity. Gartner predicts over 40% of agentic AI projects will be cancelled by the end of 2027 due to cost, unclear value or weak risk controls.</td></tr>
+        <tr><td>Industry</td><td class="plain">Lower barriers to entry, new business models.</td><td class="plain">Incumbents disrupted by AI-native entrants.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <p><b>Numbers to quote.</b> Gartner predicts that by 2028 at least 15% of day-to-day work decisions will be made autonomously through agentic AI (0% in 2024), and 33% of enterprise software applications will include agentic AI (under 1% in 2024). The first workslop article cites an MIT Media Lab report finding 95% of organizations see no measurable return on their gen AI investment.</p>
+  </div>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Open with the OECD definition, show the evolution in one line (rules → predictions → generation → action), then give three “from → to” shifts with a source each. Close with the impact levels.</p>
+  </div>
+</section>
+
+<section class="topic" id="t22">
+  <span class="eyebrow">Topic 2.2</span>
+  <h3>The paradox of prompt engineering: workslop, its root cause and consequences</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>Generative AI makes it effortless to produce work that looks finished, so the real thinking gets skipped and pushed onto whoever receives it. The easier generation becomes, the more value sits in human framing, context and review.</p>
+  </div>
+
+  <h4>The paradox</h4>
+  <p class="src">The syllabus calls this a paradox. The four points below are how the readings explain it.</p>
+  <div class="cells">
+    <div>
+      <h5>1. The effort paradox</h5>
+      <p>AI saves effort for the creator but adds it for the receiver. Workslop “transfers the effort from creator to receiver.”</p>
+    </div>
+    <div>
+      <h5>2. The skill paradox</h5>
+      <p>Good output needs a good prompt, and a good prompt needs the domain knowledge and context people hoped AI would replace. Gen AI “is not appropriate for all tasks, nor can it read minds.”</p>
+    </div>
+    <div>
+      <h5>3. The durability paradox</h5>
+      <p>Prompt engineering was hailed as the job of the future, yet as models get better at reading intent, clever wording matters less. The lasting skill is <b>problem formulation</b> (Acar, HBR 2023).</p>
+    </div>
+    <div>
+      <h5>4. The mandate paradox</h5>
+      <p>Mandates to “use AI everywhere” raise usage but lower quality. One executive: “Quantity and ‘use of AI’ is prized more than quality and effectiveness.”</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="compact">
+      <thead><tr><th>Problem formulation (Acar)</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Diagnosis</td><td class="plain">Identify the core problem for AI to solve, looking past symptoms to the real objective.</td></tr>
+        <tr><td>Decomposition</td><td class="plain">Break a complex problem into smaller, single-focus sub-problems.</td></tr>
+        <tr><td>Reframing</td><td class="plain">Change the angle from which the problem is viewed to open new solutions.</td></tr>
+        <tr><td>Constraint design</td><td class="plain">Set the boundaries: input, process and output limits the solution must meet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>What workslop is</h4>
+  <blockquote>“AI generated work content that masquerades as good work, but lacks the substance to meaningfully advance a given task.”<cite>Niederhoffer et al., BetterUp Labs with the Stanford Social Media Lab, HBR.org, September 2025</cite></blockquote>
+  <p>Examples include well-formatted slides, long structured reports, articulate-sounding summaries of papers written by non-experts, and code that is unhelpful, incomplete or missing context. The term adapts “AI slop,” the low-quality AI content clogging social media.</p>
+  <p><b>Workslop is not ordinary cognitive offloading.</b> Offloading to a machine (searching instead of remembering) moves effort from a person to technology. Workslop “uniquely uses machines to offload cognitive work to another human being,” who must decode it, infer missing or false context, and often redo it.</p>
+
+  <h4>Root causes</h4>
+  <p>The January 2026 follow-up: “It isn't a failure of the technology. It's a failure of management.” Workslop comes from pressure at both ends of the organization.</p>
+  <figure class="fig">
+    <div class="flow">
+      <div class="row2">
+        <div class="box"><span class="eyebrow">Pressure from the top</span>Boards see AI as the lever for productivity. Leaders issue blunt mandates (“use it everywhere every day”). 41% of employees were told to use AI without detailed instructions or context.</div>
+        <div class="box"><span class="eyebrow">Pressure from below</span>Budgets tightened, roles consolidated, more tasks with no formal role redesign. People are depleted and do not feel safe admitting uncertainty or asking for help.</div>
+      </div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div class="box">Performative AI use: low-effort output that shows compliance with the mandate</div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div class="box inv">Workslop: polished, plausible, empty</div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div class="box">The receiver decodes, checks and redoes it: 1 hour 56 minutes per instance</div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div class="box">Costs: about $186 per employee per month, falling trust and weaker collaboration</div>
+      <p class="loopnote">↺ Strain grows, which produces more workslop. It is both a symptom and an accelerant.</p>
+    </div>
+    <figcaption>Built from both workslop articles. Figures are from the BetterUp and Stanford survey of 1,150 U.S. full-time employees.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Unclear mandates.</b> Indiscriminate imperatives yield indiscriminate usage. Blanket mandates also model “passing the buck” instead of giving policies, best practices and norms.</li>
+    <li><b>Overload and depletion.</b> Employees say they send subpar AI work mainly because they are stretched too thin.</li>
+    <li><b>Low trust.</b> BetterUp's data on 400,000+ employees shows a 2–6% decline since 2020 in foundational mindsets such as focus, agility and strategic planning. Edelman's 2025 Trust Barometer recorded an “unprecedented” three-point fall in employee trust in employers.</li>
+    <li><b>Mindset.</b> “Pilots” (high agency, high optimism) use gen AI 75% more at work and 95% more outside work than “passengers,” and use it to enhance their creativity. Passengers are more likely to use AI to avoid doing work.</li>
+    <li><b>Self-reported sending.</b> 53% admit sending low-quality AI work at least some of the time. One in 10 say half or more of the AI work they send is unhelpful.</li>
+  </ul>
+
+  <h4>Consequences</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Prevalence</td><td class="plain">40% received workslop in the last month; 15.4% of the content people receive qualifies. It flows between peers (40%), up from reports to managers (18%) and down from managers (16%). Professional services and technology are hit hardest.</td></tr>
+        <tr><td>Productivity tax</td><td class="plain">1 hour 56 minutes per instance; about $186 per employee per month; over $9 million a year for a 10,000-person organization.</td></tr>
+        <tr><td>Emotional</td><td class="plain">Receivers feel annoyed (53%), confused (38%) and offended (22%).</td></tr>
+        <tr><td>Reputation</td><td class="plain">About half see the sender as less creative, capable and reliable; 42% as less trustworthy; 37% as less intelligent. This echoes a competence penalty for AI use, which fell harder on female engineers.</td></tr>
+        <tr><td>Relationships</td><td class="plain">34% report the incident to teammates or managers; 32% are less likely to want to work with the sender again.</td></tr>
+        <tr><td>Retention and morale</td><td class="plain">Vibe-coded bugs led one engineer to resign with two days' notice. A researcher felt “gaslit” when a manager fed their findings into ChatGPT. An employee “gave up all hope” of promotion after an AI-written review recycled their self-evaluation.</td></tr>
+        <tr><td>Strategic</td><td class="plain">Helps explain why AI activity does not become ROI, and it erodes the collaboration that AI adoption and change management depend on.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>How to stop it</h4>
+  <div class="cells">
+    <div>
+      <h5>Build competence and control</h5>
+      <p>People who feel competent and in control with AI tools are <b>half as likely</b> to create workslop. Invest in AI literacy, bring hidden “shadow” practices into the open, and forward-deploy AI engineers into teams.</p>
+    </div>
+    <div>
+      <h5>Build team trust</h5>
+      <p>Trust in the team <b>reduced workslop by 61%</b>. People must feel safe to admit AI use, raise quality concerns and ask for feedback.</p>
+    </div>
+    <div>
+      <h5>Read it as a signal</h5>
+      <p>Each instance signals an organization under strain. Blaming individual laziness is the <b>fundamental attribution error</b>: it ignores the situation.</p>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="compact">
+      <thead><tr><th>Level</th><th>System-level response (2026 article)</th></tr></thead>
+      <tbody>
+        <tr><td>Culture</td><td class="plain">Rebuild trust through everyday collaboration: feedback, questions and dialogue.</td></tr>
+        <tr><td>Practice</td><td class="plain">Clear norms for when and how to use AI, and explicit review processes that reinforce human judgment instead of offloading it.</td></tr>
+        <tr><td>Accountability</td><td class="plain">Someone fluent in technology and relationships, such as a forward-deployed “AI collaboration architect,” who finds friction and links AI to specific outcomes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>From the 2025 article: model purposeful AI use, set guardrails and acceptable-use norms, frame AI as a collaborative tool rather than a shortcut, adopt a pilot mindset, and “uphold the same standards of excellence for work done by bionic human-AI duos as by humans alone.”</p>
+
+  <div class="note">
+    <p><b>A personal check before you send AI-assisted work</b> (our synthesis of the recommendations): Do I understand the task and the reader? Did I give the AI the context? Did I verify every fact, figure and source? Is it only as long as the reader needs? Would I defend every line? Have I said where AI helped?</p>
+  </div>
+  <blockquote>“The greatest irony of all is that to make AI work at work, we need to get better at being human.”<cite>Niederhoffer, Robichaux and Hancock, HBR.org, January 2026</cite></blockquote>
+
+  <div class="note">
+    <p><b>Cross-check notes.</b> The 2025 article gives 40% for receiving workslop in the last month but uses 41% in its cost estimate; the 2026 article also uses 41%. Quote 40% for “last month” and 41% for prevalence. The 2025 article dates Nicholas Carr's Atlantic essay “Is Google Making Us Stupid?” to 2006; it appeared in the July/August 2008 issue.</p>
+  </div>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Answer as a chain: paradox → definition → root causes (top and bottom pressure) → consequences (use three numbers) → remedies (competence, trust, culture/practice/accountability).</p>
+  </div>
+</section>
+
+<section class="topic" id="t23">
+  <span class="eyebrow">Topic 2.3</span>
+  <h3>Building AI agents using no-code platforms</h3>
+  <p class="muted">No lab exam. You are expected to narrate what an agent does and how it is put together.</p>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>A no-code agent is a language model given a job description (instructions), reference material (knowledge), hands (tools and actions), a start signal (triggers) and rules (guardrails), assembled in a visual builder instead of code.</p>
+  </div>
+
+  <h4>Chatbot, automation, agent, agentic system</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>How it behaves</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Chatbot or assistant</td><td class="plain">Answers questions in a conversation; takes no actions, or only scripted ones.</td><td class="plain">A policy FAQ bot</td></tr>
+        <tr><td>Workflow automation</td><td class="plain">Runs a fixed sequence of steps when triggered. Deterministic.</td><td class="plain">“New form entry → add a spreadsheet row → send an email”</td></tr>
+        <tr><td>AI agent</td><td class="plain">Pursues a goal, decides which steps and tools to use, acts in other systems, asks for missing information and escalates.</td><td class="plain">An onboarding agent that sets up everything for a new hire</td></tr>
+        <tr><td>Agentic system</td><td class="plain">Several specialised agents coordinated by a manager agent.</td><td class="plain">Tactix's restaurant analytics agents; NTT Data's support system</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Anatomy of a no-code agent</h4>
+  <figure class="fig">
+    <div class="anatomy">
+      <div><b>Instructions</b><span>Plain-language role, goal, tone, rules and steps. The agent's job description.</span></div>
+      <div><b>Knowledge</b><span>Documents, websites, SharePoint or databases the agent grounds its answers in.</span></div>
+      <div><b>Tools and actions</b><span>Connectors that let it act: send email, create a ticket, update a CRM, query an ERP, call an API.</span></div>
+      <div><b>Triggers</b><span>What starts it: a user message, a schedule, or an event such as a new email or form entry.</span></div>
+      <div class="core"><b>Orchestration</b><span>The language model plans: interprets intent, breaks the request down, picks tools and knowledge, runs the steps.</span></div>
+      <div><b>Memory and variables</b><span>Conversation context and stored values carried between steps.</span></div>
+      <div><b>Guardrails</b><span>Permissions, allowed actions, spending limits, data access and content filters.</span></div>
+      <div><b>Human handoff</b><span>Rules for escalating to a person when confidence is low or stakes are high.</span></div>
+      <div><b>Channels</b><span>Where people meet it: Teams, a website, WhatsApp, email or Slack.</span></div>
+    </div>
+    <figcaption>Terms follow Microsoft Copilot Studio's documentation. There, “generative orchestration” is an LLM planning layer that interprets intent, breaks down complex requests, selects tools and knowledge, and executes multistep plans with guardrails. Other builders use similar parts under different names.</figcaption>
+  </figure>
+
+  <h4>Common no-code and low-code platforms</h4>
+  <p>Microsoft Copilot Studio (agents inside Microsoft 365), Zapier and Make (trigger-and-action automations with AI steps and agents), n8n (visual, low-code workflows with an AI agent node), and custom GPTs in ChatGPT (instructions, knowledge files and actions). Product names and buttons change quickly, so in the exam describe the components, not the menus.</p>
+
+  <h4>Steps to build one</h4>
+  <ol>
+    <li><b>Define the job.</b> Who uses it, what goal it serves, how success is measured, and what it must never do.</li>
+    <li><b>Write the instructions.</b> Role, tone, step order, rules and when to ask a clarifying question.</li>
+    <li><b>Add knowledge.</b> Upload or connect the policies, FAQs and data it should rely on.</li>
+    <li><b>Connect tools and actions</b> with the least access they need.</li>
+    <li><b>Set triggers:</b> a chat message, a schedule or a system event.</li>
+    <li><b>Add guardrails and human handoff</b> for high-stakes or uncertain cases.</li>
+    <li><b>Test</b> with realistic, unusual and adversarial cases.</li>
+    <li><b>Publish</b> to a channel.</li>
+    <li><b>Monitor and improve:</b> accuracy, resolution rate, escalations and cost, ideally on a control plane.</li>
+  </ol>
+
+  <h4>Model narration: a new-hire onboarding agent</h4>
+  <p class="src">Modelled on the Ema onboarding assistant described by Lee, Mantia and McNeill.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Part</th><th>What the agent does</th></tr></thead>
+      <tbody>
+        <tr><td>Purpose</td><td class="plain">Gets every new hire fully set up before day one, without HR chasing five departments.</td></tr>
+        <tr><td>Trigger</td><td class="plain">HR marks a candidate as “offer accepted” in the HR system (an event trigger).</td></tr>
+        <tr><td>Knowledge</td><td class="plain">Onboarding policy, benefits handbook, IT equipment catalogue, org chart.</td></tr>
+        <tr><td>Orchestration</td><td class="plain">Reads the role, location and start date, builds a checklist, and asks the hiring manager for anything missing, such as the team or laptop type.</td></tr>
+        <tr><td>Tools and actions</td><td class="plain">Creates the employee record, raises an IT ticket for a laptop and email ID, orders an ID badge, books a desk, enrols the hire in benefits, schedules introductions with key teammates, and sends a welcome message.</td></tr>
+        <tr><td>Guardrails</td><td class="plain">Cannot change salary or contract terms. Payroll activation needs HR approval. It sees only the new hire's records.</td></tr>
+        <tr><td>Human handoff</td><td class="plain">Visa, relocation or accessibility needs go to an HR partner with a summary.</td></tr>
+        <tr><td>Output</td><td class="plain">A day-one pack for the hire and a status dashboard for HR and the manager.</td></tr>
+        <tr><td>Monitoring</td><td class="plain">Share of tasks done before day one, time to productivity, escalation rate and new-hire satisfaction.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Narrate in the order the agent runs: <b>trigger → knowledge and inputs → reasoning → actions → guardrails and handoff → output → monitoring.</b> Mention governance: who can change it, what it may do, and who is accountable. That links your answer to the Last Mile reading.</p>
+  </div>
+</section>
+
+<section class="quiz" id="q2" data-quiz="m2" aria-labelledby="q2-title">
+  <div class="quiz-head">
+    <div><span class="eyebrow">Self-check</span><h3 id="q2-title">Module 2 quiz</h3></div>
+    <div class="quiz-tools"><span class="score" aria-live="polite"></span><button type="button" class="btn reset" id="reset-m2">Reset quiz</button></div>
+  </div>
+  <p class="verdict"></p>
+  <div class="q-list"></div>
+</section>
+
+<!-- ============ MODULE 4 ============ -->
+<header class="module-head" id="m4">
+  <span class="n">4</span>
+  <span class="eyebrow">Module 4</span>
+  <h2>Impact of AI on Work: Strategic Implications for Business</h2>
+  <p>How AI reshapes the work, the worker and the workplace; which competencies rise and fall; and how workflows move from automation to autonomy.</p>
+</header>
+
+<section class="topic" id="t41">
+  <span class="eyebrow">Topic 4.1</span>
+  <h3>Future of work (SHRM): three key aspects</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>SHRM frames the future of work around three linked areas: the <b>work</b>, the <b>worker</b> and the <b>workplace</b>. AI is changing all three at once, so HR and business leaders must redesign them together.</p>
+  </div>
+
+  <p>SHRM (the Society for Human Resource Management) describes itself as the authority on “all things work, worker, and workplace,” and organises its future-of-work research the same way. Deloitte uses the same three dimensions and labels them by question: work (the <b>what</b>), workforce (the <b>who</b>) and workplace (the <b>where</b>).</p>
+
+  <div class="cells">
+    <div>
+      <span class="eyebrow">Aspect 1 · the what</span>
+      <h4>Work</h4>
+      <ul>
+        <li>Tasks are unbundled: routine ones are automated or augmented by AI, and jobs are increasingly defined by skills instead of fixed titles.</li>
+        <li>Work is redesigned around human-agent teams. Humans take judgment, edge cases and empathy; agents take setup, coordination and monitoring.</li>
+        <li>SHRM 2026 research: 39% of organizations say AI has shifted job responsibilities, 24% say it created new roles, and only 7% report job displacement.</li>
+      </ul>
+    </div>
+    <div>
+      <span class="eyebrow">Aspect 2 · the who</span>
+      <h4>Worker (workforce)</h4>
+      <ul>
+        <li>SHRM expects demand to rise for workers who can work alongside and manage AI systems; those who cannot adapt risk being left behind.</li>
+        <li>57% of organizations report more upskilling and reskilling opportunities because of AI (SHRM 2026).</li>
+        <li>The talent pool is a continuum: full-time staff, contractors, gig workers, internal talent marketplaces, and now digital workers (agents) that must be onboarded, evaluated and retired.</li>
+        <li>Well-being and identity: burnout and depletion drive workslop, and experts fear becoming less essential.</li>
+      </ul>
+    </div>
+    <div>
+      <span class="eyebrow">Aspect 3 · the where</span>
+      <h4>Workplace</h4>
+      <ul>
+        <li>Flexible and hybrid arrangements; the workplace becomes a network of relationships, not just a location (Deloitte).</li>
+        <li>SHRM's 2026 State of the Workplace: as AI adoption accelerates, “the true engine of organizational resilience remains human leadership and culture.” Employers name effective leadership and management as their top workplace need.</li>
+        <li>Norms, trust and AI governance. Team trust cut workslop by 61%.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>How one AI change touches all three</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>AI change</th><th>Work</th><th>Worker</th><th>Workplace</th></tr></thead>
+      <tbody>
+        <tr><td>Deploying agents in customer service</td><td class="plain">Routine tickets resolved end to end by agents</td><td class="plain">Staff move to exceptions, empathy and agent oversight</td><td class="plain">Escalation rules, control planes, trust in the system</td></tr>
+        <tr><td>Copilots for all knowledge workers</td><td class="plain">Drafting and analysis sped up</td><td class="plain">Need for AI literacy and problem formulation</td><td class="plain">Norms that prevent workslop; psychological safety</td></tr>
+        <tr><td>Capturing tribal knowledge</td><td class="plain">Expert judgment encoded into systems</td><td class="plain">New roles: knowledge stewards, AI process architects</td><td class="plain">Status and recognition for experts who share</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">If your lecture used different labels for SHRM's three aspects, use those labels and reuse this content. The work/worker/workplace structure is how SHRM itself groups the topic.</p>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Define each aspect, give one AI-driven change and one implication for managers or HR per aspect, and finish by showing that the three are linked.</p>
+  </div>
+</section>
+
+<section class="topic" id="t42">
+  <span class="eyebrow">Topic 4.2</span>
+  <h3>Shifting competency requirements in a transformed workplace</h3>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>As AI takes over execution, the scarce competencies become judgment, problem formulation, orchestrating people and agents, continuous learning, deep domain knowledge and the human skills AI cannot supply.</p>
+  </div>
+
+  <h4>What the data says (WEF Future of Jobs Report 2025)</h4>
+  <ul>
+    <li>Employers expect <b>39%</b> of key skills to change by 2030.</li>
+    <li>About <b>170 million</b> jobs created and <b>92 million</b> displaced between 2025 and 2030, a net gain of <b>78 million</b> (7% of current employment).</li>
+    <li><b>Analytical thinking</b> is the top core skill; seven in ten companies call it essential. It is followed by resilience, flexibility and agility, and by leadership and social influence.</li>
+    <li><b>AI and big data</b> is the fastest-growing skill, followed by networks and cybersecurity, and technological literacy. Creative thinking, resilience, curiosity and lifelong learning are also rising.</li>
+  </ul>
+
+  <h4>From → to: how competencies are shifting</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>From</th><th>To</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Doing the task</td><td class="plain">Designing, orchestrating and verifying work done by agents</td><td class="plain">Last Mile</td></tr>
+        <tr><td>Being the person who “knew”</td><td class="plain">Externalising and encoding judgment into systems</td><td class="plain">Last Mile</td></tr>
+        <tr><td>Prompt tricks</td><td class="plain">Problem formulation: diagnosis, decomposition, reframing, constraints</td><td class="plain">Acar, 2023</td></tr>
+        <tr><td>Narrow specialist</td><td class="plain">Techno-functional: business logic plus technical limits</td><td class="plain">Last Mile</td></tr>
+        <tr><td>A fixed skill set</td><td class="plain">Continuous learning and learning agility</td><td class="plain">Neeley and Leonardi; Last Mile</td></tr>
+        <tr><td>Output volume</td><td class="plain">Output quality, verification and collaboration norms</td><td class="plain">Workslop articles</td></tr>
+        <tr><td>Following the process</td><td class="plain">Handling edge cases, exceptions and empathy</td><td class="plain">Lee, Mantia and McNeill</td></tr>
+        <tr><td>Efficiency</td><td class="plain">Value creation, judgment and storytelling</td><td class="plain">Last Mile (efficiency trap)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Six competency clusters</h4>
+  <div class="cells">
+    <div><h5>Digital and AI fluency</h5><p>The 30% rule: enough grasp of data, algorithms and AI to ask good questions and work with experts. AI and big data is the fastest-growing skill.</p></div>
+    <div><h5>Thinking</h5><p>Analytical thinking, problem formulation, systems thinking and creative thinking.</p></div>
+    <div><h5>Orchestration and assurance</h5><p>Directing agents, overseeing their work, interpreting exceptions and managing digital workers.</p></div>
+    <div><h5>Human and relational</h5><p>Leadership and social influence, empathy, storytelling, giving feedback and building trust.</p></div>
+    <div><h5>Adaptive mindset</h5><p>Resilience, flexibility, curiosity, lifelong learning, and the “pilot” mix of high agency and optimism.</p></div>
+    <div><h5>Domain depth</h5><p>Deep industry knowledge. Agentic AI raises demand for top-tier experts, and the minimum AI-native team pairs a domain expert with an AI engineer.</p></div>
+  </div>
+
+  <h4>New roles named in the readings</h4>
+  <p>AI process architect · knowledge steward · manager of digital workers · assurance and systems-thinking roles · storyteller who contextualises AI output · forward-deployed AI engineer · AI collaboration architect · digital transformation czar reporting to the CEO · AI engineer paired with a domain expert.</p>
+
+  <h4>Implications for HR and managers</h4>
+  <ul>
+    <li>Rewrite job descriptions around learning agility, domain depth and ownership of agent orchestration.</li>
+    <li>Build career paths so AI feels like career evolution rather than erosion.</li>
+    <li>Upskill existing staff using the six training practices from Topic 1.1; hiring alone cannot close the gap.</li>
+    <li>Reward knowledge sharing so experts see encoding their judgment as legacy building.</li>
+    <li>Set quality standards for AI-assisted work so skills grow instead of eroding into workslop.</li>
+  </ul>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Lead with the WEF numbers, show three or four “from → to” shifts with sources, then name the new roles. Link back to the Adoption Matrix: competence alone is not enough without buy-in.</p>
+  </div>
+</section>
+
+<section class="topic" id="t43">
+  <span class="eyebrow">Topic 4.3</span>
+  <h3>From automation to autonomy: redefining workflow dynamics</h3>
+  <p class="muted">No lab exam. You are expected to draw the outline of a workflow.</p>
+
+  <div class="oneline">
+    <span class="chip">In one line</span>
+    <p>Automation executes steps a human designed. Autonomy lets AI agents choose the steps toward a goal within guardrails, so people move from doing each step to designing the flow, setting limits and handling exceptions.</p>
+  </div>
+
+  <h4>The spectrum from automation to autonomy</h4>
+  <figure class="fig">
+    <div class="spec-axis"><span>More human control</span><span>More agent autonomy</span></div>
+    <div class="spectrum">
+      <div class="lvl l1"><span class="ln">1</span><b>Manual</b><span>People do and decide every step.</span><span class="who">Human does</span></div>
+      <div class="lvl l2"><span class="ln">2</span><b>Rule-based automation</b><span>Scripts, macros and RPA follow fixed if-then rules and break on exceptions.</span><span class="who">Human designs rules</span></div>
+      <div class="lvl l3"><span class="ln">3</span><b>Intelligent automation</b><span>A fixed flow with AI steps: read documents, classify email, extract data.</span><span class="who">Human reviews AI steps</span></div>
+      <div class="lvl l4"><span class="ln">4</span><b>AI agent</b><span>Plans and chooses tools toward a goal; escalates when unsure.</span><span class="who">Human on the loop</span></div>
+      <div class="lvl l5"><span class="ln">5</span><b>Agentic system</b><span>A manager agent coordinates specialist agents end to end and learns.</span><span class="who">Human governs</span></div>
+    </div>
+    <figcaption>A study device built from the readings, not an official standard. <b>Human in the loop</b>: a person approves each key step. <b>Human on the loop</b>: a person monitors, sets guardrails and steps in on exceptions. The Last Mile article warns that in-the-loop controls collapse at multi-agent scale.</figcaption>
+  </figure>
+
+  <h4>How workflow dynamics change</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Before (automation)</th><th>After (autonomy)</th><th>Example or source</th></tr></thead>
+      <tbody>
+        <tr><td>Sequential handoffs between departments</td><td class="plain">Outcome-owned flows that cross silos</td><td class="plain">Ema's onboarding agent spans HR, IT and three managers</td></tr>
+        <tr><td>Fixed rules</td><td class="plain">Goals plus guardrails; the agent chooses the path</td><td class="plain">NTT Data pursues service quality, not single tickets</td></tr>
+        <tr><td>Exceptions buried in email</td><td class="plain">Exceptions visible and routed to people by explicit rules</td><td class="plain">Lee, Mantia and McNeill</td></tr>
+        <tr><td>Humans execute, managers check</td><td class="plain">Agents execute, humans orchestrate and assure</td><td class="plain">Last Mile: role redesign</td></tr>
+        <tr><td>Improvement projects every few years</td><td class="plain">A continuous learning loop</td><td class="plain">The AI-driven flywheel</td></tr>
+        <tr><td>Governing software</td><td class="plain">Governing a digital workforce</td><td class="plain">Agentic control planes</td></tr>
+        <tr><td>Automate the existing process</td><td class="plain">Re-architect first, then automate</td><td class="plain">Hammer: “stop paving the cow paths”</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Design principles from the readings</h4>
+  <ol>
+    <li>Re-architect before you automate: remove dead steps, name each decision owner, simplify.</li>
+    <li>Start with a bounded, high-friction process that matters.</li>
+    <li>Make handoff points to humans explicit, with human approval for high-stakes steps.</li>
+    <li>Use accurate, consistent data and reliable signals; keep exceptions visible.</li>
+    <li>Build testing, monitoring, escalation and audit trails, because agents are not deterministic.</li>
+    <li>Govern agents like a workforce: who creates them, what they may do, who is accountable.</li>
+    <li>Prepare people for new roles: overseeing agents, interpreting exceptions, improving the flow.</li>
+  </ol>
+
+  <h4>How to draw a workflow outline</h4>
+  <p>Tools such as Zapier, Make, n8n and Microsoft Power Automate all use the same vocabulary: a <b>trigger</b> starts the flow and <b>actions</b> follow, with conditions and branches between them. Draw it with standard flowchart shapes.</p>
+  <div class="legend" aria-label="Flowchart symbols">
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><rect class="shape" x="2" y="4" width="54" height="24" rx="12"/></svg>Start or end (trigger)</div>
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><polygon class="shape" points="12,4 56,4 46,28 2,28"/></svg>Input or output data</div>
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><rect class="shape" x="2" y="4" width="54" height="24"/></svg>Action or process step</div>
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><polygon class="shape" points="29,2 56,16 29,30 2,16"/></svg>Decision (yes / no)</div>
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><rect class="ai" x="2" y="4" width="54" height="24"/></svg>AI step (our notation)</div>
+    <div><svg class="fc" viewBox="0 0 58 32" aria-hidden="true"><rect class="human" x="2" y="4" width="54" height="24"/></svg>Human checkpoint (our notation)</div>
+  </div>
+  <ol>
+    <li>Name the trigger.</li>
+    <li>List the inputs.</li>
+    <li>Write the actions in order.</li>
+    <li>Add decisions with labelled yes/no branches.</li>
+    <li>Mark which steps are AI and where a human checks.</li>
+    <li>Show the outputs and notifications.</li>
+    <li>Add the exception path.</li>
+    <li>End with logging and the metrics you would track.</li>
+  </ol>
+
+  <div class="fc-pair">
+    <figure class="fig">
+      <span class="eyebrow">Example A · Intelligent automation</span>
+      <svg class="fc" viewBox="0 0 480 516" role="img" aria-label="Invoice processing workflow: invoice email arrives, AI extracts details, decision on PO match and limit, auto-post or human approval, notify vendor and log.">
+        <defs><marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 Z" fill="currentColor"/></marker></defs>
+        <rect class="shape" x="70" y="8" width="200" height="40" rx="20"/>
+        <text x="170" y="28">START: invoice email arrives</text>
+        <line class="line" x1="170" y1="48" x2="170" y2="68" marker-end="url(#arA)"/>
+        <polygon class="shape" points="92,68 268,68 248,108 72,108"/>
+        <text x="170" y="88">Input: invoice PDF</text>
+        <line class="line" x1="170" y1="108" x2="170" y2="128" marker-end="url(#arA)"/>
+        <rect class="ai" x="60" y="128" width="220" height="50"/>
+        <text class="on" x="170" y="145">AI step: read the invoice,</text>
+        <text class="on" x="170" y="162">extract vendor, amount, PO no.</text>
+        <line class="line" x1="170" y1="178" x2="170" y2="196" marker-end="url(#arA)"/>
+        <polygon class="shape" points="170,196 282,246 170,296 58,246"/>
+        <text x="170" y="238">PO matches and</text>
+        <text x="170" y="255">amount within limit?</text>
+        <line class="line" x1="170" y1="296" x2="170" y2="330" marker-end="url(#arA)"/>
+        <text class="lbl" x="178" y="313">YES</text>
+        <path class="line" d="M282,246 H374 V280" marker-end="url(#arA)"/>
+        <text class="lbl" x="292" y="236">NO</text>
+        <rect class="shape" x="60" y="330" width="220" height="48"/>
+        <text x="170" y="347">Post to ERP and</text>
+        <text x="170" y="364">schedule payment</text>
+        <rect class="human" x="300" y="280" width="148" height="66"/>
+        <text x="374" y="298">Human checkpoint:</text>
+        <text x="374" y="314">finance manager</text>
+        <text x="374" y="330">approves or rejects</text>
+        <path class="line" d="M340,346 V354 H282" marker-end="url(#arA)"/>
+        <text class="lbl" x="288" y="370">APPROVED</text>
+        <path class="line" d="M448,313 H462 V422 H282" marker-end="url(#arA)"/>
+        <text class="lbl" x="382" y="412">REJECTED</text>
+        <line class="line" x1="170" y1="378" x2="170" y2="398" marker-end="url(#arA)"/>
+        <rect class="shape" x="60" y="398" width="220" height="48"/>
+        <text x="170" y="415">Notify vendor; log every</text>
+        <text x="170" y="432">step for audit</text>
+        <line class="line" x1="170" y1="446" x2="170" y2="466" marker-end="url(#arA)"/>
+        <rect class="shape" x="70" y="466" width="200" height="40" rx="20"/>
+        <text x="170" y="486">END</text>
+      </svg>
+      <ol class="outline">
+        <li><b>Trigger:</b> an invoice email arrives in the accounts inbox.</li>
+        <li><b>Input:</b> the attached PDF.</li>
+        <li><b>AI step:</b> extract vendor, amount and PO number.</li>
+        <li><b>Decision:</b> does it match the purchase order and fall within the approval limit?</li>
+        <li><b>Yes:</b> post to the ERP and schedule payment automatically.</li>
+        <li><b>No:</b> a finance manager approves or rejects it.</li>
+        <li><b>Output:</b> notify the vendor and log every step for audit.</li>
+      </ol>
+      <figcaption>Level 3 on the spectrum. The flow is fixed; AI only reads the document.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <span class="eyebrow">Example B · Agentic workflow</span>
+      <svg class="fc" viewBox="0 0 480 540" role="img" aria-label="Customer support agent workflow: ticket arrives, agent classifies it, pulls order history and policy, decides whether it is routine, acts or escalates to a human, logs the outcome and learns.">
+        <defs><marker id="arB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 Z" fill="currentColor"/></marker></defs>
+        <rect class="shape" x="60" y="8" width="220" height="40" rx="20"/>
+        <text x="170" y="28">START: customer ticket arrives</text>
+        <line class="line" x1="170" y1="48" x2="170" y2="68" marker-end="url(#arB)"/>
+        <rect class="ai" x="60" y="68" width="220" height="50"/>
+        <text class="on" x="170" y="85">Agent reads the ticket;</text>
+        <text class="on" x="170" y="102">classifies intent and urgency</text>
+        <line class="line" x1="170" y1="118" x2="170" y2="138" marker-end="url(#arB)"/>
+        <rect class="ai" x="60" y="138" width="220" height="50"/>
+        <text class="on" x="170" y="155">Agent pulls order history</text>
+        <text class="on" x="170" y="172">and policy (tools, knowledge)</text>
+        <line class="line" x1="170" y1="188" x2="170" y2="206" marker-end="url(#arB)"/>
+        <polygon class="shape" points="170,206 282,256 170,306 58,256"/>
+        <text x="170" y="248">Routine, confident</text>
+        <text x="170" y="265">and within limits?</text>
+        <line class="line" x1="170" y1="306" x2="170" y2="340" marker-end="url(#arB)"/>
+        <text class="lbl" x="178" y="323">YES</text>
+        <path class="line" d="M282,256 H374 V290" marker-end="url(#arB)"/>
+        <text class="lbl" x="292" y="246">NO</text>
+        <rect class="ai" x="60" y="340" width="220" height="50"/>
+        <text class="on" x="170" y="357">Agent acts: refund, reply,</text>
+        <text class="on" x="170" y="374">update the CRM</text>
+        <rect class="human" x="300" y="290" width="148" height="66"/>
+        <text x="374" y="308">Escalate to a human</text>
+        <text x="374" y="324">with a summary and</text>
+        <text x="374" y="340">recommendation</text>
+        <path class="line" d="M374,356 V435 H282" marker-end="url(#arB)"/>
+        <text class="lbl" x="382" y="398">HUMAN DECIDES</text>
+        <line class="line" x1="170" y1="390" x2="170" y2="410" marker-end="url(#arB)"/>
+        <rect class="shape" x="60" y="410" width="220" height="50"/>
+        <text x="170" y="427">Log outcome; agent updates</text>
+        <text x="170" y="444">its knowledge base</text>
+        <path class="loop" d="M60,435 H30 V163 H58" marker-end="url(#arB)"/>
+        <text class="lbl" x="0" y="0" transform="translate(22,330) rotate(-90)">LEARNS</text>
+        <line class="line" x1="170" y1="460" x2="170" y2="480" marker-end="url(#arB)"/>
+        <rect class="shape" x="40" y="480" width="260" height="50" rx="25"/>
+        <text x="170" y="497">END: customer notified;</text>
+        <text x="170" y="514">metrics sent to control plane</text>
+      </svg>
+      <ol class="outline">
+        <li><b>Trigger:</b> a customer raises a support ticket.</li>
+        <li><b>Agent:</b> classifies intent and urgency.</li>
+        <li><b>Agent:</b> uses tools and knowledge to fetch order history and policy.</li>
+        <li><b>Decision:</b> routine, confident and within limits?</li>
+        <li><b>Yes:</b> the agent acts on its own: refund, reply, CRM update.</li>
+        <li><b>No:</b> escalate to a human with a summary and a recommendation.</li>
+        <li><b>Learning loop:</b> log the outcome and update the knowledge base.</li>
+        <li><b>Output:</b> notify the customer; send metrics to the control plane.</li>
+      </ol>
+      <figcaption>Level 4 on the spectrum. The agent chooses its steps; the human is on the loop for exceptions.</figcaption>
+    </figure>
+  </div>
+
+  <div class="tip">
+    <span class="chip">Exam tip</span>
+    <p>Always label the trigger, at least one decision with both branches, the human checkpoint and the end point. Then write one sentence on where the flow is rule-based and where it is autonomous. That sentence shows you understand “automation to autonomy.”</p>
+  </div>
+</section>
+
+<section class="quiz" id="q4" data-quiz="m4" aria-labelledby="q4-title">
+  <div class="quiz-head">
+    <div><span class="eyebrow">Self-check</span><h3 id="q4-title">Module 4 quiz</h3></div>
+    <div class="quiz-tools"><span class="score" aria-live="polite"></span><button type="button" class="btn reset" id="reset-m4">Reset quiz</button></div>
+  </div>
+  <p class="verdict"></p>
+  <div class="q-list"></div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<header class="module-head" id="practice">
+  <span class="eyebrow">Written exam practice</span>
+  <h2>Eight questions with model answers</h2>
+  <p>Write your own answer first, then open the model answer and compare structure, examples and numbers.</p>
+</header>
+
+<div class="stack" style="margin-top:28px;gap:0;">
+  <details class="practice-item" id="p1">
+    <summary><span class="pn">Q1</span><span class="pq">Differentiate digitization, digitalization and digital transformation. What are the implications for managers?</span></summary>
+    <div class="ans">
+      <p><b>Definitions.</b> Digitization converts analog information to digital form (Gartner). Digitalization uses digital technology to change the business model and create new revenue and value (Gartner). Digital transformation is organization-wide change in strategy, structure, culture and skills built on digitalization.</p>
+      <p><b>Examples.</b> Scanning invoices (digitization); automatic e-invoicing and payment (digitalization); finance rebuilt as a data-driven partner with new roles (transformation). Moderna, a “tech company that happens to do biology,” built on data, cloud and AI algorithms.</p>
+      <p><b>Implications.</b> (1) Redesign processes first: “If you have crappy analog processes, you'll get crappy digital processes” (Bancel). (2) Build a digital mindset through voluntary, well-marketed upskilling; Atos certified 70,000+ people in three years. (3) Manage adoption with the Adoption Matrix: raise buy-in for the oppressed and indifferent, confidence for the oppressed and frustrated. (4) Pair a bold stroke with a long march. (5) Business leaders, not only IT, should choose tools. (6) Treat change as constant; be adaptive.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p2">
+    <summary><span class="pn">Q2</span><span class="pq">“AI is a strategic game-changer.” Discuss using the agentic AI reading. How should incumbents respond?</span></summary>
+    <div class="ans">
+      <p><b>Thesis.</b> Agentic AI causes a “second great compression of entrepreneurship”: the cost, time and head count to prototype, test and improve have collapsed, which shifts the competitive baseline.</p>
+      <p><b>Five forces.</b> Zero-latency iteration (Atomic's prototype in days versus 12–18 months and $1M+); automated go-to-market (implementations in a quarter of the time); autonomous business functions (domain expert plus AI engineer; one Tactix engineer does the work of ten); radical capital efficiency (DVx startups reach Series A with 80% less capital); the AI-driven flywheel (Anterior's ingestion engine and switching costs).</p>
+      <p><b>Threat.</b> Incumbents are built for stability and control, carry technical debt, and tend to automate before re-architecting.</p>
+      <p><b>Response.</b> Vulnerability audit against the five forces; start with a bounded, high-friction process (NTT Data's 20-minute RFP drafts); re-architect before automating; partner with AI-native ventures; improve data and make human handoffs explicit; prepare people for new roles. Incumbents still hold proprietary data, deep domain talent and a reputation for reliability and compliance.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p3">
+    <summary><span class="pn">Q3</span><span class="pq">What is the last-mile problem in AI transformation? Explain the frictions and the strategies to resolve them.</span></summary>
+    <div class="ans">
+      <p><b>Definition.</b> The stage where technical capability must meet organizational design. Pilots succeed, but gains stay in “islands of productivity”; a contract drafted in seconds waits two weeks for legal review. Source: the Frontier Firm Initiative summit (HBS D^3 Institute and Microsoft).</p>
+      <p><b>Frictions.</b> Proliferation of pilots (250+ LLM apps at one bank); productivity gap (saved time re-absorbed into meetings); process debt (the same process run dozens of ways); the identity problem of tribal knowledge; governance in an agentic world (100+ agents moving to tens of thousands); architectural complexity (months to connect SAP, Microsoft and Google agents); the efficiency trap (AI framed as offshoring).</p>
+      <p><b>Strategies.</b> Clean-sheet process redesign (outer and inner loops, agent-centric mapping); strategic knowledge capture (pre-harvest and execution context, legacy building); managing the digital workforce (agentic control planes); role redesign and career pathing (learning agility, domain depth, agent orchestration). Map each friction to its pillar.</p>
+      <p><b>Conclusion.</b> The last mile is blocked by operating models, governance and human identity, not technology.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p4">
+    <summary><span class="pn">Q4</span><span class="pq">Explain the paradigm-shifting role of AI and its impact on organizations.</span></summary>
+    <div class="ans">
+      <p><b>Definition.</b> OECD: a machine-based system that infers from input how to generate predictions, content, recommendations or decisions, with varying autonomy and adaptiveness.</p>
+      <p><b>Evolution.</b> Rules → predictive machine learning → generative AI → agentic AI.</p>
+      <p><b>Shifts.</b> Tool to teammate; cheap prediction makes judgment more valuable (Agrawal, Gans and Goldfarb); AI factories remove limits on scale, scope and learning (Iansiti and Lakhani); resource advantage gives way to speed (AI-native startups); task automation gives way to work redesign; doing gives way to orchestrating and verifying.</p>
+      <p><b>Impact.</b> Individual (41% of U.S. workers use AI for work, per SHRM; about half are unsure of outputs), team (workslop erodes trust), organization (over 40% of agentic projects may be cancelled by 2027, per Gartner, without redesign), industry (lower barriers to entry).</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p5">
+    <summary><span class="pn">Q5</span><span class="pq">What is the paradox of prompt engineering? Explain workslop, its root causes, consequences and remedies.</span></summary>
+    <div class="ans">
+      <p><b>Paradox.</b> AI makes polished output effortless, but useful output still needs human framing, context and review. Effort saved by the creator lands on the receiver. The durable skill is problem formulation (Acar): diagnosis, decomposition, reframing and constraint design.</p>
+      <p><b>Workslop.</b> “AI generated work content that masquerades as good work, but lacks the substance to meaningfully advance a given task.” It uses machines to offload cognitive work onto another human.</p>
+      <p><b>Root causes.</b> A management failure. From the top: vague mandates (41% got no detailed instructions). From below: overloaded, depleted staff and low trust. Result: performative AI use. Passengers (low agency, low optimism) use AI to avoid work.</p>
+      <p><b>Consequences.</b> 40% received workslop in the last month; 1 h 56 min per instance; $186 per employee per month; $9M+ a year for 10,000 staff; 42% see the sender as less trustworthy; 32% less willing to work with them.</p>
+      <p><b>Remedies.</b> Competence and control (half as likely to create workslop); team trust (61% less workslop); treat it as a signal and avoid the fundamental attribution error; act on culture, practice and accountability; same standards for human-AI duos as for humans alone.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p6">
+    <summary><span class="pn">Q6</span><span class="pq">Narrate the functionality of an AI agent built on a no-code platform to process employee expense claims.</span></summary>
+    <div class="ans">
+      <p><b>Purpose.</b> Check and route expense claims so that routine claims are paid within a day and finance reviews only exceptions.</p>
+      <p><b>Trigger.</b> An employee uploads receipts in Teams or the expense portal.</p>
+      <p><b>Knowledge.</b> The travel and expense policy, per-diem limits and the approved-vendor list.</p>
+      <p><b>Orchestration and tools.</b> The agent reads each receipt (amount, date, merchant, category), checks it against policy, asks the employee for a missing business purpose, looks up the cost centre in the HR system and creates the claim in the finance system.</p>
+      <p><b>Guardrails.</b> It can auto-approve only claims under a set limit that fully match policy. It cannot change amounts. It flags duplicate receipts.</p>
+      <p><b>Human handoff.</b> Out-of-policy or high-value claims go to the manager with a summary and a recommendation.</p>
+      <p><b>Output and monitoring.</b> The employee is told the status; approved claims go to payroll; finance tracks cycle time, error rate, escalation rate and policy breaches on a dashboard. The agent's owner, access rights and accountability are recorded in the control plane.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p7">
+    <summary><span class="pn">Q7</span><span class="pq">Explain SHRM's three key aspects of the future of work and the competencies the transformed workplace requires.</span></summary>
+    <div class="ans">
+      <p><b>Work (what).</b> Tasks unbundled and automated or augmented; human-agent teams; SHRM 2026: 39% of organizations report shifted responsibilities, 24% new roles, 7% displacement.</p>
+      <p><b>Worker (who).</b> Rising demand for people who can work with and manage AI; 57% report more upskilling; a talent continuum that now includes digital workers; well-being and identity concerns.</p>
+      <p><b>Workplace (where and how).</b> Hybrid and flexible; leadership and culture as the engine of resilience; norms and trust (trust cuts workslop by 61%).</p>
+      <p><b>Competencies.</b> WEF 2025: 39% of skills change by 2030; analytical thinking is the top core skill; AI and big data grows fastest. Shifts: doing to orchestrating, knowing to encoding, prompting to problem formulation, specialist to techno-functional, fixed skills to learning agility, volume to quality. New roles: AI process architects, knowledge stewards, managers of digital workers.</p>
+    </div>
+  </details>
+  <details class="practice-item" id="p8">
+    <summary><span class="pn">Q8</span><span class="pq">Draw an outline of a leave-request workflow and show where automation ends and autonomy begins.</span></summary>
+    <div class="ans">
+      <ol>
+        <li><b>(Oval) START:</b> an employee submits a leave request in the HR portal or Teams.</li>
+        <li><b>(Parallelogram) Input:</b> dates, leave type, reason.</li>
+        <li><b>(Rectangle, automation)</b> Fetch the leave balance and team calendar from the HR system.</li>
+        <li><b>(Diamond) Enough balance?</b> No → notify the employee with alternatives → END.</li>
+        <li><b>(AI step)</b> The agent checks team coverage and project deadlines and drafts a recommendation.</li>
+        <li><b>(Diamond) Standard request?</b> (for example 3 days or fewer and coverage is fine) Yes → auto-approve under policy.</li>
+        <li><b>No → (dashed) Human checkpoint:</b> the manager approves or rejects, using the agent's summary.</li>
+        <li><b>(Rectangle)</b> Update the HR system, payroll and shared calendar.</li>
+        <li><b>(Parallelogram) Output:</b> notify the employee and manager.</li>
+        <li><b>(Rectangle)</b> Log every decision for audit; review approval time and exceptions monthly.</li>
+        <li><b>(Oval) END.</b></li>
+      </ol>
+      <p><b>Where autonomy begins.</b> Steps 3–4 are rule-based automation. Steps 5–6 are autonomous: the agent weighs coverage and deadlines and approves standard requests itself within policy. Step 7 keeps a human on the loop for exceptions.</p>
+    </div>
+  </details>
+</div>
+
+<!-- ============ NUMBERS ============ -->
+<header class="module-head" id="numbers">
+  <span class="eyebrow">Revision sheet</span>
+  <h2>Key numbers</h2>
+  <p>Figures examiners often reward. Each is as stated in the source named.</p>
+</header>
+<div class="table-wrap" style="margin-top:24px;">
+  <table>
+    <thead><tr><th>Number</th><th>What it measures</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td class="num">70,000+</td><td class="plain">Atos employees digitally certified within three years (initial goal 35,000)</td><td class="plain">Neeley and Leonardi, 2022</td></tr>
+      <tr><td class="num">$6.2B → ~$13B</td><td class="plain">Atos revenue, 2008 to 2019</td><td class="plain">Neeley and Leonardi, 2022</td></tr>
+      <tr><td class="num">300 × 10</td><td class="plain">Unilever's agile teams of ten people (400+ brands, 190 countries)</td><td class="plain">Neeley and Leonardi, 2022</td></tr>
+      <tr><td class="num">~20</td><td class="plain">Algorithms Moderna built within months of the Covid-19 outbreak</td><td class="plain">Neeley and Leonardi, 2022</td></tr>
+      <tr><td class="num">250+ · 185 · 18,000+</td><td class="plain">LLM apps at one bank · countries with pilots · automated finance processes</td><td class="plain">Last Mile, 2026</td></tr>
+      <tr><td class="num">99%+</td><td class="plain">Payments-network employees actively using copilots</td><td class="plain">Last Mile, 2026</td></tr>
+      <tr><td class="num">100+ → tens of thousands</td><td class="plain">Agents at one asset servicer, now and planned</td><td class="plain">Last Mile, 2026</td></tr>
+      <tr><td class="num">12–18 months · $1M+</td><td class="plain">Traditional SaaS path to product-market fit</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">2</td><td class="plain">Minimum AI-native team: a domain expert and an AI engineer</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">~90% · 30 of 40</td><td class="plain">Anterior's legal cost cut · staff building product</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">$25M in 10 months</td><td class="plain">LangChain's Series A (versus 2+ years typical)</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">80% less · 20–40% faster</td><td class="plain">Capital and time to Series A for DVx's AI-native startups (~$2M used)</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">20 minutes</td><td class="plain">NTT Data agent's first draft of an RFP response</td><td class="plain">Lee, Mantia and McNeill, 2026</td></tr>
+      <tr><td class="num">1,150</td><td class="plain">U.S. full-time employees in the workslop survey</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">40% · 15.4%</td><td class="plain">Received workslop in the last month · share of received content that is workslop</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">1 h 56 min · $186</td><td class="plain">Time per instance · cost per employee per month</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">$9M+</td><td class="plain">Yearly cost for a 10,000-person organization</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">40% · 18% · 16%</td><td class="plain">Workslop between peers · to managers · from managers</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">53% · 38% · 22%</td><td class="plain">Receivers annoyed · confused · offended</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">42% · 37% · 32%</td><td class="plain">See sender as less trustworthy · less intelligent · less willing to work with them</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">75% · 95%</td><td class="plain">How much more pilots use gen AI than passengers, at work · outside work</td><td class="plain">Niederhoffer et al., 2025</td></tr>
+      <tr><td class="num">41% · 53%</td><td class="plain">Told to use AI without detailed instructions · admit sending low-quality AI work</td><td class="plain">Niederhoffer, Robichaux and Hancock, 2026</td></tr>
+      <tr><td class="num">61% · half</td><td class="plain">Workslop reduction from team trust · likelihood of workslop with competence and control</td><td class="plain">Niederhoffer, Robichaux and Hancock, 2026</td></tr>
+      <tr><td class="num">39% · 170M · 92M · 78M</td><td class="plain">Skills changing by 2030 · jobs created · displaced · net</td><td class="plain">WEF Future of Jobs 2025</td></tr>
+      <tr><td class="num">7 in 10</td><td class="plain">Companies that see analytical thinking as essential</td><td class="plain">WEF Future of Jobs 2025</td></tr>
+      <tr><td class="num">15% · 33% (2028)</td><td class="plain">Day-to-day decisions made by agentic AI · enterprise apps with agentic AI</td><td class="plain">Gartner, 2025</td></tr>
+      <tr><td class="num">40%+ (2027)</td><td class="plain">Agentic AI projects expected to be cancelled</td><td class="plain">Gartner, 2025</td></tr>
+      <tr><td class="num">41% · 39% · 24% · 57% · 7%</td><td class="plain">Workers using AI for work · orgs with shifted responsibilities · new roles · more upskilling · job displacement</td><td class="plain">SHRM research, 2026</td></tr>
+      <tr><td class="num">30%</td><td class="plain">Baseline digital fluency most people need</td><td class="plain">Neeley and Leonardi, <i>The Digital Mindset</i></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ GLOSSARY ============ -->
+<header class="module-head" id="glossary">
+  <span class="eyebrow">Revision sheet</span>
+  <h2>Glossary</h2>
+</header>
+<dl class="glossary" style="margin-top:24px;">
+  <div><dt>Adoption Matrix</dt><dd>Neeley and Leonardi's 2×2 of buy-in against confidence to learn: oppressed, frustrated, indifferent, inspired.</dd></div>
+  <div><dt>Agent governance</dt><dd>Rules for who may create agents, what they may do and who is accountable when they fail.</dd></div>
+  <div><dt>Agentic AI system</dt><dd>A network of specialised AI agents, coordinated by a digital manager, that plan, act and adapt toward an outcome.</dd></div>
+  <div><dt>Agentic control plane</dt><dd>A central dashboard that monitors agents' performance, permissions and accuracy, like HR performance management.</dd></div>
+  <div><dt>AI agent</dt><dd>An AI system that uses context and connected tools to carry out complex tasks toward a goal.</dd></div>
+  <div><dt>AI factory</dt><dd>Iansiti and Lakhani's term for a firm's data pipelines, algorithms, experimentation platform and infrastructure.</dd></div>
+  <div><dt>Bold stroke and long march</dt><dd>A dramatic signal of change followed by the sustained work of building buy-in and skills.</dd></div>
+  <div><dt>Clean-sheet redesign</dt><dd>Designing a process from scratch as if built today with AI agents, instead of adding AI to the old flow.</dd></div>
+  <div><dt>Cognitive offloading</dt><dd>Handing mental work to a tool. Workslop is offloading onto another person.</dd></div>
+  <div><dt>Digital mindset</dt><dd>Attitudes and behaviours that let people see how data, algorithms and AI open new possibilities.</dd></div>
+  <div><dt>Digitalization</dt><dd>Using digital technology to change a business model and create new value (Gartner).</dd></div>
+  <div><dt>Digitization</dt><dd>Converting analog information into digital form (Gartner).</dd></div>
+  <div><dt>Digital transformation</dt><dd>Organization-wide change in strategy, structure, culture and skills built on digitalization.</dd></div>
+  <div><dt>Edge case</dt><dd>A rare or extreme situation outside normal use that can cause unexpected errors.</dd></div>
+  <div><dt>Efficiency trap</dt><dd>Framing AI mainly as cost-cutting, which triggers defensiveness and narrows ambition.</dd></div>
+  <div><dt>Forward-deployed engineer</dt><dd>An engineer, or agent, embedded with the customer or team to fit software to real workflows.</dd></div>
+  <div><dt>Frontier firm</dt><dd>A company redesigned around AI and agents as a unified operating model.</dd></div>
+  <div><dt>Fundamental attribution error</dt><dd>Blaming a person's character while ignoring the situation that shaped their behaviour.</dd></div>
+  <div><dt>Generative orchestration</dt><dd>An LLM planning layer that interprets intent, breaks down requests and picks tools and knowledge (Copilot Studio).</dd></div>
+  <div><dt>Human in / on the loop</dt><dd>In: a person approves key steps. On: a person monitors and handles exceptions.</dd></div>
+  <div><dt>Islands of productivity</dt><dd>Individual AI gains that never connect into enterprise-wide value.</dd></div>
+  <div><dt>Last mile</dt><dd>The stage where AI capability must meet organizational design; where most transformations stall.</dd></div>
+  <div><dt>Pilots and passengers</dt><dd>Workers with high agency and optimism who use AI purposefully, versus those who use it to avoid work.</dd></div>
+  <div><dt>Pre-harvest and execution context</dt><dd>Rules needed before a task starts, and the nuanced data passed between agents during it.</dd></div>
+  <div><dt>Problem formulation</dt><dd>Diagnosis, decomposition, reframing and constraint design (Acar).</dd></div>
+  <div><dt>Process debt</dt><dd>Brittle, exception-ridden processes built up over years that AI exposes.</dd></div>
+  <div><dt>Product-market fit</dt><dd>Evidence that a product satisfies strong market demand.</dd></div>
+  <div><dt>RPA</dt><dd>Robotic process automation: software bots that follow fixed rules to repeat screen-based tasks.</dd></div>
+  <div><dt>Technical debt</dt><dd>Extra rework and cost caused by earlier suboptimal software design.</dd></div>
+  <div><dt>Tribal knowledge</dt><dd>Undocumented know-how held by long-tenured staff.</dd></div>
+  <div><dt>Vibe coding</dt><dd>Building software by describing it in natural language to an AI coding tool.</dd></div>
+  <div><dt>Workslop</dt><dd>AI-generated work that looks good but lacks the substance to advance the task.</dd></div>
+  <div><dt>Zero-latency iteration</dt><dd>Changing a digital product instantly in response to customer feedback.</dd></div>
+</dl>
+
+<!-- ============ SOURCES ============ -->
+<header class="module-head" id="sources">
+  <span class="eyebrow">References</span>
+  <h2>Sources</h2>
+</header>
+<div class="sources" style="margin-top:24px;">
+  <span class="eyebrow">Assigned readings</span>
+  <p>Neeley, T. and Leonardi, P. (2022). <a href="https://hbr.org/2022/05/developing-a-digital-mindset">Developing a Digital Mindset</a>. <i>Harvard Business Review</i>, May–June.</p>
+  <p>Lakhani, K. R., Spataro, J. and Stave, J. (2026). <a href="https://hbr.org/2026/03/the-last-mile-problem-slowing-ai-transformation">The “Last Mile” Problem Slowing AI Transformation</a>. HBR.org, 9 March.</p>
+  <p>Niederhoffer, K., Kellerman, G. R., Lee, A., Liebscher, A., Rapuano, K. and Hancock, J. T. (2025). <a href="https://hbr.org/2025/09/ai-generated-workslop-is-destroying-productivity">AI-Generated “Workslop” Is Destroying Productivity</a>. HBR.org, 22 September.</p>
+  <p>Niederhoffer, K., Robichaux, A. and Hancock, J. T. (2026). <a href="https://hbr.org/2026/01/why-people-create-ai-workslop-and-how-to-stop-it">Why People Create AI “Workslop” and How to Stop It</a>. HBR.org, 16 January.</p>
+  <p>Lee, V. S., Mantia, L. and McNeill, J. (2026). <a href="https://hbr.org/2026/07/how-agentic-ai-supercharges-startups-and-threatens-incumbents">How Agentic AI Supercharges Startups and Threatens Incumbents</a>. <i>Harvard Business Review</i>, July–August.</p>
+  <span class="eyebrow" style="margin-top:16px;">Supporting sources used to cross-check</span>
+  <p>Gartner IT Glossary: <a href="https://www.gartner.com/en/information-technology/glossary/digitize">Digitize</a> and <a href="https://www.gartner.com/en/information-technology/glossary/digitalization">Digitalization</a>.</p>
+  <p>OECD (2023). <a href="https://legalinstruments.oecd.org/en/instruments/oecd-legal-0449">Recommendation of the Council on Artificial Intelligence</a>, revised definition of an AI system.</p>
+  <p>Iansiti, M. and Lakhani, K. R. (2020). <a href="https://hbr.org/2020/01/competing-in-the-age-of-ai">Competing in the Age of AI</a>. <i>Harvard Business Review</i>.</p>
+  <p>Agrawal, A., Gans, J. and Goldfarb, A. (2018). <i>Prediction Machines: The Simple Economics of Artificial Intelligence</i>. Harvard Business Review Press.</p>
+  <p>Acar, O. A. (2023). <a href="https://hbr.org/2023/06/ai-prompt-engineering-isnt-the-future">AI Prompt Engineering Isn't the Future</a>. HBR.org, 6 June.</p>
+  <p>Neeley, T. and Leonardi, P. (2022). <a href="https://www.hbs.edu/faculty/Pages/item.aspx?num=62260"><i>The Digital Mindset</i></a>. Harvard Business Review Press.</p>
+  <p>SHRM: <a href="https://www.shrm.org/topics-tools/topics/future-of-work">Future of Work</a>; <a href="https://www.shrm.org/topics-tools/research/leading-future-of-work-insights-on-workforce-evolution">SHRM Blueprint for All Things Work, Worker, and Workplace</a>; <a href="https://www.shrm.org/topics-tools/research/state-of-the-workplace-summary-and-report">2026 State of the Workplace</a>; <a href="https://www.shrm.org/about/press-room/what-will-work-look-like-in-2026--new-shrm-research-reveals-how-">What Will Work Look Like in 2026?</a></p>
+  <p>Deloitte Insights. <a href="https://www.deloitte.com/us/en/insights/topics/talent/redefining-work-workforces-workplaces.html">Redefining work, workforces, and workplaces</a>.</p>
+  <p>World Economic Forum (2025). <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/">The Future of Jobs Report 2025</a> and its <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/">skills outlook</a>.</p>
+  <p>Gartner (2025). <a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027">Gartner Predicts Over 40% of Agentic AI Projects Will Be Canceled by End of 2027</a>.</p>
+  <p>Microsoft Learn: <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/generative-orchestration">Generative orchestration in Copilot Studio</a>; <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-tools-custom-agent">Add tools to custom agents</a>.</p>
+  <p>Hammer, M. (1990). Reengineering Work: Don't Automate, Obliterate. <i>HBR</i>. Christensen, C. and Bower, J. (1995). Disruptive Technologies: Catching the Wave. <i>HBR</i>. Both as cited in Lee, Mantia and McNeill.</p>
+</div>
+
+<footer class="end">
+  <p>Built from the five course readings and the public sources above. Statistics are reported as each source states them; check the original reading before quoting a figure in an exam.</p>
+</footer>
+</main>
+</div>
+</div>
+
+<script>
+(function(){
+  var QUIZZES = {
+    m1: [
+      {q:"Gartner defines digitalization as:", o:["Changing information from analog into digital form","Using digital technologies to change a business model and provide new revenue and value-producing opportunities","Moving all company servers to the cloud","Replacing employees with software robots"], a:1, e:"Digitization changes the format of information. Digitalization uses digital technology to change how the business creates value."},
+      {q:"A college scans 20 years of paper admission files into searchable PDFs. Nothing else about admissions changes. This is:", o:["Digitization","Digitalization","Digital transformation","Agentic automation"], a:0, e:"Only the format changed. The process and the business model stayed the same."},
+      {q:"Moderna's CEO said, “If you have crappy analog processes, you'll get crappy digital processes.” The implication for managers is to:", o:["Buy the most advanced digital tools first","Redesign processes before digitizing them","Keep digital and operations teams separate","Outsource digital work to IT vendors"], a:1, e:"Bancel: “Digitization only makes sense once the processes are done.” He also refused to separate digital from operational excellence."},
+      {q:"In Neeley and Leonardi's Adoption Matrix, an employee who says “I can learn digital content, but I don't see the benefit to me or my company” is:", o:["Frustrated","Inspired","Indifferent","Oppressed"], a:2, e:"High confidence in the ability to learn with low buy-in is the Indifferent quadrant."},
+      {q:"The two dimensions of the Adoption Matrix are:", o:["Cost and speed of adoption","Buy-in (belief that the change matters) and confidence in one's ability to learn","Technical skill and seniority","Budget and executive sponsorship"], a:1, e:"Buy-in on one axis, confidence (capacity) to learn on the other."},
+      {q:"Once buy-in exists, which employees should managers target with confidence-building such as hands-on experience and peer stories?", o:["The two left quadrants: oppressed and frustrated","The two bottom quadrants: oppressed and indifferent","Only the inspired quadrant","Only the indifferent quadrant"], a:0, e:"The left column has low confidence. Buy-in messaging targets the bottom row."},
+      {q:"What made Atos's Digital Transformation Factory effective?", o:["It was mandatory, with penalties for non-completion","It was voluntary, supported by internal marketing, nominations and rewards","It trained only engineers and data scientists","It replaced existing staff with new digital hires"], a:1, e:"Voluntary certification led to more than 70,000 certifications in three years against an initial goal of 35,000."},
+      {q:"According to Neeley and Leonardi, in a digital world the transitional state of change:", o:["Lasts about three years","Ends once new software is installed","Has no end point, so change is constant","Should be skipped with a single bold stroke"], a:2, e:"Tools and skills keep changing, so leaders must be adaptive, not adapt once."},
+      {q:"Lee, Mantia and McNeill call the collapse in the cost, time and head count needed to prototype, test and improve a product:", o:["The last mile","The second great compression of entrepreneurship","The efficiency trap","Zero-based budgeting"], a:1, e:"Mature LLMs, agents, multi-agent frameworks, cheap APIs and falling cloud costs drive it."},
+      {q:"Which of these is NOT one of the five forces of disruptive change in the agentic AI article?", o:["Zero-latency iteration","Radical capital efficiency","Economies of scale from large sales teams","The AI-driven flywheel"], a:2, e:"The five forces are zero-latency iteration, automated go-to-market, autonomous business functions, radical capital efficiency and the AI-driven flywheel."},
+      {q:"According to the article, the minimum team an AI-native startup needs is:", o:["Six to eight people: engineers, a PM, UX and a business lead","A domain expert and an AI engineer","One founder and an agent platform licence","A CEO, CTO and CFO"], a:1, e:"A traditional MVP team needed six to eight people for six to twelve months."},
+      {q:"Leaders at the Frontier Firm summit said the main obstacle to scaling AI is:", o:["Model quality","Data availability","The “last mile,” where technical capability must meet organizational design","The cost of AI licences"], a:2, e:"The article concludes that the last mile “is not blocked by technology.”"},
+      {q:"Employees save hours with copilots, but the time goes into extra meetings and email and never shows up in cycle times or budgets. Which friction is this?", o:["Process debt","Productivity gap","Architectural complexity","Proliferation of pilots"], a:1, e:"Gains stay trapped in individual workflows unless leaders redesign roles and budgets to capture the time."},
+      {q:"Framing AI as “a new form of offshoring” made middle managers defensive and narrowed ambition. This friction is:", o:["The efficiency trap","The identity problem of tribal knowledge","Governance in an agentic world","Clean-sheet redesign"], a:0, e:"The biggest gains come from rethinking value creation, not shaving minutes off tasks."},
+      {q:"Central dashboards that monitor agents' performance, security permissions and accuracy, much like HR performance management, are called:", o:["Agentic control planes","AI librarians","Adoption matrices","Hyperscalers"], a:0, e:"They belong to the blueprint pillar “Managing the digital workforce.”"}
+    ],
+    m2: [
+      {q:"The OECD (2023) defines an AI system as a machine-based system that, for explicit or implicit objectives:", o:["Follows a fixed set of if-then rules written by programmers","Infers from the input it receives how to generate outputs such as predictions, content, recommendations or decisions","Stores data digitally in the cloud","Replaces human judgment in all decisions"], a:1, e:"The key word is “infers.” The definition adds that AI systems vary in autonomy and adaptiveness."},
+      {q:"Iansiti and Lakhani argue that firms rebuilt around an “AI factory” escape traditional constraints on:", o:["Scale, scope and learning","Price, product and place","Land, labour and capital","Cost, quality and time"], a:0, e:"Data pipelines, algorithms, experimentation and infrastructure let AI-driven processes scale and learn."},
+      {q:"What distinguishes an agentic AI system from a single LLM chatbot?", o:["It only answers questions faster","It is a network of specialised agents, coordinated by a digital manager, that plan, act and adapt toward an outcome","It needs no data","It cannot use external tools"], a:1, e:"NTT Data's system spots bugs across thousands of tickets, writes fixes and creates help articles, pursuing service quality as an outcome."},
+      {q:"Workslop is defined as:", o:["Any content written with AI","AI-generated work content that masquerades as good work but lacks the substance to meaningfully advance a given task","Low-quality work produced by junior employees","Spam email from outside the company"], a:1, e:"The problem is polished form without substance."},
+      {q:"How is workslop different from ordinary cognitive offloading, such as searching Google instead of memorising?", o:["It offloads cognitive work to a machine","It uses a machine to offload cognitive work onto another human","It reduces total effort in the organization","It only happens on social media"], a:1, e:"The receiver must decode, correct or redo the work, so effort moves from creator to receiver."},
+      {q:"On average, how long did employees spend dealing with each instance of workslop?", o:["15 minutes","About 45 minutes","1 hour 56 minutes","Half a working day"], a:2, e:"This produces an invisible tax of about $186 per employee per month."},
+      {q:"For a 10,000-person organization, the researchers estimated workslop costs:", o:["About $186 per year","About $1 million per year","Over $9 million per year","Over $90 million per year"], a:2, e:"Based on 41% prevalence and self-reported time and salary."},
+      {q:"Workslop most often flows:", o:["From managers down to teams","Between peers","From direct reports up to managers","From clients to vendors"], a:1, e:"Peers 40%, reports to managers 18%, managers down 16%."},
+      {q:"The January 2026 follow-up article argues that the spread of workslop is mainly:", o:["A failure of the technology","A management failure: unclear AI mandates plus overwhelmed teams","Caused by lazy employees","A problem only in the technology sector"], a:1, e:"41% of employees said leaders encouraged AI use without detailed instructions."},
+      {q:"Which factor reduced workslop by 61% in the research?", o:["Banning AI tools","Trust within the team","Longer prompts","Mandatory AI usage quotas"], a:1, e:"When people can admit AI use and ask for feedback without stigma, they produce better work."},
+      {q:"People who feel competence and control over AI tools are:", o:["Twice as likely to create workslop","Half as likely to create workslop","Equally likely to create workslop","Unaffected by training"], a:1, e:"AI literacy, sharing hidden practices and forward-deployed AI engineers build this."},
+      {q:"Blaming workslop on individual laziness while ignoring overload and unclear mandates is an example of:", o:["Confirmation bias","The fundamental attribution error","The sunk cost fallacy","Groupthink"], a:1, e:"The authors ask leaders to treat workslop as a signal of organizational strain."},
+      {q:"“Pilots” in the BetterUp research combine:", o:["High agency and high optimism","Low agency and high optimism","High skill and low motivation","Seniority and technical training"], a:0, e:"Pilots use gen AI purposefully and 75% more often at work than passengers, who are more likely to use AI to avoid work."},
+      {q:"Acar (HBR, 2023) argues that the lasting skill behind good AI use is problem formulation. Its four components are:", o:["Diagnosis, decomposition, reframing, constraint design","Prompting, pasting, polishing, publishing","Plan, do, check, act","Search, summarise, send, store"], a:0, e:"A clear problem definition matters more than clever prompt wording."},
+      {q:"In a no-code agent builder, “tools” or “actions” are:", o:["The documents the agent reads","Connectors that let the agent do things in other systems, such as sending email or updating a CRM","The agent's personality and tone","The user's chat history"], a:1, e:"Knowledge grounds what the agent knows, tools let it act, and instructions tell it how to behave."},
+      {q:"What is the best order for narrating an agent's functionality in an exam?", o:["Price → vendor → logo → colour scheme","Trigger → knowledge and inputs → reasoning → actions → guardrails and handoff → output → monitoring","Output → trigger → price → users","Code → database → server → network"], a:1, e:"This follows the agent's actual run and shows where the control points are."}
+    ],
+    m4: [
+      {q:"SHRM organises its future-of-work thinking around three linked areas:", o:["Work, worker (workforce) and workplace","Pay, promotion and performance","Hiring, firing and training","Technology, tax and trade"], a:0, e:"Deloitte's parallel framing is work (what), workforce (who) and workplace (where)."},
+      {q:"In the what/who/where framing, the “workforce” dimension covers:", o:["Where work happens, such as hybrid offices","Who does the work: employees, contractors, gig workers and increasingly AI agents","Which tasks can be automated","Office design"], a:1, e:"The Last Mile article adds digital workers that must be onboarded, evaluated, secured and retired."},
+      {q:"The WEF Future of Jobs Report 2025 says employers expect what share of key skills to change by 2030?", o:["10%","25%","39%","75%"], a:2, e:"The report also projects 170 million jobs created and 92 million displaced, a net gain of 78 million."},
+      {q:"Which skill does the WEF 2025 report rank as the top core skill employers look for?", o:["Programming","Analytical thinking","Manual dexterity","Foreign languages"], a:1, e:"Seven in ten companies call it essential. Next come resilience, flexibility and agility, then leadership and social influence."},
+      {q:"Which skill is the fastest-growing in the WEF 2025 report?", o:["AI and big data","Reading, writing and mathematics","Global citizenship","Manual dexterity"], a:0, e:"It is followed by networks and cybersecurity, and technological literacy."},
+      {q:"Neeley and Leonardi's “30% rule” says:", o:["30% of jobs will be automated","Most people need about 30% fluency in data, algorithms and AI, much like knowing 30% of a language","Companies should spend 30% of revenue on IT","Only 30% of pilots succeed"], a:1, e:"That is enough to ask the right questions and work with technical experts without becoming one."},
+      {q:"The Last Mile article says new job descriptions look for:", o:["Typing speed and years of tenure","Learning agility, domain depth and ownership of agent orchestration","Certification in a single software tool","Only coding skills"], a:1, e:"Human roles shift toward design, orchestration and interpretation."},
+      {q:"In an agentic workflow, a “human on the loop” means:", o:["A human approves every single step","A human monitors the system, sets guardrails and steps in on exceptions","No human is involved at all","The human does the work and the AI checks it"], a:1, e:"The Last Mile article notes that approving every step breaks down at multi-agent scale."},
+      {q:"The key difference between RPA (rule-based automation) and an AI agent is that:", o:["RPA is always cheaper","RPA follows fixed, pre-defined steps, while an agent plans its own steps toward a goal within guardrails","Agents cannot use software tools","RPA can handle any exception"], a:1, e:"That move from executing steps to pursuing goals is the move from automation to autonomy."},
+      {q:"When drawing a workflow outline, a diamond represents:", o:["Start or end","A decision with yes/no branches","Input or output data","A document"], a:1, e:"Ovals mark start and end, rectangles actions, parallelograms inputs and outputs."},
+      {q:"Lee, Mantia and McNeill advise incumbents to begin with agentic AI by choosing:", o:["An easy pilot that is sure to succeed","A bounded, high-friction process that matters","The whole enterprise at once","A process with no customer impact"], a:1, e:"NTT Data began with RFP proposals; its agent writes a first draft in 20 minutes."},
+      {q:"“Re-architect before you automate” matters because:", o:["Automation is illegal without redesign","An agent dropped into a messy process reproduces its flaws faster","Redesign is always cheaper than software","Regulators require it"], a:1, e:"Michael Hammer's version: stop paving the cow paths."},
+      {q:"Gartner predicts that by 2028 at least what share of day-to-day work decisions will be made autonomously through agentic AI?", o:["1%","15%","50%","90%"], a:1, e:"Up from 0% in 2024. Gartner also predicts over 40% of agentic AI projects will be cancelled by the end of 2027."}
+    ]
+  };
+
+  var LETTERS = "ABCD";
+
+  function renderQuiz(id){
+    var root = document.querySelector('[data-quiz="' + id + '"]');
+    if (!root) return;
+    var list = root.querySelector('.q-list');
+    var scoreEl = root.querySelector('.score');
+    var verdictEl = root.querySelector('.verdict');
+    var items = QUIZZES[id];
+    var state = {answered:0, correct:0, total:items.length};
+    list.innerHTML = '';
+    verdictEl.textContent = '';
+
+    function update(){
+      scoreEl.textContent = state.correct + ' correct · ' + state.answered + ' of ' + state.total + ' answered';
+      if (state.answered === state.total){
+        var pct = Math.round(100 * state.correct / state.total);
+        var msg = pct >= 80 ? 'Ready for the exam on this module.' : (pct >= 50 ? 'Re-read the topics behind the questions you missed.' : 'Work through this module again, then retake the quiz.');
+        verdictEl.textContent = 'Final score ' + state.correct + ' of ' + state.total + ' (' + pct + '%). ' + msg;
+      }
+    }
+
+    items.forEach(function(item, i){
+      var q = document.createElement('div');
+      q.className = 'q';
+      var qt = document.createElement('p');
+      qt.className = 'q-text';
+      qt.id = id + '-q' + (i + 1);
+      qt.textContent = (i + 1) + '. ' + item.q;
+      var opts = document.createElement('div');
+      opts.className = 'opts';
+      opts.setAttribute('role', 'group');
+      opts.setAttribute('aria-labelledby', qt.id);
+      var fb = document.createElement('p');
+      fb.className = 'fb';
+      fb.hidden = true;
+      fb.setAttribute('aria-live', 'polite');
+
+      item.o.forEach(function(text, j){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'opt';
+        b.id = id + '-q' + (i + 1) + '-o' + j;
+        var k = document.createElement('span');
+        k.className = 'k';
+        k.textContent = LETTERS[j];
+        var t = document.createElement('span');
+        t.className = 't';
+        t.textContent = text;
+        b.appendChild(k);
+        b.appendChild(t);
+        b.addEventListener('click', function(){
+          var buttons = opts.querySelectorAll('.opt');
+          buttons.forEach(function(x){ x.disabled = true; });
+          buttons[item.a].classList.add('correct');
+          var ok = (j === item.a);
+          if (!ok) b.classList.add('wrong');
+          state.answered += 1;
+          if (ok) state.correct += 1;
+          fb.hidden = false;
+          fb.textContent = '';
+          var head = document.createElement('strong');
+          head.textContent = ok ? 'Correct. ' : 'Not quite. The answer is ' + LETTERS[item.a] + '. ';
+          fb.appendChild(head);
+          fb.appendChild(document.createTextNode(item.e));
+          update();
+        });
+        opts.appendChild(b);
+      });
+
+      q.appendChild(qt);
+      q.appendChild(opts);
+      q.appendChild(fb);
+      list.appendChild(q);
+    });
+
+    root.querySelector('.reset').onclick = function(){ renderQuiz(id); };
+    update();
+  }
+
+  Object.keys(QUIZZES).forEach(renderQuiz);
+
+  // Highlight the current section in the sidebar.
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-side a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window && targets.length){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          var id = '#' + en.target.id;
+          links.forEach(function(a){ a.setAttribute('aria-current', a.getAttribute('href') === id ? 'true' : 'false'); });
+        }
+      });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    targets.forEach(function(t){ io.observe(t); });
+  }
+})();
+</script>
+</body>
+</html>
