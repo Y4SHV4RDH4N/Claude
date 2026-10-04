@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DMFS Exam Prep</title>
+<style>
+/* Layout concept: an exam-paper system in pure black and white. A sticky bar carries the universal answer switch and the four views (guide, past questions, two papers). Each paper opens with an inverted white header block; questions are square boxes with a number tab and a mark count; answers sit in dashed boxes that stay closed in practice mode. */
+:root{
+  color-scheme: dark;
+  --bg:#000000;
+  --surface:#0c0c0c;
+  --ink:#ffffff;
+  --ink-2:#d0d0d0;
+  --ink-3:#949494;
+  --rule:#262626;
+  --rule-2:#404040;
+  --g3:#4d4d4d;
+  --font: Helvetica, "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+}
+html{background:var(--bg);}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth;}}
+*,*::before,*::after{box-sizing:border-box;}
+h1,h2,h3,h4{font-family:var(--font);font-weight:700;line-height:1.1;letter-spacing:-0.02em;text-wrap:balance;margin:0;}
+p{margin:0;}
+a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;}
+a:hover{text-decoration-thickness:2px;}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+[id]{scroll-margin-top:124px;}
+ul,ol{margin:0;padding-left:1.25em;display:grid;gap:8px;}
+li::marker{color:var(--ink-3);}
+b,strong{font-weight:700;}
+small{font-size:13px;}
+.wrap{max-width:1000px;margin-inline:auto;padding-inline:20px;}
+.eyebrow{display:block;font-size:12px;line-height:1.3;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3);}
+.muted{color:var(--ink-2);}
+.stack{display:grid;gap:12px;}
+.prose{max-width:68ch;color:var(--ink-2);}
+
+/* sticky bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--ink);}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px 6px;}
+.brand{text-decoration:none;display:flex;align-items:baseline;gap:10px;}
+.brand b{font-size:22px;letter-spacing:-0.04em;}
+.brand span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-3);}
+.sw{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;padding:7px 12px;font-family:var(--font);font-size:12px;line-height:1;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;}
+.sw-track{width:34px;height:18px;border:1px solid var(--ink);position:relative;display:inline-block;flex:none;}
+.sw-knob{position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--ink);transition:transform .15s;}
+.sw-s{min-width:5.4em;text-align:left;}
+.sw[aria-checked="true"]{background:var(--ink);color:var(--bg);}
+.sw[aria-checked="true"] .sw-track{border-color:var(--bg);}
+.sw[aria-checked="true"] .sw-knob{background:var(--bg);transform:translateX(16px);}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tabs a{flex:none;text-decoration:none;color:var(--ink-3);font-size:14px;font-weight:700;padding:9px 14px 10px;border-bottom:3px solid transparent;}
+.tabs a:hover{color:var(--ink);}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink);}
+.tabs .sh{display:none;}
+@media (max-width:520px){.tabs .lg{display:none;}.tabs .sh{display:inline;}.brand span{display:none;}.tabs a{padding-inline:11px;font-size:13.5px;}.sw{padding:7px 10px;gap:8px;}.sw-l{display:none;}}
+
+/* view header */
+.vhead{padding-block:44px 28px;display:grid;gap:18px;border-bottom:1px solid var(--ink);}
+.vhead h1{font-size:clamp(40px,8vw,84px);letter-spacing:-0.045em;line-height:.95;}
+.lede{font-size:clamp(17px,2.1vw,20px);line-height:1.5;color:var(--ink-2);max-width:64ch;}
+.facts{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums;}
+.facts b{color:var(--ink);font-size:22px;letter-spacing:-0.02em;margin-right:6px;}
+.jump{display:flex;flex-wrap:wrap;gap:8px;}
+.jump a{border:1px solid var(--rule-2);padding:7px 12px;font-size:13px;font-weight:700;text-decoration:none;color:var(--ink-2);}
+.jump a:hover{border-color:var(--ink);color:var(--ink);}
+
+/* sections */
+.sec{padding-top:60px;display:grid;gap:20px;}
+.sec > h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-0.03em;}
+.sec h3{font-size:19px;letter-spacing:-0.01em;margin-top:12px;}
+.sec h3:first-child{margin-top:0;}
+.chip{display:inline-block;justify-self:start;background:var(--ink);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;}
+.tip{border:1px dashed var(--ink-3);padding:16px 20px;display:grid;gap:8px;}
+.tip p,.tip li{font-size:16px;}
+.oneline{border:1px solid var(--ink);padding:18px 20px;display:grid;gap:8px;}
+.oneline p{font-size:18px;line-height:1.45;}
+.note{border-left:1px solid var(--rule-2);padding-left:16px;color:var(--ink-2);font-size:15px;display:grid;gap:6px;}
+.cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);}
+.cells > div{background:var(--bg);padding:18px;display:grid;gap:8px;align-content:start;}
+.cells > div.inv{background:var(--ink);color:var(--bg);}
+.cells > div.inv .eyebrow{color:var(--g3);}
+.cells > div.inv p,.cells > div.inv li{color:var(--bg);}
+.cells h4{font-size:18px;}
+.cells p,.cells li{font-size:15px;line-height:1.5;color:var(--ink-2);}
+.cells ul,.cells ol{gap:6px;}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:20px;align-items:start;}
+.formula{border:1px solid var(--ink);padding:14px 18px;font-size:18px;line-height:1.5;font-weight:700;letter-spacing:-0.01em;}
+.formula small{display:block;font-weight:400;color:var(--ink-3);font-size:13.5px;letter-spacing:0;margin-top:4px;}
+.res{background:var(--ink);color:var(--bg);font-weight:700;padding:0 6px;white-space:nowrap;}
+
+/* tables */
+.table-wrap{overflow-x:auto;border-top:1px solid var(--ink);}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45;min-width:560px;}
+th{text-align:left;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700;padding:12px 12px 10px 0;border-bottom:1px solid var(--rule-2);vertical-align:bottom;}
+td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:700;}
+th.n,td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px;}
+td.plain{font-weight:400;color:var(--ink-2);}
+tr.tot td{color:var(--ink);font-weight:700;border-top:1px solid var(--rule-2);}
+table.compact{min-width:0;font-size:14.5px;}
+table.compact td,table.compact th{padding-block:8px;}
+.mv{font-size:12px;font-weight:700;letter-spacing:.04em;white-space:nowrap;color:var(--ink);}
+.mv.dn{color:var(--ink-3);}
+.cap{font-size:13px;color:var(--ink-3);line-height:1.45;}
+details.ref{border:1px solid var(--rule-2);}
+details.ref > summary{cursor:pointer;list-style:none;padding:12px 18px;display:flex;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-2);}
+details.ref > summary::-webkit-details-marker{display:none;}
+details.ref > summary::after{content:"Open";color:var(--ink-3);}
+details.ref[open] > summary::after{content:"Close";}
+details.ref > .ref-body{padding:4px 18px 18px;display:grid;gap:16px;}
+
+/* buttons */
+.btn{background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;padding:9px 16px;font-family:var(--font);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
+.btn:hover{background:var(--ink);color:var(--bg);}
+.btn[disabled]{opacity:.4;cursor:default;background:transparent;color:var(--ink);}
+
+/* exam paper */
+.paper-head{margin-top:36px;background:var(--ink);color:var(--bg);padding:24px 22px 22px;display:grid;gap:16px;}
+.paper-head .eyebrow{color:var(--g3);}
+.paper-head h1{font-size:clamp(34px,6.5vw,62px);letter-spacing:-0.045em;line-height:.95;}
+.paper-head h1 small{display:block;font-size:.34em;letter-spacing:.02em;font-weight:700;margin-top:10px;color:var(--g3);}
+.paper-meta{display:flex;flex-wrap:wrap;gap:6px 28px;font-size:14px;font-variant-numeric:tabular-nums;color:var(--g3);}
+.paper-meta b{font-size:24px;letter-spacing:-0.02em;color:var(--bg);margin-right:6px;}
+.rules{border:1px solid var(--ink);border-top:0;padding:16px 22px;display:grid;gap:8px;}
+.rules ul{font-size:15px;color:var(--ink-2);gap:5px;}
+.timer{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;border:1px solid var(--ink);border-top:0;padding:16px 22px;}
+.clock{font-size:clamp(38px,7vw,58px);font-weight:700;letter-spacing:-0.04em;font-variant-numeric:tabular-nums;line-height:1;}
+.tstat{display:grid;gap:2px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-3);}
+.tstat b{font-size:14px;letter-spacing:.04em;color:var(--ink);font-variant-numeric:tabular-nums;}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;}
+.timer.done{background:var(--ink);color:var(--bg);}
+.timer.done .tstat,.timer.done .tstat b{color:var(--g3);}
+.timer.done .btn{color:var(--bg);border-color:var(--bg);}
+.timer.done .btn:hover{background:var(--bg);color:var(--ink);}
+.tnote{font-size:13px;color:var(--ink-3);padding:10px 0 0;}
+.q{border:1px solid var(--rule-2);margin-top:20px;}
+.q-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--rule-2);}
+.q-no{background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;letter-spacing:.06em;padding:6px 10px;}
+.q-head h3{font-size:19px;margin:0;}
+.q-marks{text-align:right;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.q-marks b{color:var(--ink);font-size:22px;letter-spacing:-0.02em;margin-right:4px;}
+.q-body{padding:18px;display:grid;gap:14px;}
+.q-body p{color:var(--ink-2);}
+.q-body p b{color:var(--ink);}
+.q > details.answer{margin:0 18px 18px;}
+.parts{display:grid;border-top:1px solid var(--rule);}
+.part{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);}
+.part .pl{font-weight:700;color:var(--ink-3);}
+.part .pm{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.givens{display:grid;gap:6px;padding-left:1.1em;color:var(--ink-2);}
+.givens li{font-size:15.5px;}
+@media (max-width:520px){.q-head{grid-template-columns:auto minmax(0,1fr);}.q-marks{grid-column:1 / -1;text-align:left;}.q-body{padding:16px 14px;}.q > details.answer{margin:0 14px 14px;}}
+
+/* answers */
+details.answer{border:1px dashed var(--ink-3);}
+details.answer > summary{cursor:pointer;list-style:none;padding:12px 18px;display:flex;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-2);}
+details.answer > summary::-webkit-details-marker{display:none;}
+details.answer > summary::after{content:"Show answer";color:var(--ink-3);white-space:nowrap;}
+details.answer[open]{border-style:solid;border-color:var(--ink);}
+details.answer[open] > summary{background:var(--ink);color:var(--bg);}
+details.answer[open] > summary::after{content:"Hide";color:var(--g3);}
+.ans{padding:18px;display:grid;gap:16px;font-size:15.5px;line-height:1.55;color:var(--ink-2);}
+.ans b{color:var(--ink);}
+.ans h4{font-size:16px;letter-spacing:-0.01em;color:var(--ink);}
+.steps{display:grid;list-style:none;padding:0;margin:0;border-top:1px solid var(--rule);gap:0;}
+.steps li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule);}
+.steps .m{font-size:12px;font-weight:700;letter-spacing:.04em;border:1px solid var(--ink-3);color:var(--ink);padding:1px 7px;align-self:start;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.verdict{border:1px solid var(--ink);padding:14px 16px;display:grid;gap:8px;color:var(--ink-2);}
+.verdict b.v{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);}
+
+/* scoring */
+.score{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-3);}
+.score label{font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px;}
+.score input{width:4.6em;background:var(--bg);color:var(--ink);border:1px solid var(--rule-2);border-radius:0;padding:6px 8px;font-family:var(--font);font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;}
+.total{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border:1px solid var(--ink);padding:14px 18px;margin-top:20px;}
+.total b{font-size:34px;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;}
+.pill{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--ink);color:var(--bg);font-weight:700;font-variant-numeric:tabular-nums;padding:10px 14px;font-size:16px;letter-spacing:.02em;display:flex;gap:10px;align-items:baseline;}
+.pill small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);}
+
+footer.end{margin-top:72px;padding-block:20px 72px;border-top:1px solid var(--rule-2);font-size:13px;color:var(--ink-3);display:grid;gap:6px;}
+
+@media (max-width:640px){
+  table.stack-sm{min-width:0;}
+  table.stack-sm thead{display:none;}
+  table.stack-sm tr{display:block;padding:12px 0;border-bottom:1px solid var(--rule);}
+  table.stack-sm td{display:block;border:0;padding:2px 0;}
+  table.stack-sm td:first-child{font-size:16px;margin-bottom:2px;}
+  table.stack-sm td:nth-child(2){color:var(--ink);}
+  table.stack-sm td[data-l]:not(:first-child)::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3);margin-top:6px;}
+}
+
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#guide"><b>DMFS</b><span>Exam prep</span></a>
+    <button id="ansSwitch" class="sw" type="button" role="switch" aria-checked="false" title="Practice mode: answers are hidden. Click to show them.">
+      <span class="sw-l">Answers</span><span class="sw-track" aria-hidden="true"><span class="sw-knob"></span></span><span class="sw-s" id="ansState">Hidden</span>
+    </button>
+  </div>
+  <nav class="wrap tabs" aria-label="Sections"><a href="#guide"><span class="lg">Study guide</span><span class="sh">Guide</span></a><a href="#past"><span class="lg">Past questions</span><span class="sh">Past Qs</span></a><a href="#seta"><span class="lg">Mock Set A</span><span class="sh">Set A</span></a><a href="#setb"><span class="lg">Mock Set B</span><span class="sh">Set B</span></a></nav>
+</header>
+<main>
+<section class="view" id="guide">
+<div class="wrap">
+<header class="vhead">
+  <span class="eyebrow">DMFS · BBAT35F98 · Mid-semester · CO1</span>
+  <h1>Study guide</h1>
+  <p class="lede">What each question type asks, the formulas to hold in your head for a closed-book paper, how to word the answers, and one fully worked company. Two 30-mark mock papers follow in the last two tabs.</p>
+  <div class="facts"><span><b>60</b>minutes</span><span><b>Closed</b>book</span><span><b>20%</b>weighting</span><span><b>2</b>mock papers of 30 marks</span></div>
+  <nav class="jump" aria-label="On this page">
+    <a href="#g-map">Question types</a><a href="#g-playbook">How to answer</a><a href="#g-formulas">Formula sheet</a><a href="#g-concepts">Concepts in words</a><a href="#g-horizon">Horizon Limited</a><a href="#g-limits">Limits and judgement</a><a href="#g-traps">Traps</a>
+  </nav>
+</header>
+
+<section class="sec" id="g-map">
+  <span class="eyebrow">Exam map</span>
+  <h2>Six question types</h2>
+  <p class="prose">Your four PDFs contain six kinds of question. Each mock paper has one question of every kind, so a full paper rehearses the whole range.</p>
+  <div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Type</th><th class="">Seen in your PDFs</th><th class="">What it tests</th><th class="">Practise</th></tr></thead><tbody><tr class=""><td class="" data-l="Type">Activity ratios and cash cycle</td><td class="" data-l="Seen in your PDFs"><span class="plain">DMFS_Questions: Q1 to Q5</span></td><td class="" data-l="What it tests"><span class="plain">Inventory, debtors and creditors turnover; holding, collection and payment periods; cash cycle; defensive-interval ratio</span></td><td class="" data-l="Practise"><span class="plain">P1–P5 · Set A Q1, Q3(b) · Set B Q1, Q3(c)</span></td></tr><tr class=""><td class="" data-l="Type">Working backwards from ratios</td><td class="" data-l="Seen in your PDFs"><span class="plain">Questions: Q1</span></td><td class="" data-l="What it tests"><span class="plain">Chaining current ratio, acid-test, inventory turnover and margin to reach sales</span></td><td class="" data-l="Practise"><span class="plain">P7 · Set A Q2 · Set B Q2</span></td></tr><tr class=""><td class="" data-l="Type">Liquidity capacity</td><td class="" data-l="Seen in your PDFs"><span class="plain">Questions: Q2</span></td><td class="" data-l="What it tests"><span class="plain">How much short-term debt a firm can add before the current ratio breaks a floor</span></td><td class="" data-l="Practise"><span class="plain">P8 · Set A Q3(a) · Set B Q3(a), (b)</span></td></tr><tr class=""><td class="" data-l="Type">DuPont calculation</td><td class="" data-l="Seen in your PDFs"><span class="plain">Questions: Q4</span></td><td class="" data-l="What it tests"><span class="plain">Net profit margin, asset turnover, equity multiplier and ROE from raw statements</span></td><td class="" data-l="Practise"><span class="plain">P10 · Set A Q4 · Set B Q4</span></td></tr><tr class=""><td class="" data-l="Type">Theory with an example</td><td class="" data-l="Seen in your PDFs"><span class="plain">Questions: Q3</span></td><td class="" data-l="What it tests"><span class="plain">Explaining a concept in words, with a formula, a numerical example and a caution</span></td><td class="" data-l="Practise"><span class="plain">P9 · Set A Q5 · Set B Q5</span></td></tr><tr class=""><td class="" data-l="Type">Common-size and trend case</td><td class="" data-l="Seen in your PDFs"><span class="plain">Vertex Auto-Systems</span></td><td class="" data-l="What it tests"><span class="plain">Two years of statements, full workings and assumptions, and a verdict on genuine improvement</span></td><td class="" data-l="Practise"><span class="plain">P6 · Set A Q6 · Set B Q6</span></td></tr></tbody></table></div>
+</section>
+
+<section class="sec" id="g-playbook">
+  <span class="eyebrow">Method</span>
+  <h2>How to write each answer</h2>
+  <div class="cells">
+    <div><span class="eyebrow">Numerical</span><h4>Formula, figures, unit, reading</h4>
+      <ol><li>Write the formula in words.</li><li>List the given figures; average the opening and closing balances.</li><li>Substitute and calculate.</li><li>State the unit: times, days, months or %.</li><li>Interpret against a benchmark: a standard, the industry or the prior year.</li></ol></div>
+    <div><span class="eyebrow">Working backwards</span><h4>One ratio at a time</h4>
+      <ol><li>Start with the ratio that contains the given figure.</li><li>Move step by step: current ratio gives current assets, acid-test gives inventory, turnover gives COGS, margin gives sales.</li><li>Use the inverse operation at each step.</li><li>Verify by recomputing the ratios you were given.</li></ol></div>
+    <div><span class="eyebrow">Case</span><h4>Assumptions to verdict</h4>
+      <ol><li>Assumptions: base year, balances used, any data anomaly.</li><li>Common-size statements.</li><li>Trend indices with the base year at 100.</li><li>Four to six supporting ratios: liquidity, turnover, leverage, profitability, DuPont.</li><li>Conclude: genuine improvement, or only growth?</li></ol></div>
+    <div><span class="eyebrow">Theory</span><h4>Five moves</h4>
+      <ol><li>Definition, in the slide wording.</li><li>Formula or framework.</li><li>Example, with numbers.</li><li>Limitation or caution.</li><li>A one-line conclusion.</li></ol></div>
+  </div>
+  <div class="tip"><span class="chip">Time</span><p>Plan on two minutes per mark. Do the short numericals first, keep 15 minutes for the case, and write the theory answer last in five tight sentences.</p></div>
+</section>
+
+<section class="sec" id="g-formulas">
+  <span class="eyebrow">Reference</span>
+  <h2>Formula sheet</h2>
+  <div class="oneline"><span class="chip">Memorise</span>
+    <ul>
+      <li><b>Liquidity:</b> current = CA ÷ CL · acid-test = (CA − inventory) ÷ CL · DIR = liquid assets ÷ daily cash need</li>
+      <li><b>Activity:</b> inventory turnover = COGS ÷ average inventory · collection = 12 ÷ DT · payment = 12 ÷ CT · cash cycle = holding + collection − payment</li>
+      <li><b>Leverage:</b> D/E = liabilities ÷ equity · ICR = PBIT ÷ interest · FCCR = (PBIT + D&amp;A) ÷ (interest + repayment ÷ (1 − t))</li>
+      <li><b>Returns:</b> NPM = PAT ÷ sales · ROA = PAT ÷ assets · ROCE = PBIT(1 − t) ÷ assets · ROE = (PAT − pref. dividend) ÷ equity</li>
+      <li><b>DuPont:</b> ROE = NPM × TAT × (assets ÷ equity)</li>
+      <li><b>Common-size and trend:</b> item ÷ base × 100 · index = year t ÷ base year × 100</li>
+    </ul></div>
+  <p class="prose">Averages are (opening + closing) ÷ 2. If only one balance sheet is given, use the year-end figure and say so.</p>
+  <h3>Liquidity</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Net working capital</td><td class=""><span class="plain">Current assets − current liabilities</span></td><td class=""><span class="plain">Rupee cushion for operations; higher is better.</span></td></tr><tr class=""><td class="">Current ratio</td><td class=""><span class="plain">Current assets ÷ current liabilities</span></td><td class=""><span class="plain">Convention 2 : 1 internationally; 1.33 is the India norm. Higher means stronger short-term solvency, but check what the current assets are made of.</span></td></tr><tr class=""><td class="">Acid-test (quick) ratio</td><td class=""><span class="plain">(Current assets − inventories) ÷ current liabilities</span></td><td class=""><span class="plain">1 : 1 is satisfactory. Inventories are the least liquid current asset. A stricter version also removes prepaid expenses.</span></td></tr><tr class=""><td class="">Cash ratio</td><td class=""><span class="plain">(Cash and bank + current investments) ÷ current liabilities</span></td><td class=""><span class="plain">The most stringent liquidity test.</span></td></tr><tr class=""><td class="">Defensive-interval ratio</td><td class=""><span class="plain">Liquid current assets ÷ (projected cash operating expenditure ÷ 365)</span></td><td class=""><span class="plain">Days the firm can keep operating on liquid assets alone.</span></td></tr></tbody></table></div>
+  <p class="cap">Current assets: cash, current investments, trade receivables, inventories, loans and advances, prepaid expenses. Current liabilities: current provisions, loans (secured or unsecured) and bills payable due within 12 months.</p>
+  <h3>Activity (turnover)</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Inventory turnover</td><td class=""><span class="plain">COGS ÷ average inventory</span></td><td class=""><span class="plain">Times per year the stock turns. Class problems use COGS; the slide deck divides revenue from operations by average inventory, so follow the question. Too high can mean stock-outs and lost sales.</span></td></tr><tr class=""><td class="">Inventory holding period</td><td class=""><span class="plain">12 ÷ inventory turnover (months), or 365 ÷ inventory turnover (days)</span></td><td class=""><span class="plain">How long stock sits before it is sold.</span></td></tr><tr class=""><td class="">Debtors' turnover</td><td class=""><span class="plain">Net credit sales ÷ average trade receivables</span></td><td class=""><span class="plain">Times per year receivables are collected. Higher means better credit management.</span></td></tr><tr class=""><td class="">Average collection period</td><td class=""><span class="plain">12 ÷ debtors' turnover, or 365 ÷ debtors' turnover</span></td><td class=""><span class="plain">Compare with credit terms. On terms 2/10, net 45, a period of 85 days is slow and 40 days is prompt.</span></td></tr><tr class=""><td class="">Creditors' turnover</td><td class=""><span class="plain">Net credit purchases ÷ average trade creditors</span></td><td class=""><span class="plain">Times per year suppliers are paid.</span></td></tr><tr class=""><td class="">Creditors' payment period</td><td class=""><span class="plain">12 ÷ creditors' turnover, or 365 ÷ creditors' turnover</span></td><td class=""><span class="plain">How long the firm takes to pay its suppliers.</span></td></tr><tr class=""><td class="">Fixed assets turnover</td><td class=""><span class="plain">Revenue from operations ÷ average net fixed assets</span></td><td class=""><span class="plain">Sales per rupee of fixed assets. Old, heavily depreciated plant makes it look too high.</span></td></tr><tr class=""><td class="">Total assets turnover</td><td class=""><span class="plain">Total revenues ÷ average total assets</span></td><td class=""><span class="plain">How efficiently all assets are used.</span></td></tr><tr class=""><td class="">Operating cycle</td><td class=""><span class="plain">Inventory holding period + collection period</span></td><td class=""><span class="plain">Time from buying stock to collecting cash from the customer.</span></td></tr><tr class=""><td class="">Cash cycle</td><td class=""><span class="plain">Inventory holding period + collection period − payment period</span></td><td class=""><span class="plain">Time the firm's own cash is tied up. Example: 2 + 1.5 − 3 = 0.5 month. A negative cycle means customers pay before suppliers are paid.</span></td></tr></tbody></table></div>
+  <h3>Leverage and coverage</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Debt-equity ratio</td><td class=""><span class="plain">Total liabilities ÷ shareholders' funds</span></td><td class=""><span class="plain">Textbook form includes all liabilities, current and non-current. The deck version uses long-term debt only. Lower means more protection for creditors.</span></td></tr><tr class=""><td class="">Debt-asset ratio</td><td class=""><span class="plain">Total debt ÷ total assets = (D/E) ÷ (1 + D/E)</span></td><td class=""><span class="plain">Share of assets financed by borrowed funds.</span></td></tr><tr class=""><td class="">Equity multiplier</td><td class=""><span class="plain">Total assets ÷ equity = 1 ÷ (1 − D/A)</span></td><td class=""><span class="plain">The leverage link in DuPont.</span></td></tr><tr class=""><td class="">Debt to capital</td><td class=""><span class="plain">Long-term debt ÷ (equity + long-term debt)</span></td><td class=""><span class="plain">1 : 2 is considered satisfactory.</span></td></tr><tr class=""><td class="">Proprietary ratio</td><td class=""><span class="plain">Equity ÷ total assets × 100</span></td><td class=""><span class="plain">Share of assets the owners fund.</span></td></tr><tr class=""><td class="">Interest coverage</td><td class=""><span class="plain">PBIT ÷ interest</span></td><td class=""><span class="plain">Times interest is covered. Lenders and bond raters use it. Very high may mean unused debt capacity.</span></td></tr><tr class=""><td class="">Modified interest coverage</td><td class=""><span class="plain">(PBIT + depreciation and amortisation) ÷ interest</span></td><td class=""><span class="plain">Uses cash flow before interest and tax.</span></td></tr><tr class=""><td class="">Fixed charges coverage</td><td class=""><span class="plain">(PBIT + D&A) ÷ [interest + loan repayment ÷ (1 − tax rate)]</span></td><td class=""><span class="plain">Repayment is grossed up because it is not tax deductible.</span></td></tr><tr class=""><td class="">Debt service coverage</td><td class=""><span class="plain">Σ (EAT + interest + depreciation) ÷ Σ instalments</span></td><td class=""><span class="plain">Ability to service debt in each year of the loan.</span></td></tr><tr class=""><td class="">Debt-EBITDA</td><td class=""><span class="plain">(Long-term debt + short-term debt) ÷ EBITDA</span></td><td class=""><span class="plain">Above 2.5 to 3 is generally considered risky.</span></td></tr></tbody></table></div>
+  <h3>Profitability: margins</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Gross profit margin</td><td class=""><span class="plain">Gross profit ÷ revenue from operations</span></td><td class=""><span class="plain">Pricing power and production cost efficiency. COGS covers material, manufacturing personnel and manufacturing expenses.</span></td></tr><tr class=""><td class="">EBITDA margin</td><td class=""><span class="plain">EBITDA ÷ total revenues</span></td><td class=""><span class="plain">Efficiency of production, selling, administration and pricing, before financing and tax.</span></td></tr><tr class=""><td class="">Operating profit margin</td><td class=""><span class="plain">EBIT ÷ sales</span></td><td class=""><span class="plain">Return from operations per rupee sold.</span></td></tr><tr class=""><td class="">Net profit margin (NPM)</td><td class=""><span class="plain">Profit after tax ÷ total revenues (slides) or net sales (class problems)</span></td><td class=""><span class="plain">Earnings left for shareholders per rupee of revenue.</span></td></tr><tr class=""><td class="">Expense ratios</td><td class=""><span class="plain">Each expense ÷ sales × 100</span></td><td class=""><span class="plain">Cost control line by line.</span></td></tr><tr class=""><td class="">Operating ratio</td><td class=""><span class="plain">(COGS + operating expenses) ÷ sales × 100</span></td><td class=""><span class="plain">The inverse of operating margin.</span></td></tr></tbody></table></div>
+  <h3>Profitability: returns</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Return on assets (ROA)</td><td class=""><span class="plain">Profit after tax ÷ average total assets</span></td><td class=""><span class="plain">Variant: (PAT + interest) ÷ average total assets, as if the firm were all-equity.</span></td></tr><tr class=""><td class="">Earning power</td><td class=""><span class="plain">PBIT ÷ average total assets</span></td><td class=""><span class="plain">Not affected by interest or tax, so it suits comparing firms.</span></td></tr><tr class=""><td class="">Return on capital employed (ROCE)</td><td class=""><span class="plain">PBIT × (1 − t) ÷ average total assets</span></td><td class=""><span class="plain">Equals NOPAT over assets. Deck variant: EBIT ÷ average capital employed.</span></td></tr><tr class=""><td class="">Return on equity (ROE)</td><td class=""><span class="plain">(PAT − preference dividend) ÷ average equity</span></td><td class=""><span class="plain">Equity means paid-up capital plus reserves and surplus.</span></td></tr></tbody></table></div>
+  <h3>Valuation and per-share</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Earnings per share</td><td class=""><span class="plain">Profit for equity shareholders ÷ weighted average shares</span></td><td class=""><span class="plain">Earnings attributable to each share.</span></td></tr><tr class=""><td class="">Price-earnings ratio</td><td class=""><span class="plain">Market price per share ÷ EPS</span></td><td class=""><span class="plain">Reflects growth prospects, risk, shareholder orientation, corporate image and liquidity.</span></td></tr><tr class=""><td class="">Yield</td><td class=""><span class="plain">(Dividend + price change) ÷ initial price</span></td><td class=""><span class="plain">Total return to shareholders; compare with the return they require.</span></td></tr><tr class=""><td class="">Market value to book value</td><td class=""><span class="plain">Market value per share ÷ book value per share</span></td><td class=""><span class="plain">Above 1 means the firm has added to wealth.</span></td></tr><tr class=""><td class="">EV-EBITDA</td><td class=""><span class="plain">(Market value of equity + market value of debt) ÷ EBITDA</span></td><td class=""><span class="plain">Reflects profitability, growth, risk and liquidity.</span></td></tr><tr class=""><td class="">Tobin's Q</td><td class=""><span class="plain">Market value of equity and liabilities ÷ replacement cost of all assets</span></td><td class=""><span class="plain">The numerator is equity and liabilities, not equity alone; the denominator is all assets at replacement cost.</span></td></tr><tr class=""><td class="">Per-share extras</td><td class=""><span class="plain">BVPS = equity ÷ shares · DPS = dividends ÷ shares · Payout = DPS ÷ EPS · Dividend yield = DPS ÷ price · Earnings yield = EPS ÷ price</span></td><td class=""><span class="plain">Cash EPS adds back depreciation and other non-cash charges.</span></td></tr></tbody></table></div>
+  <h3>DuPont analysis</h3>
+  <div class="pair">
+    <div class="formula">ROA = NPM × TAT<small>(Net profit ÷ Sales) × (Sales ÷ Average total assets)</small></div>
+    <div class="formula">ROE = NPM × TAT × EM<small>(PAT ÷ Sales) × (Sales ÷ Assets) × (Assets ÷ Equity), where EM = 1 ÷ (1 − debt-asset ratio)</small></div>
+  </div>
+  <div class="cells">
+    <div><span class="eyebrow">Driver 1</span><h4>Profitability</h4><p>Net profit margin: profit per rupee of sales.</p></div>
+    <div><span class="eyebrow">Driver 2</span><h4>Efficiency</h4><p>Total asset turnover: sales per rupee of assets.</p></div>
+    <div><span class="eyebrow">Driver 3</span><h4>Leverage</h4><p>Equity multiplier: assets per rupee of equity. It lifts ROE and risk together.</p></div>
+  </div>
+  <h3>Common-size and trend analysis</h3>
+  <div class="cells">
+    <div><span class="eyebrow">Common-size</span><h4>Structure</h4><p>Income statement: each line ÷ sales (or total income) × 100. Balance sheet: each line ÷ total assets × 100. Lets you compare firms of different size and spot changes in the cost and funding mix.</p></div>
+    <div><span class="eyebrow">Trend (common base year)</span><h4>Growth</h4><p>Index = (item in year t ÷ item in base year) × 100, with the base year at 100. An index of 110 means +10%. Use the same base year for every line.</p></div>
+  </div>
+  <h3>Cash flow and modified measures</h3><div class="table-wrap"><table class="stack-sm"><thead><tr><th class="">Ratio</th><th class="">Formula</th><th class="">How to read it</th></tr></thead><tbody><tr class=""><td class="">Net cash flow (simplified)</td><td class=""><span class="plain">PAT + depreciation + amortisation</span></td><td class=""><span class="plain">Profit includes non-cash items; cash flow does not.</span></td></tr><tr class=""><td class="">Operating working capital</td><td class=""><span class="plain">Operating current assets − operating current liabilities</span></td><td class=""><span class="plain">Excludes excess cash and debt.</span></td></tr><tr class=""><td class="">NOPAT</td><td class=""><span class="plain">(PBT + interest − other income) × (1 − tax rate)</span></td><td class=""><span class="plain">Operating profit after tax, independent of financing.</span></td></tr><tr class=""><td class="">Free cash flow</td><td class=""><span class="plain">NOPAT − net investment in operating capital, or (NOPAT + depreciation) − gross investment</span></td><td class=""><span class="plain">Cash left after funding growth in operating capital.</span></td></tr><tr class=""><td class="">ROIC</td><td class=""><span class="plain">NOPAT ÷ operating capital</span></td><td class=""><span class="plain">Return on the capital invested in operations.</span></td></tr></tbody></table></div>
+  <p class="prose">Sources of cash: an increase in liabilities or equity, or a decrease in assets. Uses: the opposite. The cash flow statement reports operating, investing and financing activities; the indirect method starts from profit and adjusts for non-cash items and working capital changes.</p>
+</section>
+
+<section class="sec" id="g-concepts">
+  <span class="eyebrow">Concepts</span>
+  <h2>Ideas to explain in words</h2>
+  <div class="cells">
+    <div><h4>Profit is not cash</h4><p>Revenue is recognised when the sale happens and expenses when the related sale happens, so profit and cash flow differ. Depreciation cuts profit but no cash leaves. Credit sales are revenue before the cash arrives. Capital spending is paid in cash but spread as depreciation.</p></div>
+    <div><h4>Composition of current assets</h4><p>Two firms with the same current ratio are not equally liquid. The one holding cash and receivables is more liquid than the one holding inventory. Say this whenever you quote a current ratio.</p></div>
+    <div><h4>The cash cycle</h4><p>Positive: the firm's own cash is tied up and has to be financed. Negative: customers pay before suppliers are paid, so the firm holds cash that can earn a return.</p></div>
+    <div><h4>Low margin, high ROE</h4><p>ROE = NPM × TAT × EM. Margins in retail and FMCG are largely set by the industry, so ROE comes from fast turnover and leverage. Leverage raises risk, so state it.</p></div>
+    <div><h4>Growth is not improvement</h4><p>Sales and assets can rise while margins, turnover, liquidity and cover fall. Compare ratios and common-size shares, not only rupee growth. ROE can rise purely because leverage rose.</p></div>
+    <div><h4>Choosing a benchmark</h4><p>Trend analysis compares the firm with its own past. Cross-section compares it with an industry average. Within-year ratios relate statement items to each other. Standards such as 2 : 1 are a third reference.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="g-horizon">
+  <span class="eyebrow">Worked reference</span>
+  <h2>Horizon Limited</h2>
+  <p class="prose">The slide deck's running example. Every ratio in the table is reproduced from its statements, so use it to rehearse the formulas and to practise reading a ratio against an industry average.</p>
+  <details class="ref"><summary>Horizon's statements</summary><div class="ref-body"><div class="pair"><div class="table-wrap"><table class="compact"><thead><tr><th class="">Balance sheet (₹ million)</th><th class="n">20X1</th><th class="n">20X0</th></tr></thead><tbody><tr class=""><td class="">Property, plant and equipment</td><td class="n">500</td><td class="n">450</td></tr><tr class=""><td class="">Investments (non-current)</td><td class="n">50</td><td class="n">40</td></tr><tr class=""><td class="">Long-term loans and advances</td><td class="n">50</td><td class="n">60</td></tr><tr class="tot"><td class="">Non-current assets</td><td class="n">600</td><td class="n">550</td></tr><tr class=""><td class="">Inventories</td><td class="n">160</td><td class="n">140</td></tr><tr class=""><td class="">Investments (current)</td><td class="n">20</td><td class="n">20</td></tr><tr class=""><td class="">Trade receivables</td><td class="n">140</td><td class="n">120</td></tr><tr class=""><td class="">Cash and cash equivalents</td><td class="n">60</td><td class="n">50</td></tr><tr class=""><td class="">Loans</td><td class="n">20</td><td class="n">20</td></tr><tr class="tot"><td class="">Current assets</td><td class="n">400</td><td class="n">350</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">1,000</td><td class="n">900</td></tr><tr class=""><td class="">Equity share capital (par ₹10)</td><td class="n">100</td><td class="n">100</td></tr><tr class=""><td class="">Other equity</td><td class="n">400</td><td class="n">350</td></tr><tr class="tot"><td class="">Equity</td><td class="n">500</td><td class="n">450</td></tr><tr class=""><td class="">Borrowings</td><td class="n">200</td><td class="n">180</td></tr><tr class=""><td class="">Provisions</td><td class="n">50</td><td class="n">45</td></tr><tr class=""><td class="">Deferred tax liabilities (net)</td><td class="n">50</td><td class="n">45</td></tr><tr class="tot"><td class="">Non-current liabilities</td><td class="n">300</td><td class="n">270</td></tr><tr class=""><td class="">Borrowings</td><td class="n">40</td><td class="n">30</td></tr><tr class=""><td class="">Trade payables</td><td class="n">120</td><td class="n">110</td></tr><tr class=""><td class="">Other current liabilities</td><td class="n">30</td><td class="n">30</td></tr><tr class=""><td class="">Short-term provisions</td><td class="n">10</td><td class="n">10</td></tr><tr class="tot"><td class="">Current liabilities</td><td class="n">200</td><td class="n">180</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">1,000</td><td class="n">900</td></tr></tbody></table></div><div class="table-wrap"><table class="compact"><thead><tr><th class="">Profit and loss (₹ million)</th><th class="n">20X1</th><th class="n">20X0</th></tr></thead><tbody><tr class=""><td class="">Revenue from operations</td><td class="n">1,290</td><td class="n">1,172</td></tr><tr class=""><td class="">Other income</td><td class="n">10</td><td class="n">8</td></tr><tr class="tot"><td class="">Total income</td><td class="n">1,300</td><td class="n">1,180</td></tr><tr class=""><td class="">Material expenses</td><td class="n">600</td><td class="n">560</td></tr><tr class=""><td class="">Employee benefit expenses</td><td class="n">200</td><td class="n">180</td></tr><tr class=""><td class="">Finance costs</td><td class="n">30</td><td class="n">25</td></tr><tr class=""><td class="">Depreciation and amortisation</td><td class="n">50</td><td class="n">45</td></tr><tr class=""><td class="">Other expenses</td><td class="n">240</td><td class="n">210</td></tr><tr class="tot"><td class="">Total expenses</td><td class="n">1,120</td><td class="n">1,020</td></tr><tr class="tot"><td class="">Profit before tax</td><td class="n">180</td><td class="n">160</td></tr><tr class=""><td class="">Tax expense</td><td class="n">50</td><td class="n">40</td></tr><tr class="tot"><td class="">Profit for the period</td><td class="n">130</td><td class="n">120</td></tr><tr class=""><td class="">Dividend</td><td class="n">80</td><td class="n">—</td></tr><tr class=""><td class="">Earnings per share (₹)</td><td class="n">13</td><td class="n">—</td></tr></tbody></table></div></div></div></details>
+  <div class="table-wrap"><table class="compact"><thead><tr><th class="">Ratio</th><th class="">Working</th><th class="n">Horizon</th><th class="n">Industry</th><th class="">Reading</th></tr></thead><tbody><tr class="tot"><td class="">Liquidity</td><td class=""></td><td class="n"></td><td class="n"></td><td class=""></td></tr><tr class=""><td class="">Current ratio</td><td class="">400 ÷ 200</td><td class="n">2.00</td><td class="n">1.80</td><td class="">Above industry</td></tr><tr class=""><td class="">Acid-test ratio</td><td class="">(400 − 160) ÷ 200</td><td class="n">1.20</td><td class="n">1.05</td><td class="">Above industry</td></tr><tr class=""><td class="">Cash ratio</td><td class="">(60 + 20) ÷ 200</td><td class="n">0.40</td><td class="n">—</td><td class="">Not benchmarked</td></tr><tr class="tot"><td class="">Leverage</td><td class=""></td><td class="n"></td><td class="n"></td><td class=""></td></tr><tr class=""><td class="">Debt-equity ratio</td><td class="">(300 + 200) ÷ 500</td><td class="n">1.00</td><td class="n">1.10</td><td class="">Slightly less leverage</td></tr><tr class=""><td class="">Debt-asset ratio</td><td class="">500 ÷ 1,000</td><td class="n">0.50</td><td class="n">—</td><td class="">Half the assets are debt-financed</td></tr><tr class=""><td class="">Interest coverage</td><td class="">210 ÷ 30</td><td class="n">7.0</td><td class="n">5.0</td><td class="">Stronger cover</td></tr><tr class=""><td class="">Modified interest coverage</td><td class="">(210 + 50) ÷ 30</td><td class="n">8.67</td><td class="n">—</td><td class="">Adds back depreciation</td></tr><tr class=""><td class="">Fixed charges coverage</td><td class="">(210 + 50) ÷ [30 + 50 ÷ (1 − 0.3)]</td><td class="n">2.56</td><td class="n">—</td><td class="">Repayment 50, tax rate 30%</td></tr><tr class="tot"><td class="">Turnover</td><td class=""></td><td class="n"></td><td class="n"></td><td class=""></td></tr><tr class=""><td class="">Inventory turnover (slide basis)</td><td class="">1,290 ÷ avg (160, 140)</td><td class="n">8.6</td><td class="n">8.4</td><td class="">Slightly faster</td></tr><tr class=""><td class="">Debtors' turnover</td><td class="">1,290 ÷ avg (140, 120)</td><td class="n">9.92</td><td class="n">10.1</td><td class="">Slightly slower, about 37 days</td></tr><tr class=""><td class="">Fixed assets turnover</td><td class="">1,290 ÷ avg (500, 450)</td><td class="n">2.72</td><td class="n">2.75</td><td class="">In line</td></tr><tr class=""><td class="">Total assets turnover</td><td class="">1,300 ÷ avg (1,000, 900)</td><td class="n">1.37</td><td class="n">1.40</td><td class="">In line</td></tr><tr class="tot"><td class="">Profitability</td><td class=""></td><td class="n"></td><td class="n"></td><td class=""></td></tr><tr class=""><td class="">Gross profit margin</td><td class="">470 ÷ 1,290</td><td class="n">36.4%</td><td class="n">34%</td><td class="">Better</td></tr><tr class=""><td class="">EBITDA margin</td><td class="">260 ÷ 1,300</td><td class="n">20.0%</td><td class="n">—</td><td class="">Slide prints 16%; 20% is correct</td></tr><tr class=""><td class="">Net profit margin</td><td class="">130 ÷ 1,300</td><td class="n">10.0%</td><td class="n">8.5%</td><td class="">Better</td></tr><tr class=""><td class="">Return on assets</td><td class="">130 ÷ avg (1,000, 900)</td><td class="n">13.7%</td><td class="n">12.5%</td><td class="">Better</td></tr><tr class=""><td class="">Earning power</td><td class="">210 ÷ 950</td><td class="n">22.1%</td><td class="n">19.3%</td><td class="">Better</td></tr><tr class=""><td class="">ROCE</td><td class="">210 × 0.7 ÷ 950</td><td class="n">15.5%</td><td class="n">13.8%</td><td class="">Better</td></tr><tr class=""><td class="">Return on equity</td><td class="">130 ÷ avg (500, 450)</td><td class="n">27.4%</td><td class="n">23.2%</td><td class="">Better</td></tr><tr class="tot"><td class="">Valuation</td><td class=""></td><td class="n"></td><td class="n"></td><td class=""></td></tr><tr class=""><td class="">Price-earnings ratio</td><td class="">200 ÷ 13</td><td class="n">15.4</td><td class="n">12.0</td><td class="">Market pays more per rupee of earnings</td></tr><tr class=""><td class="">Yield</td><td class="">[8 + (200 − 180)] ÷ 180</td><td class="n">15.6%</td><td class="n">14.1%</td><td class="">Higher</td></tr><tr class=""><td class="">Market value to book value</td><td class="">200 ÷ 50</td><td class="n">4.0</td><td class="n">3.2</td><td class="">Above 1: wealth created</td></tr></tbody></table></div>
+  <div class="oneline"><span class="chip">DuPont for Horizon</span><p>NPM 10.0% × TAT 1.37 × EM 2.0 = ROE 27.4%. ROA is 13.7%. Average total assets are 950 and average equity is 475, so EM = 950 ÷ 475 = 2.0.</p></div>
+  <h3>Common-size and common-base view</h3>
+  <div class="pair"><div class="table-wrap"><table class="compact"><thead><tr><th class="">Income statement (₹ million)</th><th class="n">20X0</th><th class="n">20X1</th><th class="n">Common-size 20X1 (% of total income)</th><th class="n">Index (20X0 = 100)</th></tr></thead><tbody><tr class=""><td class="">Total income</td><td class="n">1180</td><td class="n">1300</td><td class="n">100.0%</td><td class="n">110</td></tr><tr class=""><td class="">Expenses other than finance cost</td><td class="n">995</td><td class="n">1090</td><td class="n">83.8%</td><td class="n">110</td></tr><tr class="tot"><td class="">PBIT</td><td class="n">185</td><td class="n">210</td><td class="n">16.2%</td><td class="n">114</td></tr><tr class=""><td class="">Interest (finance costs)</td><td class="n">25</td><td class="n">30</td><td class="n">2.3%</td><td class="n">120</td></tr><tr class=""><td class="">PBT</td><td class="n">160</td><td class="n">180</td><td class="n">13.8%</td><td class="n">112</td></tr><tr class=""><td class="">Tax</td><td class="n">40</td><td class="n">50</td><td class="n">3.8%</td><td class="n">125</td></tr><tr class="tot"><td class="">PAT</td><td class="n">120</td><td class="n">130</td><td class="n">10.0%</td><td class="n">108</td></tr></tbody></table></div><div class="table-wrap"><table class="compact"><thead><tr><th class="">Balance sheet (₹ million)</th><th class="n">20X0</th><th class="n">20X1</th><th class="n">Common-size 20X1 (% of total assets)</th><th class="n">Index (20X0 = 100)</th></tr></thead><tbody><tr class=""><td class="">Non-current assets</td><td class="n">550</td><td class="n">600</td><td class="n">60.0%</td><td class="n">109</td></tr><tr class=""><td class="">Current assets</td><td class="n">350</td><td class="n">400</td><td class="n">40.0%</td><td class="n">114</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">900</td><td class="n">1000</td><td class="n">100.0%</td><td class="n">111</td></tr><tr class=""><td class="">Equity</td><td class="n">450</td><td class="n">500</td><td class="n">50.0%</td><td class="n">111</td></tr><tr class=""><td class="">Non-current liabilities</td><td class="n">270</td><td class="n">300</td><td class="n">30.0%</td><td class="n">111</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">180</td><td class="n">200</td><td class="n">20.0%</td><td class="n">111</td></tr></tbody></table></div></div>
+  <p class="cap">Slides round the common-size percentages to whole numbers. Total income grew 10%, PBIT 14%, interest 20%, tax 25% and PAT 8%: the tax and interest lines grew faster than profit.</p>
+</section>
+
+<section class="sec" id="g-limits">
+  <span class="eyebrow">Judgement</span>
+  <h2>Limits, applications and what lies beyond the numbers</h2>
+  <div class="cells">
+    <div><h4>Problems in analysis</h4><ol>
+      <li><b>No underlying theory.</b> Nothing says which numbers to look at, so analysis is ad hoc and subjective.</li>
+      <li><b>Few benchmarks.</b> Conglomerates have no clean peer group.</li>
+      <li><b>Window dressing.</b> A firm may run down inventory on the last day, so look at averages.</li>
+      <li><b>Price-level changes.</b> Historical-cost accounting distorts balance sheets and profits.</li>
+      <li><b>Accounting policy choices.</b> Depreciation, stock valuation, foreign exchange, R&amp;D, pre-operative costs, revaluation.</li>
+      <li><b>Interpretation.</b> A high current ratio is good liquidity or excess inventory; high fixed-asset turnover is efficiency or worn-out plant.</li>
+      <li><b>Correlated ratios.</b> Pick a small group that you understand.</li></ol></div>
+    <div><h4>Applications</h4><ul>
+      <li><b>Corporate excellence:</b> net sales, net profit, market capitalisation, ROE, share-price return and three-year CAGR.</li>
+      <li><b>Creditworthiness:</b> a credit scoring model built on character, capacity, capital, collateral and conditions.</li>
+      <li><b>Bankruptcy:</b> single-ratio analysis versus a multivariate model such as Altman's.</li>
+      <li><b>Equity valuation:</b> P/E = 8.2 + 1.5 × earnings growth + 6.7 × payout ratio − 0.2 × earnings variability.</li>
+      <li><b>Bond ratings:</b> Kaplan and Urwitz (1979) found lower debt, higher interest coverage, higher ROA, larger size and lower risk help ratings.</li>
+      <li><b>Market risk:</b> the accounting beta, the sensitivity of a firm's earnings to aggregate earnings.</li></ul></div>
+    <div><h4>Beyond the numbers</h4><ul>
+      <li>Are revenues tied to one key customer?</li><li>To one key product?</li><li>Does the firm rely on a single supplier?</li><li>What share of business is generated overseas?</li><li>Competition</li><li>Future prospects</li><li>The legal and regulatory environment</li></ul>
+      <p class="cap">Guidelines: use ratios to ask the right questions, choose ratios selectively, use proper benchmarks, know the accountants' tricks, read the footnotes, and remember that the ratios are inter-related. Analysis is a mixture of art and science.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="g-traps">
+  <span class="eyebrow">Checklist</span>
+  <h2>Traps and source corrections</h2>
+  <div class="tip"><ul>
+    <li><b>Inventory turnover.</b> Class problems use COGS ÷ average inventory. The deck uses revenue, and some questions say "closing inventory". Follow the question's definition.</li>
+    <li><b>Asset turnover</b> uses sales or revenue, never COGS.</li>
+    <li><b>Months or days.</b> Say which: 12 months or 365 days. The sample answers are in months.</li>
+    <li><b>Net profit margin.</b> The deck divides by total revenues; class problems divide by net sales.</li>
+    <li><b>Defensive-interval ratio.</b> Divide by daily cash need (annual cash expenditure ÷ 365), not by the annual figure.</li>
+    <li><b>Borrowing capacity.</b> State what the money is used for. Cash raises current assets and current liabilities together; machinery raises only current liabilities.</li>
+    <li><b>Acid-test.</b> The exam form is (CA − inventory) ÷ CL; a stricter form removes prepaid expenses too.</li>
+    <li><b>Data checks.</b> Does the balance sheet balance? Does PAT reconcile to the lines above it? State any gap as an assumption.</li>
+    <li><b>Slide typos.</b> Horizon's EBITDA margin is 260 ÷ 1,300 = 20% (the slide prints 16%). Earning power is 210 ÷ 950 = 22.1% (the slide shows 200 in the numerator). The gross-margin row in the comparison table lists "current liabilities" as the denominator; it should be revenue from operations.</li>
+  </ul></div>
+</section>
+</div>
+</section>
+
+<section class="view" id="past">
+<div class="wrap">
+<header class="vhead">
+  <span class="eyebrow">From your four PDFs</span>
+  <h1>Past questions</h1>
+  <p class="lede">Every question from the PDFs you sent, reproduced as written, with a worked answer. Attempt each one on paper first. The switch at the top hides or shows every answer on this page.</p>
+  <div class="facts"><span><b>10</b>questions</span><span><b>5</b>short numericals</span><span><b>1</b>long case</span><span><b>1</b>theory</span></div>
+  <nav class="jump" aria-label="Questions"><a href="#p1">P1–P5 Activity</a><a href="#p6">P6 Vertex case</a><a href="#p7">P7–P8 Ratios and liquidity</a><a href="#p9">P9–P10 DuPont</a></nav>
+</header>
+<section class="sec"><span class="eyebrow">Activity ratios and the cash cycle</span><h2>P1 to P5</h2><article class="q" id="p1">
+<header class="q-head"><span class="q-no">P1</span><h3>Inventory turnover and holding period</h3><span class="q-marks">DMFS_Questions · Q1</span></header>
+<div class="q-body"><p>A firm has sold goods worth Rs 300 lakh with a gross profit margin of 20%. The stock at the beginning and the end of the year was Rs 35 lakh and Rs 45 lakh respectively. What is the inventory turnover ratio? What is the inventory holding period?</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Gross profit = 20% × 300 = 60, so COGS = 300 − 60 = Rs 240 lakh</span><span></span></li><li><span>Average inventory = (35 + 45) ÷ 2 = Rs 40 lakh</span><span></span></li><li><span>Inventory turnover = COGS ÷ average inventory = 240 ÷ 40 = <span class="res">6.0 times</span></span><span></span></li><li><span>Holding period = 12 ÷ 6 = <span class="res">2 months</span> (365 ÷ 6 ≈ 61 days)</span><span></span></li></ul><p>Stock turns over six times a year and is held for about two months before it is sold.</p></div></details>
+</article><article class="q" id="p2">
+<header class="q-head"><span class="q-no">P2</span><h3>Debtors' turnover and collection period</h3><span class="q-marks">DMFS_Questions · Q2</span></header>
+<div class="q-body"><p>A firm has made a credit sales of Rs 240 lakh during the year. The outstanding amount of debtors at the beginning and at the end of the year respectively was Rs 27.5 lakh and Rs 32.5 lakh. Determine the debtor's turnover ratio. What is the debtor's collection period?</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Average debtors = (27.5 + 32.5) ÷ 2 = Rs 30 lakh</span><span></span></li><li><span>Debtors' turnover = 240 ÷ 30 = <span class="res">8.0 times</span></span><span></span></li><li><span>Collection period = 12 ÷ 8 = <span class="res">1.5 months</span> (365 ÷ 8 ≈ 45.6 days)</span><span></span></li></ul><p>Customers take about a month and a half to pay.</p></div></details>
+</article><article class="q" id="p3">
+<header class="q-head"><span class="q-no">P3</span><h3>Creditors' turnover and payment period</h3><span class="q-marks">DMFS_Questions · Q3</span></header>
+<div class="q-body"><p>The firm has made credit purchases of Rs 180 lakhs. The amount payable to the creditors at the beginning and at the end of the year is Rs 42.5 lakhs and Rs 47.5 lakhs respectively. Find out the creditor's turnover ratio. What is the creditor's payment period?</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Average creditors = (42.5 + 47.5) ÷ 2 = Rs 45 lakh</span><span></span></li><li><span>Creditors' turnover = 180 ÷ 45 = <span class="res">4.0 times</span></span><span></span></li><li><span>Payment period = 12 ÷ 4 = <span class="res">3 months</span> (365 ÷ 4 ≈ 91 days)</span><span></span></li></ul><p>The firm takes three months to pay its suppliers.</p></div></details>
+</article><article class="q" id="p4">
+<header class="q-head"><span class="q-no">P4</span><h3>Cash cycle</h3><span class="q-marks">DMFS_Questions · Q4</span></header>
+<div class="q-body"><p>Find the cash cycle. <span class="cap">(Use the holding, collection and payment periods from P1 to P3.)</span></p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Cash cycle = inventory holding period + collection period − payment period</span><span></span></li><li><span>= 2 + 1.5 − 3 = <span class="res">0.5 month</span> (about 15 days)</span><span></span></li><li><span>For reference, the operating cycle = 2 + 1.5 = 3.5 months</span><span></span></li></ul><p>The firm pays suppliers about half a month before it collects from customers, so it needs a small working-capital bridge for that gap.</p></div></details>
+</article><article class="q" id="p5">
+<header class="q-head"><span class="q-no">P5</span><h3>Defensive-interval ratio</h3><span class="q-marks">DMFS_Questions · Q5</span></header>
+<div class="q-body"><p>The projected cash operating expenditure of a firm from the next year is Rs 182.5 lakhs. If the liquid current assets are amounting to Rs 40 lakhs, determine the defensive-interval ratio.</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Daily cash operating expenditure = 182.5 ÷ 365 = Rs 0.5 lakh per day</span><span></span></li><li><span>Defensive-interval ratio = 40 ÷ 0.5 = <span class="res">80 days</span></span><span></span></li></ul><p>The firm can keep operating for 80 days on its liquid assets alone.</p></div></details>
+</article></section>
+<section class="sec"><span class="eyebrow">Common-size and trend analysis</span><h2>P6</h2><article class="q" id="p6">
+<header class="q-head"><span class="q-no">P6</span><h3>Vertex Auto-Systems: common-size and trend case</h3><span class="q-marks">Q3.pdf · long answer</span></header>
+<div class="q-body"><p>Vertex Auto-Systems Ltd. manufactures specialised drive-train components. During 2025, the company expanded production using a mix of internal funds and loans. Although sales improved, the Board remains uncertain whether profitability and financial health actually strengthened.</p><div class="pair"><div class="stack"><span class="eyebrow">Income statement (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">165</td><td class="n">205</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">103</td><td class="n">131</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">34</td><td class="n">41</td></tr><tr class=""><td class="">Interest expense</td><td class="n">5</td><td class="n">7</td></tr><tr class=""><td class="">Income tax</td><td class="n">3.5</td><td class="n">4.2</td></tr><tr class=""><td class="">Net profit after tax</td><td class="n">19</td><td class="n">21.8</td></tr></tbody></table></div></div><div class="stack"><span class="eyebrow">Balance sheet (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">42</td><td class="n">60</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">78</td><td class="n">112</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">120</td><td class="n">172</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">63</td><td class="n">69</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">32</td><td class="n">46</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">25</td><td class="n">57</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">120</td><td class="n">172</td></tr></tbody></table></div></div></div><p><b>Question.</b> Using common-size and trend analysis, analyse whether Vertex Auto-Systems Ltd. experienced a genuine improvement in performance and financial strength from 2024 to 2025. Provide full workings and assumptions.</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><h4>1. Assumptions</h4><ul><li>Base year for trend analysis is 2024 = 100. Common-size statements use net sales for the income statement and total assets for the balance sheet.</li><li>Only two balance sheets are given, so ratios use year-end balances for both years. No 2023 balance sheet is available to average.</li><li>PBIT = net sales − COGS − operating expenses. Interest and tax are taken as given.</li><li><b>Data check:</b> 2024 PAT is reported as 19.0, but 28.0 − 5.0 − 3.5 = 19.5. The 0.5 gap is unexplained. I use the reported 19.0 and treat the difference as an unlisted charge; the conclusion is the same either way.</li><li>No inventory or receivables split is given, so the acid-test ratio and the turnover periods cannot be computed. Liquidity is judged on the current ratio.</li></ul><h4>2. Income statement: common-size and trend</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of sales 2024</th><th class="n">% of sales 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">165.0</td><td class="n">205.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">124.2</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">103.0</td><td class="n">131.0</td><td class="n">62.4%</td><td class="n">63.9%</td><td class="n">+1.5</td><td class="n">127.2</td></tr><tr class="tot"><td class="">Gross profit</td><td class="n">62.0</td><td class="n">74.0</td><td class="n">37.6%</td><td class="n">36.1%</td><td class="n">-1.5</td><td class="n">119.4</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">34.0</td><td class="n">41.0</td><td class="n">20.6%</td><td class="n">20.0%</td><td class="n">-0.6</td><td class="n">120.6</td></tr><tr class="tot"><td class="">PBIT (operating profit)</td><td class="n">28.0</td><td class="n">33.0</td><td class="n">17.0%</td><td class="n">16.1%</td><td class="n">-0.9</td><td class="n">117.9</td></tr><tr class=""><td class="">Interest</td><td class="n">5.0</td><td class="n">7.0</td><td class="n">3.0%</td><td class="n">3.4%</td><td class="n">+0.4</td><td class="n">140.0</td></tr><tr class="tot"><td class="">Profit before tax</td><td class="n">23.0</td><td class="n">26.0</td><td class="n">13.9%</td><td class="n">12.7%</td><td class="n">-1.3</td><td class="n">113.0</td></tr><tr class=""><td class="">Income tax</td><td class="n">3.5</td><td class="n">4.2</td><td class="n">2.1%</td><td class="n">2.0%</td><td class="n">-0.1</td><td class="n">120.0</td></tr><tr class="tot"><td class="">Profit after tax (as reported)</td><td class="n">19.0</td><td class="n">21.8</td><td class="n">11.5%</td><td class="n">10.6%</td><td class="n">-0.9</td><td class="n">114.7</td></tr></tbody></table></div><h4>3. Balance sheet: common-size and trend</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of assets 2024</th><th class="n">% of assets 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">42.0</td><td class="n">60.0</td><td class="n">35.0%</td><td class="n">34.9%</td><td class="n">-0.1</td><td class="n">142.9</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">78.0</td><td class="n">112.0</td><td class="n">65.0%</td><td class="n">65.1%</td><td class="n">+0.1</td><td class="n">143.6</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">120.0</td><td class="n">172.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">143.3</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">63.0</td><td class="n">69.0</td><td class="n">52.5%</td><td class="n">40.1%</td><td class="n">-12.4</td><td class="n">109.5</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">32.0</td><td class="n">46.0</td><td class="n">26.7%</td><td class="n">26.7%</td><td class="n">+0.1</td><td class="n">143.8</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">25.0</td><td class="n">57.0</td><td class="n">20.8%</td><td class="n">33.1%</td><td class="n">+12.3</td><td class="n">228.0</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">120.0</td><td class="n">172.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">143.3</td></tr></tbody></table></div><h4>4. Supporting ratios</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Ratio</th><th class="">Basis</th><th class="n">2024</th><th class="n">2025</th><th class="">Movement</th></tr></thead><tbody><tr class=""><td class="">Gross margin</td><td class=""><span class="plain">GP ÷ sales</span></td><td class="n">37.6%</td><td class="n">36.1%</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">PBIT margin</td><td class=""><span class="plain">PBIT ÷ sales</span></td><td class="n">17.0%</td><td class="n">16.1%</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Net profit margin (NPM)</td><td class=""><span class="plain">PAT ÷ sales</span></td><td class="n">11.5%</td><td class="n">10.6%</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Total asset turnover (TAT)</td><td class=""><span class="plain">Sales ÷ total assets</span></td><td class="n">1.38</td><td class="n">1.19</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Fixed asset turnover</td><td class=""><span class="plain">Sales ÷ non-current assets</span></td><td class="n">2.12</td><td class="n">1.83</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Equity multiplier (EM)</td><td class=""><span class="plain">Total assets ÷ equity</span></td><td class="n">1.90</td><td class="n">2.49</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Return on assets (ROA)</td><td class=""><span class="plain">PAT ÷ total assets</span></td><td class="n">15.8%</td><td class="n">12.7%</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Return on equity (ROE)</td><td class=""><span class="plain">PAT ÷ equity</span></td><td class="n">30.2%</td><td class="n">31.6%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Current ratio</td><td class=""><span class="plain">Current assets ÷ current liabilities</span></td><td class="n">1.68</td><td class="n">1.05</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Debt-asset ratio</td><td class=""><span class="plain">Total liabilities ÷ total assets</span></td><td class="n">47.5%</td><td class="n">59.9%</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Debt-equity ratio</td><td class=""><span class="plain">Total liabilities ÷ equity</span></td><td class="n">0.90</td><td class="n">1.49</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Interest coverage (times)</td><td class=""><span class="plain">PBIT ÷ interest</span></td><td class="n">5.60</td><td class="n">4.71</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr></tbody></table></div><h4>5. DuPont analysis</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Year</th><th class="n">NPM</th><th class="n">× TAT</th><th class="n">× EM</th><th class="n">= ROE</th><th class="n">Check: PAT ÷ equity</th></tr></thead><tbody><tr class=""><td class="">2024</td><td class="n">11.5%</td><td class="n">1.375</td><td class="n">1.905</td><td class="n"><b>30.2%</b></td><td class="n">30.2%</td></tr><tr class=""><td class="">2025</td><td class="n">10.6%</td><td class="n">1.192</td><td class="n">2.493</td><td class="n"><b>31.6%</b></td><td class="n">31.6%</td></tr></tbody></table></div><h4>6. What the numbers say</h4><ul><li><b>Margins slipped.</b> COGS grew 27.2% against sales growth of 24.2%, so gross margin fell from 37.6% to 36.1%. A small saving on operating expenses (20.6% to 20.0% of sales) did not offset it, and PBIT margin fell from 17.0% to 16.1%.</li><li><b>Profit lagged sales.</b> Sales index 124, PAT index 115. Interest rose 40% (index 140), so it took 3.4% of sales against 3.0%. Net margin fell from 11.5% to 10.6%.</li><li><b>Efficiency fell.</b> Total asset turnover dropped from 1.38 to 1.19 and fixed asset turnover from 2.12 to 1.83, because assets grew 43% on 24% more sales.</li><li><b>Funding became fragile.</b> Of the 52 added to assets, 61.5% came from current liabilities (+32), 26.9% from long-term debt (+14) and only 11.5% from equity (+6). Equity fell from 52.5% to 40.1% of the balance sheet; current liabilities more than doubled (index 228).</li><li><b>Liquidity broke.</b> The current ratio fell from 1.68 to 1.05, below the India norm of 1.33 and the 2 : 1 convention. Interest coverage fell from 5.6 to 4.7 times.</li><li><b>ROE rose only through leverage.</b> ROE moved from 30.2% to 31.6%, yet net margin and asset turnover both fell and ROA dropped from 15.8% to 12.7%. The equity multiplier rose from 1.90 to 2.49, which carries all of the gain.</li></ul><div class="verdict"><b class="v">Conclusion</b><p>No, the improvement is not genuine. Vertex became bigger, not better: sales and profit grew, but margins, asset efficiency, liquidity and interest cover all weakened. The headline ROE gain comes from more debt, mostly short-term, so financial strength deteriorated.</p></div></div></details>
+</article></section>
+<section class="sec"><span class="eyebrow">Ratios, liquidity and DuPont</span><h2>P7 to P10</h2><article class="q" id="p7">
+<header class="q-head"><span class="q-no">P7</span><h3>Finding sales from ratios</h3><span class="q-marks">Questions · Q1</span></header>
+<div class="q-body"><p>Inventory turnover ratio = 8 times. Determine the sales of a firm with the following financial data:</p><ul class="givens"><li>Current ratio = 1.8</li><li>Acid-test ratio = 1</li><li>Current liabilities = 800,000</li><li>Gross profit margin = 15%</li></ul><p class="cap">Note: Inventory turnover ratio = COGS ÷ closing inventory.</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span>Current assets = 1.8 × 8,00,000 = ₹14,40,000</span><span></span></li><li><span>Quick assets = 1.0 × 8,00,000 = ₹8,00,000, so inventory = 14,40,000 − 8,00,000 = ₹6,40,000</span><span></span></li><li><span>COGS = 8 × 6,40,000 = ₹51,20,000</span><span></span></li><li><span>COGS is 85% of sales, so sales = 51,20,000 ÷ 0.85 = <span class="res">₹60,23,529</span> (about ₹60.2 lakh)</span><span></span></li><li><span>Check: gross profit = 60,23,529 − 51,20,000 = 9,03,529 = 15% of sales ✓</span><span></span></li></ul></div></details>
+</article><article class="q" id="p8">
+<header class="q-head"><span class="q-no">P8</span><h3>Maximum extra short-term borrowing</h3><span class="q-marks">Questions · Q2</span></header>
+<div class="q-body"><p>A company has current assets of ₹4,80,000 and current liabilities of ₹3,00,000. Determine the maximum additional short-term borrowing possible without letting the current ratio fall below 1.3.</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><p><b>Assumption:</b> the borrowed money is held as cash, so current assets and current liabilities both rise by the same amount x.</p><ul class="steps"><li><span>(4,80,000 + x) ÷ (3,00,000 + x) ≥ 1.3</span><span></span></li><li><span>4,80,000 + x ≥ 3,90,000 + 1.3x</span><span></span></li><li><span>90,000 ≥ 0.3x</span><span></span></li><li><span>x ≤ <span class="res">₹3,00,000</span></span><span></span></li><li><span>Check: 7,80,000 ÷ 6,00,000 = 1.30 ✓</span><span></span></li></ul><p>If the money were instead spent on fixed assets, only current liabilities would rise: 4,80,000 ÷ (3,00,000 + x) ≥ 1.3 gives x ≤ ₹69,231. State which assumption you use.</p></div></details>
+</article><article class="q" id="p9">
+<header class="q-head"><span class="q-no">P9</span><h3>Low margin, high ROE in FMCG</h3><span class="q-marks">Questions · Q3 · theory</span></header>
+<div class="q-body"><p>In case of FMCG sector companies, where net profit margin is low, what other factors can potentially drive its high return on equity (ROE)? Explain with an example of DuPont equation.</p></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><ul class="steps"><li><span><b>Definition.</b> The extended DuPont equation splits ROE into three drivers: ROE = net profit margin × total asset turnover × equity multiplier = (PAT ÷ Sales) × (Sales ÷ Total assets) × (Total assets ÷ Equity).</span><span></span></li><li><span><b>Other drivers.</b> A low margin can be offset by <b>asset turnover</b> and <b>leverage</b>. FMCG goods sell fast, so inventory turns quickly and debtors are collected quickly. Suppliers' credit funds much of the stock, which keeps assets lean and raises the equity multiplier.</span><span></span></li><li><span><b>Example.</b> FMCG firm: 5% × 3.0 × 2.0 = <b>30%</b>. A high-margin, slow-turning firm: 20% × 0.5 × 1.5 = <b>15%</b>. The FMCG firm earns twice the ROE on a quarter of the margin.</span><span></span></li><li><span><b>Caution.</b> Leverage raises risk, and a high turnover can reflect old, depreciated assets. Compare with industry benchmarks.</span><span></span></li><li><span><b>Conclusion.</b> In FMCG, ROE is earned through speed and funding structure, not margin.</span><span></span></li></ul></div></details>
+</article><article class="q" id="p10">
+<header class="q-head"><span class="q-no">P10</span><h3>PQR Ltd: DuPont analysis</h3><span class="q-marks">Questions · Q4</span></header>
+<div class="q-body"><p>PQR Ltd. has provided the following financial information for the year ended 31st March 2025:</p><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">Amount (₹)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">15,00,000</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">9,00,000</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">2,50,000</td></tr><tr class=""><td class="">Interest expense</td><td class="n">30,000</td></tr><tr class=""><td class="">Income tax expense</td><td class="n">48,000</td></tr><tr class=""><td class="">Total assets</td><td class="n">6,00,000</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">3,00,000</td></tr></tbody></table></div><div class="parts"><div class="part"><span class="pl">(1)</span><div>Calculate: (a) net profit margin, (b) total asset turnover, (c) equity multiplier.</div><span></span></div><div class="part"><span class="pl">(2)</span><div>Using the DuPont formula, compute the return on equity (ROE).</div><span></span></div></div></div>
+<details class="answer"><summary>Worked answer</summary><div class="ans"><p><b>Assumption:</b> only closing balances are given, so year-end assets and equity are used.</p><ul class="steps"><li><span>PBIT = 15,00,000 − 9,00,000 − 2,50,000 = ₹3,50,000; PBT = 3,50,000 − 30,000 = ₹3,20,000; PAT = 3,20,000 − 48,000 = ₹2,72,000</span><span></span></li><li><span>(a) Net profit margin = 2,72,000 ÷ 15,00,000 = <span class="res">18.13%</span></span><span></span></li><li><span>(b) Total asset turnover = 15,00,000 ÷ 6,00,000 = <span class="res">2.5 times</span></span><span></span></li><li><span>(c) Equity multiplier = 6,00,000 ÷ 3,00,000 = <span class="res">2.0</span></span><span></span></li><li><span>ROE = 18.13% × 2.5 × 2.0 = <span class="res">90.67%</span></span><span></span></li><li><span>Check: PAT ÷ equity = 2,72,000 ÷ 3,00,000 = 90.67% ✓</span><span></span></li></ul><p>A margin of 18% would give ROE of 18% on its own. Turnover multiplies it by 2.5 and leverage by 2.0, which is why ROE is five times the margin. ROA is 45.3%.</p></div></details>
+</article></section>
+</div>
+</section>
+
+<section class="view" id="seta">
+<div class="wrap">
+
+<div class="paper-head">
+  <span class="eyebrow">Mock examination · Set A</span>
+  <h1>Decision Making Using Financial Statements<small>Mid-semester practice paper</small></h1>
+  <div class="paper-meta"><span><b>60</b>minutes</span><span><b>30</b>marks</span><span><b>6</b>questions, all compulsory</span><span><b>Closed</b>book</span></div>
+</div>
+<div class="rules"><span class="eyebrow">Instructions</span><ul>
+  <li>Attempt all six questions. Marks are shown in brackets.</li>
+  <li>Show the formula, the workings and the unit for every answer. State any assumption you make.</li>
+  <li>Where a question defines a ratio, use that definition. Use average balances unless told otherwise.</li>
+  <li>Suggested timing at two minutes per mark: Q1 14 · Q2 8 · Q3 8 · Q4 10 · Q5 6 · Q6 14 minutes.</li>
+  <li>Starting the timer hides the answers. Mark yourself afterwards and enter your marks under each question.</li></ul></div>
+<div class="timer" id="timer-A">
+  <div class="clock" id="clock-A">60:00</div>
+  <div class="tstat">Timer<b id="tstat-A">Ready</b></div>
+  <div class="tstat">Time used<b id="used-A">0 min used</b></div>
+  <div class="btns"><button class="btn" id="start-A" type="button">Start</button><button class="btn" id="reset-A" type="button">Reset</button></div>
+</div>
+<article class="q" id="a-q1">
+<header class="q-head"><span class="q-no">Q1</span><h3>Activity ratios and the cash cycle</h3><span class="q-marks"><b>7</b>marks · about 14 min</span></header>
+<div class="q-body"><p><b>Hartwell Appliances Ltd.</b> reports the following for the year (₹ lakh):</p><ul class="givens"><li>Net sales 400; gross profit margin 25%</li><li>Inventory: opening 50, closing 70</li><li>Credit sales 360; trade debtors: opening 55, closing 65</li><li>Credit purchases 320; trade creditors: opening 70, closing 90</li></ul><p>Use average balances and take a year as 12 months.</p><div class="parts"><div class="part"><span class="pl">(a)</span><div>Inventory turnover ratio and inventory holding period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(b)</span><div>Debtors' turnover ratio and average collection period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(c)</span><div>Creditors' turnover ratio and payment period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(d)</span><div>The cash cycle, with a one-line interpretation.</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a) Inventory</h4><ul class="steps"><li><span>COGS = 400 × (1 − 0.25) = 300; average inventory = (50 + 70) ÷ 2 = 60. Turnover = 300 ÷ 60 = <span class="res">5.0 times</span></span><span class="m">[1]</span></li><li><span>Holding period = 12 ÷ 5 = <span class="res">2.4 months</span></span><span class="m">[1]</span></li></ul><h4>(b) Debtors</h4><ul class="steps"><li><span>Average debtors = (55 + 65) ÷ 2 = 60. Turnover = 360 ÷ 60 = <span class="res">6.0 times</span></span><span class="m">[1]</span></li><li><span>Collection period = 12 ÷ 6 = <span class="res">2.0 months</span></span><span class="m">[1]</span></li></ul><h4>(c) Creditors</h4><ul class="steps"><li><span>Average creditors = (70 + 90) ÷ 2 = 80. Turnover = 320 ÷ 80 = <span class="res">4.0 times</span></span><span class="m">[1]</span></li><li><span>Payment period = 12 ÷ 4 = <span class="res">3.0 months</span></span><span class="m">[1]</span></li></ul><h4>(d) Cash cycle</h4><ul class="steps"><li><span>Cash cycle = 2.4 + 2.0 − 3.0 = <span class="res">1.4 months</span>. The firm's own cash is tied up for about six weeks: it pays suppliers 1.4 months before customers pay it, so that gap needs working-capital finance.</span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-A-1">Your marks</label><input id="sc-A-1" type="number" inputmode="decimal" min="0" max="7" step="0.5" data-set="A" placeholder="0"><span>out of 7</span></div>
+</article><article class="q" id="a-q2">
+<header class="q-head"><span class="q-no">Q2</span><h3>Finding sales from ratios</h3><span class="q-marks"><b>4</b>marks · about 8 min</span></header>
+<div class="q-body"><p>Determine the net sales of a firm with the following data:</p><ul class="givens"><li>Current ratio 2.4</li><li>Acid-test ratio 1.4, where acid-test = (current assets − inventory) ÷ current liabilities</li><li>Current liabilities ₹5,00,000</li><li>Inventory turnover 6 times, where inventory turnover = COGS ÷ closing inventory</li><li>Gross profit margin 20%</li></ul></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span>Current assets = 2.4 × 5,00,000 = ₹12,00,000</span><span class="m">[1]</span></li><li><span>Quick assets = 1.4 × 5,00,000 = ₹7,00,000, so inventory = 12,00,000 − 7,00,000 = ₹5,00,000</span><span class="m">[1]</span></li><li><span>COGS = 6 × 5,00,000 = ₹30,00,000</span><span class="m">[1]</span></li><li><span>COGS is 80% of sales, so sales = 30,00,000 ÷ 0.80 = <span class="res">₹37,50,000</span></span><span class="m">[1]</span></li><li><span>Check: gross profit 7,50,000 = 20% of sales ✓; acid-test (12,00,000 − 5,00,000) ÷ 5,00,000 = 1.4 ✓</span><span></span></li></ul></div></details>
+<div class="score"><label for="sc-A-2">Your marks</label><input id="sc-A-2" type="number" inputmode="decimal" min="0" max="4" step="0.5" data-set="A" placeholder="0"><span>out of 4</span></div>
+</article><article class="q" id="a-q3">
+<header class="q-head"><span class="q-no">Q3</span><h3>Liquidity capacity and defensive interval</h3><span class="q-marks"><b>4</b>marks · about 8 min</span></header>
+<div class="q-body"><p><b>Crestline Ltd.</b> has current assets of ₹6,00,000 and current liabilities of ₹4,00,000.</p><div class="parts"><div class="part"><span class="pl">(a)</span><div>Find the maximum additional short-term borrowing possible without letting the current ratio fall below 1.2. Assume the money is held as cash.</div><span class="pm">[3]</span></div><div class="part"><span class="pl">(b)</span><div>Next year's projected cash operating expenditure is ₹219 lakh and liquid current assets are ₹36 lakh. Compute the defensive-interval ratio (365 days).</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a)</h4><ul class="steps"><li><span>Let x be the borrowing. Cash and current liabilities both rise by x: (6,00,000 + x) ÷ (4,00,000 + x) ≥ 1.2</span><span class="m">[1]</span></li><li><span>6,00,000 + x ≥ 4,80,000 + 1.2x, so 1,20,000 ≥ 0.2x</span><span class="m">[1]</span></li><li><span>x ≤ <span class="res">₹6,00,000</span>. Check: 12,00,000 ÷ 10,00,000 = 1.2 ✓</span><span class="m">[1]</span></li></ul><h4>(b)</h4><ul class="steps"><li><span>Daily cash expenditure = 219 ÷ 365 = ₹0.6 lakh. DIR = 36 ÷ 0.6 = <span class="res">60 days</span></span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-A-3">Your marks</label><input id="sc-A-3" type="number" inputmode="decimal" min="0" max="4" step="0.5" data-set="A" placeholder="0"><span>out of 4</span></div>
+</article><article class="q" id="a-q4">
+<header class="q-head"><span class="q-no">Q4</span><h3>DuPont analysis</h3><span class="q-marks"><b>5</b>marks · about 10 min</span></header>
+<div class="q-body"><p><b>Helios Components Ltd.</b>, year ended 31 March 2025. Use year-end balances.</p><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">Amount (₹)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">20,00,000</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">13,00,000</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">4,20,000</td></tr><tr class=""><td class="">Interest expense</td><td class="n">30,000</td></tr><tr class=""><td class="">Income tax expense</td><td class="n">60,000</td></tr><tr class=""><td class="">Total assets</td><td class="n">8,00,000</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">5,00,000</td></tr></tbody></table></div><div class="parts"><div class="part"><span class="pl">(a)</span><div>Compute profit after tax and the net profit margin.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(b)</span><div>Compute total asset turnover.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(c)</span><div>Compute the equity multiplier.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(d)</span><div>Compute ROE using the DuPont formula.</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span>PBIT = 20,00,000 − 13,00,000 − 4,20,000 = 2,80,000; PBT = 2,80,000 − 30,000 = 2,50,000; PAT = 2,50,000 − 60,000 = <span class="res">₹1,90,000</span></span><span class="m">[1]</span></li><li><span>Net profit margin = 1,90,000 ÷ 20,00,000 = <span class="res">9.5%</span></span><span class="m">[1]</span></li><li><span>Total asset turnover = 20,00,000 ÷ 8,00,000 = <span class="res">2.5 times</span></span><span class="m">[1]</span></li><li><span>Equity multiplier = 8,00,000 ÷ 5,00,000 = <span class="res">1.6</span></span><span class="m">[1]</span></li><li><span>ROE = 9.5% × 2.5 × 1.6 = <span class="res">38.0%</span>. Check: 1,90,000 ÷ 5,00,000 = 38% ✓</span><span class="m">[1]</span></li></ul><p>Most of the ROE comes from turnover: each rupee of assets generates ₹2.5 of sales.</p></div></details>
+<div class="score"><label for="sc-A-4">Your marks</label><input id="sc-A-4" type="number" inputmode="decimal" min="0" max="5" step="0.5" data-set="A" placeholder="0"><span>out of 5</span></div>
+</article><article class="q" id="a-q5">
+<header class="q-head"><span class="q-no">Q5</span><h3>Low margin, high ROE in retail</h3><span class="q-marks"><b>3</b>marks · about 6 min</span></header>
+<div class="q-body"><p>A supermarket chain earns a net profit margin of only 2% but reports an ROE above 25%. Explain how this is possible using the extended DuPont equation. Support your answer with a numerical example and state one risk.</p></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span><b>Framework.</b> ROE = NPM × TAT × EM = (PAT ÷ Sales) × (Sales ÷ Total assets) × (Total assets ÷ Equity). A low margin can be offset by high turnover and by leverage.</span><span class="m">[1]</span></li><li><span><b>Example.</b> 2% × 6.0 × 2.2 = <span class="res">26.4%</span>. Supermarkets sell fast-moving goods, so inventory turns quickly and sales are largely for cash, which keeps assets small relative to sales. Supplier credit funds much of the stock, which raises the equity multiplier.</span><span class="m">[1]</span></li><li><span><b>Risk.</b> An ROE built on a thin margin and leverage is fragile: a small fall in margin or volumes cuts ROE sharply, and high leverage raises financial risk. Compare with industry benchmarks.</span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-A-5">Your marks</label><input id="sc-A-5" type="number" inputmode="decimal" min="0" max="3" step="0.5" data-set="A" placeholder="0"><span>out of 3</span></div>
+</article><article class="q" id="a-q6">
+<header class="q-head"><span class="q-no">Q6</span><h3>Meridian Cables Ltd: common-size and trend case</h3><span class="q-marks"><b>7</b>marks · about 14 min</span></header>
+<div class="q-body"><p>Meridian Cables Ltd. makes power cables. In 2025 it commissioned a new plant, financed by a mix of debt and retained earnings. The Board asks whether performance and financial strength genuinely improved.</p><div class="pair"><div class="stack"><span class="eyebrow">Income statement (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">240</td><td class="n">276</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">144</td><td class="n">160</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">48</td><td class="n">54</td></tr><tr class=""><td class="">Interest expense</td><td class="n">6</td><td class="n">8</td></tr><tr class=""><td class="">Income tax</td><td class="n">10.5</td><td class="n">13.5</td></tr><tr class=""><td class="">Net profit after tax</td><td class="n">31.5</td><td class="n">40.5</td></tr></tbody></table></div></div><div class="stack"><span class="eyebrow">Balance sheet (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">90</td><td class="n">105</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">150</td><td class="n">195</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">240</td><td class="n">300</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">140</td><td class="n">160</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">60</td><td class="n">90</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">40</td><td class="n">50</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">240</td><td class="n">300</td></tr></tbody></table></div></div></div><p><b>Using common-size and trend analysis:</b></p><div class="parts"><div class="part"><span class="pl">(a)</span><div>State your assumptions.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(b)</span><div>Prepare common-size income statements and balance sheets for both years.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(c)</span><div>Compute trend indices (2024 = 100) for each line.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(d)</span><div>Compute the current ratio, total liabilities to total assets, interest coverage and the DuPont decomposition of ROE for both years.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(e)</span><div>Conclude: was there a genuine improvement?</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a) Assumptions [1]</h4><ul><li>Base year 2024 = 100. Common-size income statement on net sales; balance sheet on total assets.</li><li>Only two balance sheets, so year-end balances are used for ratios.</li><li>PBIT = sales − COGS − operating expenses; interest and tax as given.</li><li>Data check passes: both balance sheets balance and PAT reconciles to the lines above it.</li><li>No inventory or receivables split, so liquidity is judged on the current ratio.</li></ul><h4>(b) and (c) Income statement: common-size and trend [3]</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of sales 2024</th><th class="n">% of sales 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">240.0</td><td class="n">276.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">115.0</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">144.0</td><td class="n">160.0</td><td class="n">60.0%</td><td class="n">58.0%</td><td class="n">-2.0</td><td class="n">111.1</td></tr><tr class="tot"><td class="">Gross profit</td><td class="n">96.0</td><td class="n">116.0</td><td class="n">40.0%</td><td class="n">42.0%</td><td class="n">+2.0</td><td class="n">120.8</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">48.0</td><td class="n">54.0</td><td class="n">20.0%</td><td class="n">19.6%</td><td class="n">-0.4</td><td class="n">112.5</td></tr><tr class="tot"><td class="">PBIT (operating profit)</td><td class="n">48.0</td><td class="n">62.0</td><td class="n">20.0%</td><td class="n">22.5%</td><td class="n">+2.5</td><td class="n">129.2</td></tr><tr class=""><td class="">Interest</td><td class="n">6.0</td><td class="n">8.0</td><td class="n">2.5%</td><td class="n">2.9%</td><td class="n">+0.4</td><td class="n">133.3</td></tr><tr class="tot"><td class="">Profit before tax</td><td class="n">42.0</td><td class="n">54.0</td><td class="n">17.5%</td><td class="n">19.6%</td><td class="n">+2.1</td><td class="n">128.6</td></tr><tr class=""><td class="">Income tax</td><td class="n">10.5</td><td class="n">13.5</td><td class="n">4.4%</td><td class="n">4.9%</td><td class="n">+0.5</td><td class="n">128.6</td></tr><tr class="tot"><td class="">Profit after tax</td><td class="n">31.5</td><td class="n">40.5</td><td class="n">13.1%</td><td class="n">14.7%</td><td class="n">+1.5</td><td class="n">128.6</td></tr></tbody></table></div><h4>(b) and (c) Balance sheet: common-size and trend</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of assets 2024</th><th class="n">% of assets 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">90.0</td><td class="n">105.0</td><td class="n">37.5%</td><td class="n">35.0%</td><td class="n">-2.5</td><td class="n">116.7</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">150.0</td><td class="n">195.0</td><td class="n">62.5%</td><td class="n">65.0%</td><td class="n">+2.5</td><td class="n">130.0</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">240.0</td><td class="n">300.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">125.0</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">140.0</td><td class="n">160.0</td><td class="n">58.3%</td><td class="n">53.3%</td><td class="n">-5.0</td><td class="n">114.3</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">60.0</td><td class="n">90.0</td><td class="n">25.0%</td><td class="n">30.0%</td><td class="n">+5.0</td><td class="n">150.0</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">40.0</td><td class="n">50.0</td><td class="n">16.7%</td><td class="n">16.7%</td><td class="n">+0.0</td><td class="n">125.0</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">240.0</td><td class="n">300.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">125.0</td></tr></tbody></table></div><h4>(d) Supporting ratios [2]</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Ratio</th><th class="">Basis</th><th class="n">2024</th><th class="n">2025</th><th class="">Movement</th></tr></thead><tbody><tr class=""><td class="">Gross margin</td><td class=""><span class="plain">GP ÷ sales</span></td><td class="n">40.0%</td><td class="n">42.0%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">PBIT margin</td><td class=""><span class="plain">PBIT ÷ sales</span></td><td class="n">20.0%</td><td class="n">22.5%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Net profit margin (NPM)</td><td class=""><span class="plain">PAT ÷ sales</span></td><td class="n">13.1%</td><td class="n">14.7%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Total asset turnover (TAT)</td><td class=""><span class="plain">Sales ÷ total assets</span></td><td class="n">1.00</td><td class="n">0.92</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Fixed asset turnover</td><td class=""><span class="plain">Sales ÷ non-current assets</span></td><td class="n">1.60</td><td class="n">1.42</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Equity multiplier (EM)</td><td class=""><span class="plain">Total assets ÷ equity</span></td><td class="n">1.71</td><td class="n">1.88</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Return on assets (ROA)</td><td class=""><span class="plain">PAT ÷ total assets</span></td><td class="n">13.1%</td><td class="n">13.5%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Return on equity (ROE)</td><td class=""><span class="plain">PAT ÷ equity</span></td><td class="n">22.5%</td><td class="n">25.3%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Current ratio</td><td class=""><span class="plain">Current assets ÷ current liabilities</span></td><td class="n">2.25</td><td class="n">2.10</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Debt-asset ratio</td><td class=""><span class="plain">Total liabilities ÷ total assets</span></td><td class="n">41.7%</td><td class="n">46.7%</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Debt-equity ratio</td><td class=""><span class="plain">Total liabilities ÷ equity</span></td><td class="n">0.71</td><td class="n">0.88</td><td class=""><span class="mv">▲ More leverage</span></td></tr><tr class=""><td class="">Interest coverage (times)</td><td class=""><span class="plain">PBIT ÷ interest</span></td><td class="n">8.00</td><td class="n">7.75</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr></tbody></table></div><div class="table-wrap"><table class="compact"><thead><tr><th class="">Year</th><th class="n">NPM</th><th class="n">× TAT</th><th class="n">× EM</th><th class="n">= ROE</th><th class="n">Check: PAT ÷ equity</th></tr></thead><tbody><tr class=""><td class="">2024</td><td class="n">13.1%</td><td class="n">1.000</td><td class="n">1.714</td><td class="n"><b>22.5%</b></td><td class="n">22.5%</td></tr><tr class=""><td class="">2025</td><td class="n">14.7%</td><td class="n">0.920</td><td class="n">1.875</td><td class="n"><b>25.3%</b></td><td class="n">25.3%</td></tr></tbody></table></div><h4>Reading the results</h4><ul><li><b>Profitability improved.</b> Sales grew 15% but PAT grew 28.6%. COGS fell from 60.0% to 58.0% of sales, so gross margin rose from 40.0% to 42.0%; PBIT margin rose from 20.0% to 22.5% and net margin from 13.1% to 14.7%.</li><li><b>Efficiency dipped.</b> Non-current assets rose 30% (the new plant) against sales growth of 15%, so asset turnover fell from 1.00 to 0.92 and fixed asset turnover from 1.60 to 1.42. The plant has not yet earned its keep.</li><li><b>Leverage rose modestly.</b> Long-term debt is up 50%, total liabilities to assets moved from 41.7% to 46.7% and the equity multiplier from 1.71 to 1.88. Interest coverage stays strong at 7.75 times (8.0 before).</li><li><b>Liquidity is still sound.</b> The current ratio eased from 2.25 to 2.10, above the India norm of 1.33 and the 2 : 1 convention.</li><li><b>DuPont.</b> ROE rose from 22.5% to 25.3%. Net margin (+1.5 points) is the main driver, leverage adds a little and turnover subtracts.</li></ul><div class="verdict"><b class="v">Conclusion [1]</b><p>Yes, the improvement is genuine. It comes mainly from a better margin, not from borrowing. Two points to watch: asset turnover fell because the new plant is not yet fully used, and debt is up 50%. Liquidity and interest cover remain comfortable.</p></div></div></details>
+<div class="score"><label for="sc-A-6">Your marks</label><input id="sc-A-6" type="number" inputmode="decimal" min="0" max="7" step="0.5" data-set="A" placeholder="0"><span>out of 7</span></div>
+</article>
+<div class="total"><span class="eyebrow">Self-score</span><b id="total-A">0 / 30</b><span class="muted" id="pct-A">0%</span><button class="btn clear-scores" data-set="A" type="button" style="margin-left:auto">Clear marks</button></div>
+</div>
+</section>
+
+<section class="view" id="setb">
+<div class="wrap">
+
+<div class="paper-head">
+  <span class="eyebrow">Mock examination · Set B</span>
+  <h1>Decision Making Using Financial Statements<small>Mid-semester practice paper</small></h1>
+  <div class="paper-meta"><span><b>60</b>minutes</span><span><b>30</b>marks</span><span><b>6</b>questions, all compulsory</span><span><b>Closed</b>book</span></div>
+</div>
+<div class="rules"><span class="eyebrow">Instructions</span><ul>
+  <li>Attempt all six questions. Marks are shown in brackets.</li>
+  <li>Show the formula, the workings and the unit for every answer. State any assumption you make.</li>
+  <li>Where a question defines a ratio, use that definition. Use average balances unless told otherwise.</li>
+  <li>Suggested timing at two minutes per mark: Q1 14 · Q2 8 · Q3 8 · Q4 10 · Q5 6 · Q6 14 minutes.</li>
+  <li>Starting the timer hides the answers. Mark yourself afterwards and enter your marks under each question.</li></ul></div>
+<div class="timer" id="timer-B">
+  <div class="clock" id="clock-B">60:00</div>
+  <div class="tstat">Timer<b id="tstat-B">Ready</b></div>
+  <div class="tstat">Time used<b id="used-B">0 min used</b></div>
+  <div class="btns"><button class="btn" id="start-B" type="button">Start</button><button class="btn" id="reset-B" type="button">Reset</button></div>
+</div>
+<article class="q" id="b-q1">
+<header class="q-head"><span class="q-no">Q1</span><h3>Activity ratios and the cash cycle</h3><span class="q-marks"><b>7</b>marks · about 14 min</span></header>
+<div class="q-body"><p><b>Kestrel Distributors Ltd.</b> reports the following for the year (₹ lakh):</p><ul class="givens"><li>Net sales 600; gross profit margin 30%</li><li>Inventory: opening 60, closing 80</li><li>Credit sales 500; trade debtors: opening 35, closing 65</li><li>Credit purchases 400; trade creditors: opening 40, closing 60</li></ul><p>Use average balances, take a year as 365 days and round days to one decimal place.</p><div class="parts"><div class="part"><span class="pl">(a)</span><div>Inventory turnover ratio and inventory holding period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(b)</span><div>Debtors' turnover ratio and average collection period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(c)</span><div>Creditors' turnover ratio and payment period.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(d)</span><div>The cash cycle, with a one-line interpretation.</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a) Inventory</h4><ul class="steps"><li><span>COGS = 600 × (1 − 0.30) = 420; average inventory = (60 + 80) ÷ 2 = 70. Turnover = 420 ÷ 70 = <span class="res">6.0 times</span></span><span class="m">[1]</span></li><li><span>Holding period = 365 ÷ 6 = <span class="res">60.8 days</span></span><span class="m">[1]</span></li></ul><h4>(b) Debtors</h4><ul class="steps"><li><span>Average debtors = (35 + 65) ÷ 2 = 50. Turnover = 500 ÷ 50 = <span class="res">10.0 times</span></span><span class="m">[1]</span></li><li><span>Collection period = 365 ÷ 10 = <span class="res">36.5 days</span></span><span class="m">[1]</span></li></ul><h4>(c) Creditors</h4><ul class="steps"><li><span>Average creditors = (40 + 60) ÷ 2 = 50. Turnover = 400 ÷ 50 = <span class="res">8.0 times</span></span><span class="m">[1]</span></li><li><span>Payment period = 365 ÷ 8 = <span class="res">45.6 days</span></span><span class="m">[1]</span></li></ul><h4>(d) Cash cycle</h4><ul class="steps"><li><span>Cash cycle = 60.8 + 36.5 − 45.6 = <span class="res">51.7 days</span>. The firm's own cash is tied up for about 52 days: suppliers are paid roughly seven weeks before customers pay. The operating cycle is 97.3 days.</span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-B-1">Your marks</label><input id="sc-B-1" type="number" inputmode="decimal" min="0" max="7" step="0.5" data-set="B" placeholder="0"><span>out of 7</span></div>
+</article><article class="q" id="b-q2">
+<header class="q-head"><span class="q-no">Q2</span><h3>Finding sales from ratios</h3><span class="q-marks"><b>4</b>marks · about 8 min</span></header>
+<div class="q-body"><p>Determine the net sales of a firm with the following data:</p><ul class="givens"><li>Current ratio 2.0</li><li>Quick (acid-test) ratio 1.2, where quick ratio = (current assets − inventory) ÷ current liabilities</li><li>Current liabilities ₹6,00,000</li><li>Inventory turnover 5 times, where inventory turnover = COGS ÷ closing inventory</li><li>Gross profit margin 40%</li></ul></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span>Current assets = 2.0 × 6,00,000 = ₹12,00,000</span><span class="m">[1]</span></li><li><span>Quick assets = 1.2 × 6,00,000 = ₹7,20,000, so inventory = 12,00,000 − 7,20,000 = ₹4,80,000</span><span class="m">[1]</span></li><li><span>COGS = 5 × 4,80,000 = ₹24,00,000</span><span class="m">[1]</span></li><li><span>COGS is 60% of sales, so sales = 24,00,000 ÷ 0.60 = <span class="res">₹40,00,000</span></span><span class="m">[1]</span></li><li><span>Check: gross profit 16,00,000 = 40% of sales ✓; quick ratio (12,00,000 − 4,80,000) ÷ 6,00,000 = 1.2 ✓</span><span></span></li></ul></div></details>
+<div class="score"><label for="sc-B-2">Your marks</label><input id="sc-B-2" type="number" inputmode="decimal" min="0" max="4" step="0.5" data-set="B" placeholder="0"><span>out of 4</span></div>
+</article><article class="q" id="b-q3">
+<header class="q-head"><span class="q-no">Q3</span><h3>Liquidity capacity and defensive interval</h3><span class="q-marks"><b>4</b>marks · about 8 min</span></header>
+<div class="q-body"><p><b>Zenith Ltd.</b> has current assets of ₹9,00,000 and current liabilities of ₹6,00,000. The firm wants to keep its current ratio at or above 1.2.</p><div class="parts"><div class="part"><span class="pl">(a)</span><div>Find the maximum additional short-term borrowing if the money is held as cash.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(b)</span><div>Find the maximum if the borrowed money is instead used to buy machinery.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(c)</span><div>Projected cash operating expenditure for next year is ₹18,25,000 and liquid current assets are ₹4,50,000. Compute the defensive-interval ratio (365 days).</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a) Money held as cash</h4><ul class="steps"><li><span>(9,00,000 + x) ÷ (6,00,000 + x) ≥ 1.2, so 9,00,000 + x ≥ 7,20,000 + 1.2x and 1,80,000 ≥ 0.2x</span><span class="m">[1]</span></li><li><span>x ≤ <span class="res">₹9,00,000</span>. Check: 18,00,000 ÷ 15,00,000 = 1.2 ✓</span><span class="m">[1]</span></li></ul><h4>(b) Money spent on machinery</h4><ul class="steps"><li><span>Current assets stay at 9,00,000: 9,00,000 ÷ (6,00,000 + x) ≥ 1.2, so 6,00,000 + x ≤ 7,50,000 and x ≤ <span class="res">₹1,50,000</span></span><span class="m">[1]</span></li></ul><p>Where the money goes changes the answer from ₹9,00,000 to ₹1,50,000, because only current liabilities rise in (b).</p><h4>(c) Defensive interval</h4><ul class="steps"><li><span>Daily cash expenditure = 18,25,000 ÷ 365 = ₹5,000. DIR = 4,50,000 ÷ 5,000 = <span class="res">90 days</span></span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-B-3">Your marks</label><input id="sc-B-3" type="number" inputmode="decimal" min="0" max="4" step="0.5" data-set="B" placeholder="0"><span>out of 4</span></div>
+</article><article class="q" id="b-q4">
+<header class="q-head"><span class="q-no">Q4</span><h3>DuPont analysis and a comparison</h3><span class="q-marks"><b>5</b>marks · about 10 min</span></header>
+<div class="q-body"><p><b>Sunrise Foods Ltd.</b> (packaged foods), year ended 31 March 2025. Use year-end balances.</p><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">Amount (₹)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">8,00,000</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">5,60,000</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">1,40,000</td></tr><tr class=""><td class="">Interest expense</td><td class="n">20,000</td></tr><tr class=""><td class="">Income tax expense</td><td class="n">24,000</td></tr><tr class=""><td class="">Total assets</td><td class="n">4,00,000</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">2,50,000</td></tr></tbody></table></div><div class="parts"><div class="part"><span class="pl">(a)</span><div>Compute profit after tax and the net profit margin.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(b)</span><div>Compute total asset turnover and the equity multiplier.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(c)</span><div>Compute ROE using the DuPont formula.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(d)</span><div>A competitor, Peak Luxuries Ltd., has NPM 20%, TAT 0.6 and EM 1.5. Compute its ROE and explain in one or two lines why Sunrise earns the higher ROE despite the lower margin.</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span>PBIT = 8,00,000 − 5,60,000 − 1,40,000 = 1,00,000; PBT = 1,00,000 − 20,000 = 80,000; PAT = 80,000 − 24,000 = <span class="res">₹56,000</span>. Net profit margin = 56,000 ÷ 8,00,000 = <span class="res">7.0%</span></span><span class="m">[2]</span></li><li><span>TAT = 8,00,000 ÷ 4,00,000 = <span class="res">2.0 times</span>; EM = 4,00,000 ÷ 2,50,000 = <span class="res">1.6</span></span><span class="m">[1]</span></li><li><span>ROE = 7.0% × 2.0 × 1.6 = <span class="res">22.4%</span>. Check: 56,000 ÷ 2,50,000 = 22.4% ✓</span><span class="m">[1]</span></li><li><span>Peak ROE = 20% × 0.6 × 1.5 = <span class="res">18.0%</span>. Sunrise turns its assets 2.0 times against Peak's 0.6, a 3.3-fold advantage that outweighs the 13-point margin gap, and it uses somewhat more leverage.</span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-B-4">Your marks</label><input id="sc-B-4" type="number" inputmode="decimal" min="0" max="5" step="0.5" data-set="B" placeholder="0"><span>out of 5</span></div>
+</article><article class="q" id="b-q5">
+<header class="q-head"><span class="q-no">Q5</span><h3>Why the current ratio can mislead</h3><span class="q-marks"><b>3</b>marks · about 6 min</span></header>
+<div class="q-body"><p>Two firms both have a current ratio of 2.0. Firm X holds mostly cash and receivables; Firm Y holds mostly inventory. Explain why the current ratio alone can mislead. Name the ratios that address the problem and give a numerical illustration.</p></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><ul class="steps"><li><span><b>Definition.</b> Current ratio = current assets ÷ current liabilities. The norm is 2 : 1 internationally and 1.33 in India; a higher ratio means stronger short-term solvency. It treats every current asset as equally liquid.</span><span class="m">[1]</span></li><li><span><b>Composition.</b> Cash and receivables convert quickly; inventory is the least liquid current asset and may be slow-moving. The acid-test ratio, (CA − inventory) ÷ CL with 1 : 1 as the standard, and the cash ratio, (cash + current investments) ÷ CL, give a truer picture. A very high current ratio can also signal idle cash or excess inventory.</span><span class="m">[1]</span></li><li><span><b>Illustration.</b> Current liabilities 100. X: current assets 200 = 180 cash and receivables + 20 inventory, so acid-test = 1.8. Y: current assets 200 = 40 + 160 inventory, so acid-test = 0.4. Y may struggle to pay creditors although its current ratio is the same 2.0. A year-end snapshot can also be window-dressed, so use averages and the trend.</span><span class="m">[1]</span></li></ul></div></details>
+<div class="score"><label for="sc-B-5">Your marks</label><input id="sc-B-5" type="number" inputmode="decimal" min="0" max="3" step="0.5" data-set="B" placeholder="0"><span>out of 3</span></div>
+</article><article class="q" id="b-q6">
+<header class="q-head"><span class="q-no">Q6</span><h3>Orbit Textiles Ltd: common-size and trend case</h3><span class="q-marks"><b>7</b>marks · about 14 min</span></header>
+<div class="q-body"><p>Orbit Textiles Ltd. weaves fabric for garment makers. In 2025 it cut costs, repaid part of its long-term debt and let sales soften. The Board asks whether performance and financial strength genuinely improved.</p><div class="pair"><div class="stack"><span class="eyebrow">Income statement (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">320</td><td class="n">304</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">208</td><td class="n">188</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">64</td><td class="n">56</td></tr><tr class=""><td class="">Interest expense</td><td class="n">12</td><td class="n">8</td></tr><tr class=""><td class="">Income tax</td><td class="n">9</td><td class="n">13</td></tr><tr class=""><td class="">Net profit after tax</td><td class="n">27</td><td class="n">39</td></tr></tbody></table></div></div><div class="stack"><span class="eyebrow">Balance sheet (₹ million)</span><div class="table-wrap"><table class="compact"><thead><tr><th class="">Particulars</th><th class="n">2024</th><th class="n">2025</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">100</td><td class="n">96</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">180</td><td class="n">164</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">280</td><td class="n">260</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">100</td><td class="n">130</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">120</td><td class="n">70</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">60</td><td class="n">60</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">280</td><td class="n">260</td></tr></tbody></table></div></div></div><p><b>Using common-size and trend analysis:</b></p><div class="parts"><div class="part"><span class="pl">(a)</span><div>State your assumptions.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(b)</span><div>Prepare common-size income statements and balance sheets for both years.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(c)</span><div>Compute trend indices (2024 = 100) for each line.</div><span class="pm">[1]</span></div><div class="part"><span class="pl">(d)</span><div>Choose and compute at least four supporting ratios, covering liquidity, leverage, profitability and the DuPont decomposition of ROE.</div><span class="pm">[2]</span></div><div class="part"><span class="pl">(e)</span><div>Conclude: was there a genuine improvement?</div><span class="pm">[1]</span></div></div></div>
+<details class="answer"><summary>Answer and marking scheme</summary><div class="ans"><h4>(a) Assumptions [1]</h4><ul><li>Base year 2024 = 100. Common-size income statement on net sales; balance sheet on total assets.</li><li>Only two balance sheets, so year-end balances are used for ratios.</li><li>PBIT = sales − COGS − operating expenses; interest and tax as given.</li><li>Data check passes: both balance sheets balance and PAT reconciles. Equity rose by 30 against PAT of 39, so about 9 was paid out as dividend (assuming no new shares).</li></ul><h4>(b) and (c) Income statement: common-size and trend [3]</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of sales 2024</th><th class="n">% of sales 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Net sales</td><td class="n">320.0</td><td class="n">304.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">95.0</td></tr><tr class=""><td class="">Cost of goods sold</td><td class="n">208.0</td><td class="n">188.0</td><td class="n">65.0%</td><td class="n">61.8%</td><td class="n">-3.2</td><td class="n">90.4</td></tr><tr class="tot"><td class="">Gross profit</td><td class="n">112.0</td><td class="n">116.0</td><td class="n">35.0%</td><td class="n">38.2%</td><td class="n">+3.2</td><td class="n">103.6</td></tr><tr class=""><td class="">Operating expenses</td><td class="n">64.0</td><td class="n">56.0</td><td class="n">20.0%</td><td class="n">18.4%</td><td class="n">-1.6</td><td class="n">87.5</td></tr><tr class="tot"><td class="">PBIT (operating profit)</td><td class="n">48.0</td><td class="n">60.0</td><td class="n">15.0%</td><td class="n">19.7%</td><td class="n">+4.7</td><td class="n">125.0</td></tr><tr class=""><td class="">Interest</td><td class="n">12.0</td><td class="n">8.0</td><td class="n">3.8%</td><td class="n">2.6%</td><td class="n">-1.1</td><td class="n">66.7</td></tr><tr class="tot"><td class="">Profit before tax</td><td class="n">36.0</td><td class="n">52.0</td><td class="n">11.2%</td><td class="n">17.1%</td><td class="n">+5.9</td><td class="n">144.4</td></tr><tr class=""><td class="">Income tax</td><td class="n">9.0</td><td class="n">13.0</td><td class="n">2.8%</td><td class="n">4.3%</td><td class="n">+1.5</td><td class="n">144.4</td></tr><tr class="tot"><td class="">Profit after tax</td><td class="n">27.0</td><td class="n">39.0</td><td class="n">8.4%</td><td class="n">12.8%</td><td class="n">+4.4</td><td class="n">144.4</td></tr></tbody></table></div><h4>(b) and (c) Balance sheet: common-size and trend</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Item</th><th class="n">2024</th><th class="n">2025</th><th class="n">% of assets 2024</th><th class="n">% of assets 2025</th><th class="n">Change (pts)</th><th class="n">Index (2024 = 100)</th></tr></thead><tbody><tr class=""><td class="">Current assets</td><td class="n">100.0</td><td class="n">96.0</td><td class="n">35.7%</td><td class="n">36.9%</td><td class="n">+1.2</td><td class="n">96.0</td></tr><tr class=""><td class="">Non-current assets</td><td class="n">180.0</td><td class="n">164.0</td><td class="n">64.3%</td><td class="n">63.1%</td><td class="n">-1.2</td><td class="n">91.1</td></tr><tr class="tot"><td class="">Total assets</td><td class="n">280.0</td><td class="n">260.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">92.9</td></tr><tr class=""><td class="">Shareholders' equity</td><td class="n">100.0</td><td class="n">130.0</td><td class="n">35.7%</td><td class="n">50.0%</td><td class="n">+14.3</td><td class="n">130.0</td></tr><tr class=""><td class="">Long-term debt</td><td class="n">120.0</td><td class="n">70.0</td><td class="n">42.9%</td><td class="n">26.9%</td><td class="n">-15.9</td><td class="n">58.3</td></tr><tr class=""><td class="">Current liabilities</td><td class="n">60.0</td><td class="n">60.0</td><td class="n">21.4%</td><td class="n">23.1%</td><td class="n">+1.6</td><td class="n">100.0</td></tr><tr class="tot"><td class="">Total equity and liabilities</td><td class="n">280.0</td><td class="n">260.0</td><td class="n">100.0%</td><td class="n">100.0%</td><td class="n">+0.0</td><td class="n">92.9</td></tr></tbody></table></div><h4>(d) Supporting ratios [2]</h4><div class="table-wrap"><table class="compact"><thead><tr><th class="">Ratio</th><th class="">Basis</th><th class="n">2024</th><th class="n">2025</th><th class="">Movement</th></tr></thead><tbody><tr class=""><td class="">Gross margin</td><td class=""><span class="plain">GP ÷ sales</span></td><td class="n">35.0%</td><td class="n">38.2%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">PBIT margin</td><td class=""><span class="plain">PBIT ÷ sales</span></td><td class="n">15.0%</td><td class="n">19.7%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Net profit margin (NPM)</td><td class=""><span class="plain">PAT ÷ sales</span></td><td class="n">8.4%</td><td class="n">12.8%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Total asset turnover (TAT)</td><td class=""><span class="plain">Sales ÷ total assets</span></td><td class="n">1.14</td><td class="n">1.17</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Fixed asset turnover</td><td class=""><span class="plain">Sales ÷ non-current assets</span></td><td class="n">1.78</td><td class="n">1.85</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Equity multiplier (EM)</td><td class=""><span class="plain">Total assets ÷ equity</span></td><td class="n">2.80</td><td class="n">2.00</td><td class=""><span class="mv">▼ Less leverage</span></td></tr><tr class=""><td class="">Return on assets (ROA)</td><td class=""><span class="plain">PAT ÷ total assets</span></td><td class="n">9.6%</td><td class="n">15.0%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Return on equity (ROE)</td><td class=""><span class="plain">PAT ÷ equity</span></td><td class="n">27.0%</td><td class="n">30.0%</td><td class=""><span class="mv">▲ Improved</span></td></tr><tr class=""><td class="">Current ratio</td><td class=""><span class="plain">Current assets ÷ current liabilities</span></td><td class="n">1.67</td><td class="n">1.60</td><td class=""><span class="mv dn">▼ Weaker</span></td></tr><tr class=""><td class="">Debt-asset ratio</td><td class=""><span class="plain">Total liabilities ÷ total assets</span></td><td class="n">64.3%</td><td class="n">50.0%</td><td class=""><span class="mv">▼ Less leverage</span></td></tr><tr class=""><td class="">Debt-equity ratio</td><td class=""><span class="plain">Total liabilities ÷ equity</span></td><td class="n">1.80</td><td class="n">1.00</td><td class=""><span class="mv">▼ Less leverage</span></td></tr><tr class=""><td class="">Interest coverage (times)</td><td class=""><span class="plain">PBIT ÷ interest</span></td><td class="n">4.00</td><td class="n">7.50</td><td class=""><span class="mv">▲ Improved</span></td></tr></tbody></table></div><div class="table-wrap"><table class="compact"><thead><tr><th class="">Year</th><th class="n">NPM</th><th class="n">× TAT</th><th class="n">× EM</th><th class="n">= ROE</th><th class="n">Check: PAT ÷ equity</th></tr></thead><tbody><tr class=""><td class="">2024</td><td class="n">8.4%</td><td class="n">1.143</td><td class="n">2.800</td><td class="n"><b>27.0%</b></td><td class="n">27.0%</td></tr><tr class=""><td class="">2025</td><td class="n">12.8%</td><td class="n">1.169</td><td class="n">2.000</td><td class="n"><b>30.0%</b></td><td class="n">30.0%</td></tr></tbody></table></div><h4>Reading the results</h4><ul><li><b>Smaller but more profitable.</b> Sales fell 5% and total assets 7%, yet PAT rose 44% (27 to 39). COGS fell 9.6%, lifting gross margin from 35.0% to 38.2%; operating expenses fell from 20.0% to 18.4% of sales; PBIT margin rose from 15.0% to 19.7% and net margin from 8.4% to 12.8%.</li><li><b>Financial risk fell.</b> Long-term debt dropped 42%, total liabilities to assets from 64.3% to 50.0%, the equity multiplier from 2.80 to 2.00, and interest coverage rose from 4.0 to 7.5 times.</li><li><b>Liquidity is steady.</b> The current ratio moved from 1.67 to 1.60 and current liabilities were unchanged at 60. Both are above the India norm of 1.33.</li><li><b>Efficiency edged up.</b> Asset turnover rose from 1.14 to 1.17 because assets shrank faster than sales.</li><li><b>DuPont.</b> ROE rose from 27.0% to 30.0% even though leverage fell. Net margin (+4.4 points) drives it, which makes the ROE higher in quality and lower in risk.</li></ul><div class="verdict"><b class="v">Conclusion [1]</b><p>Yes, the improvement in quality is genuine: margins, cover and the balance sheet are all stronger and ROE is higher with less debt. The caution is the top line. Sales fell 5%, and cost cutting cannot lift profit indefinitely, so the Board should find out whether price or volume caused the decline.</p></div></div></details>
+<div class="score"><label for="sc-B-6">Your marks</label><input id="sc-B-6" type="number" inputmode="decimal" min="0" max="7" step="0.5" data-set="B" placeholder="0"><span>out of 7</span></div>
+</article>
+<div class="total"><span class="eyebrow">Self-score</span><b id="total-B">0 / 30</b><span class="muted" id="pct-B">0%</span><button class="btn clear-scores" data-set="B" type="button" style="margin-left:auto">Clear marks</button></div>
+</div>
+</section>
+</main>
+<div class="wrap"><footer class="end"><span>Built from the course slides (Chapter 4, Analysis of Financial Statements), the four question PDFs and the DMFS mid-semester study guide. Answers use the class conventions stated in the guide; where a question defines a ratio, that definition wins.</span><span>Scores and the answer setting are saved in this browser only.</span></footer></div>
+<div class="pill" id="pill" hidden><small id="pill-n">Set A</small><span id="pill-t">60:00</span></div>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  /* ---------- universal answer switch ---------- */
+  var sw = $('#ansSwitch');
+  var swState = $('#ansState');
+  var showAnswers = false;
+  function setAnswers(show, persist) {
+    showAnswers = !!show;
+    sw.setAttribute('aria-checked', showAnswers ? 'true' : 'false');
+    sw.title = showAnswers ? 'Review mode: answers are shown. Click to hide them.' : 'Practice mode: answers are hidden. Click to show them.';
+    swState.textContent = showAnswers ? 'Shown' : 'Hidden';
+    $$('details.answer').forEach(function (d) { d.open = showAnswers; });
+    if (persist !== false) store.set('dmfs-answers', showAnswers ? '1' : '0');
+  }
+  sw.addEventListener('click', function () { setAnswers(!showAnswers); });
+
+  /* ---------- views and in-page links ---------- */
+  var views = $$('.view');
+  var tabs = $$('.tabs a');
+  function showView(id) {
+    var found = false;
+    views.forEach(function (v) { if (v.id === id) { found = true; } });
+    if (!found) id = 'guide';
+    views.forEach(function (v) { v.hidden = v.id !== id; });
+    tabs.forEach(function (a) {
+      if (a.getAttribute('href') === '#' + id) { a.setAttribute('aria-current', 'page'); }
+      else { a.removeAttribute('aria-current'); }
+    });
+    return id;
+  }
+  function go(id) {
+    var el = document.getElementById(id);
+    if (!el) return false;
+    var view = el.classList.contains('view') ? el : el.closest('.view');
+    if (view) showView(view.id);
+    if (el.classList.contains('view')) { window.scrollTo(0, 0); } else { el.scrollIntoView(); }
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (!id || !document.getElementById(id)) return;
+    e.preventDefault();
+    go(id);
+    try { history.replaceState(null, '', '#' + id); } catch (err) {}
+  });
+  window.addEventListener('hashchange', function () { go(location.hash.slice(1)); });
+
+  /* ---------- 60-minute timers ---------- */
+  var TOTAL = 3600;
+  var timers = {
+    A: { left: TOTAL, endAt: 0, running: false, started: false, name: 'Set A' },
+    B: { left: TOTAL, endAt: 0, running: false, started: false, name: 'Set B' }
+  };
+  var iv = null;
+  var pill = $('#pill');
+  function fmt(s) {
+    var m = Math.floor(s / 60), r = s % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
+  }
+  function render() {
+    var pillSet = null;
+    Object.keys(timers).forEach(function (k) {
+      var t = timers[k];
+      var clock = $('#clock-' + k), stat = $('#tstat-' + k), box = $('#timer-' + k);
+      clock.textContent = fmt(t.left);
+      var label = t.left === 0 ? 'Time is up' : t.running ? 'Running' : t.started ? 'Paused' : 'Ready';
+      stat.textContent = label;
+      box.classList.toggle('done', t.left === 0);
+      $('#start-' + k).textContent = t.running ? 'Pause' : (t.started && t.left > 0 ? 'Resume' : 'Start');
+      $('#start-' + k).disabled = t.left === 0;
+      var used = TOTAL - t.left;
+      $('#used-' + k).textContent = Math.floor(used / 60) + ' min used';
+      if (t.started && (pillSet === null || t.running)) pillSet = k;
+    });
+    if (pillSet) {
+      pill.hidden = false;
+      $('#pill-t').textContent = fmt(timers[pillSet].left);
+      $('#pill-n').textContent = timers[pillSet].name;
+    } else { pill.hidden = true; }
+  }
+  function tick() {
+    var now = Date.now(), any = false;
+    Object.keys(timers).forEach(function (k) {
+      var t = timers[k];
+      if (!t.running) return;
+      t.left = Math.max(0, Math.ceil((t.endAt - now) / 1000));
+      if (t.left === 0) { t.running = false; } else { any = true; }
+    });
+    render();
+    if (!any && iv) { clearInterval(iv); iv = null; }
+  }
+  function startPause(k) {
+    var t = timers[k];
+    if (t.running) {
+      t.left = Math.max(0, Math.ceil((t.endAt - Date.now()) / 1000));
+      t.running = false;
+    } else {
+      if (t.left === 0) return;
+      t.running = true; t.started = true;
+      t.endAt = Date.now() + t.left * 1000;
+      if (showAnswers) { setAnswers(false); }
+      if (!iv) iv = setInterval(tick, 500);
+    }
+    render();
+  }
+  function reset(k) {
+    var t = timers[k];
+    t.left = TOTAL; t.running = false; t.started = false; t.endAt = 0;
+    render();
+  }
+  ['A', 'B'].forEach(function (k) {
+    $('#start-' + k).addEventListener('click', function () { startPause(k); });
+    $('#reset-' + k).addEventListener('click', function () { reset(k); });
+  });
+
+  /* ---------- self-scoring ---------- */
+  var inputs = $$('.score input');
+  var saved = {};
+  try { saved = JSON.parse(store.get('dmfs-scores') || '{}') || {}; } catch (e) { saved = {}; }
+  function sumSet(k) {
+    var t = 0;
+    $$('.score input[data-set="' + k + '"]').forEach(function (i) {
+      var v = parseFloat(i.value), max = parseFloat(i.max);
+      if (!isNaN(v)) t += Math.min(Math.max(v, 0), max);
+    });
+    $('#total-' + k).textContent = (Math.round(t * 10) / 10) + ' / 30';
+    var pc = Math.round(t / 30 * 100);
+    $('#pct-' + k).textContent = pc + '%';
+  }
+  inputs.forEach(function (i) {
+    if (saved[i.id] !== undefined) i.value = saved[i.id];
+    i.addEventListener('input', function () {
+      saved[i.id] = i.value;
+      store.set('dmfs-scores', JSON.stringify(saved));
+      sumSet(i.getAttribute('data-set'));
+    });
+  });
+  $$('.clear-scores').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-set');
+      $$('.score input[data-set="' + k + '"]').forEach(function (i) { i.value = ''; delete saved[i.id]; });
+      store.set('dmfs-scores', JSON.stringify(saved));
+      sumSet(k);
+    });
+  });
+
+  /* ---------- boot ---------- */
+  setAnswers(store.get('dmfs-answers') === '1', false);
+  sumSet('A'); sumSet('B'); render();
+  var first = location.hash ? location.hash.slice(1) : 'guide';
+  if (!go(first)) showView('guide');
+})();
+</script>
+</body>
+</html>
