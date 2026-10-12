@@ -1,0 +1,783 @@
+<title>CCD Revision Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky progress header, tab strip, single-column study cards (max 46rem). Highlighter-yellow marks the one thing to remember per card. */
+:root{
+  --bg:#f4f6fa; --surface:#ffffff; --fg:#161b2b; --muted:#59627a; --line:#d9deea;
+  --accent:#3b4ccf; --accent-fg:#ffffff; --hi:#ffe66d; --hi-fg:#1c1a00;
+  --good:#17803d; --warn:#b45309; --bad:#b4232a; --soft:#e9edf8;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1220; --surface:#171b2e; --fg:#e8ebf6; --muted:#9aa3bf; --line:#2a3050;
+  --accent:#8e9bff; --accent-fg:#0f1220; --hi:#f5d94a; --hi-fg:#1c1a00;
+  --good:#5fd08a; --warn:#f0b35a; --bad:#ff8a8f; --soft:#1f2440; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1220; --surface:#171b2e; --fg:#e8ebf6; --muted:#9aa3bf; --line:#2a3050;
+  --accent:#8e9bff; --accent-fg:#0f1220; --hi:#f5d94a; --hi-fg:#1c1a00;
+  --good:#5fd08a; --warn:#f0b35a; --bad:#ff8a8f; --soft:#1f2440; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:17px/1.55 var(--body);padding-inline:16px;padding-block:0 4rem}
+.wrap{max-width:46rem;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:1.5rem}
+h2{font-size:1.45rem;margin-block:1.6rem .6rem}
+h3{font-size:1.15rem}
+p{margin:.4rem 0}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:.7rem .5rem;border-bottom:1px solid var(--line)}
+.top .row{display:flex;gap:.8rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin-top:.5rem}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.pct{font:600 .85rem var(--mono);color:var(--muted)}
+.tabs{display:flex;gap:.35rem;overflow-x:auto;padding-block:.55rem 0;scrollbar-width:thin}
+.tabs a{flex:none;text-decoration:none;color:var(--muted);font-weight:600;font-size:.92rem;padding:.35rem .75rem;border-radius:99px;border:1px solid var(--line);background:var(--surface)}
+.tabs a[aria-current="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.theme{background:none;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:.2rem .7rem;font-size:.8rem}
+section.view{display:none}
+section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;margin-block:.8rem}
+.card.done{opacity:.62}
+.chead{display:flex;gap:.7rem;align-items:flex-start;justify-content:space-between}
+.chead label{display:flex;gap:.45rem;align-items:center;font-size:.82rem;color:var(--muted);flex:none;cursor:pointer}
+input[type=checkbox]{width:1.15rem;height:1.15rem;accent-color:var(--accent)}
+.tag{font:600 .72rem var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mark{background:var(--hi);color:var(--hi-fg);padding:.05rem .3rem;border-radius:3px;font-weight:600}
+ul{margin:.4rem 0;padding-left:1.15rem}
+li{margin-block:.28rem}
+li::marker{color:var(--accent)}
+.hook{margin-top:.7rem;padding:.55rem .75rem;border-radius:8px;background:var(--soft);font-size:.95rem}
+.ex{margin-top:.7rem;padding:.55rem .75rem;border-radius:8px;border:1px dashed var(--accent);font-size:.95rem}
+.ex b{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);display:block}
+.ex ul{margin:.25rem 0 0}
+.hook b{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.1rem}
+.table{overflow-x:auto;margin-block:.6rem}
+table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:.4rem .5rem;text-align:left;vertical-align:top}
+th{font:600 .75rem var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.time{font:600 .9rem var(--mono);color:var(--accent);flex:none;width:6.2rem}
+.plan li{list-style:none;display:flex;gap:.6rem;padding-block:.5rem;border-bottom:1px solid var(--line)}
+.plan{padding:0}
+.btnrow{display:flex;gap:.5rem;flex-wrap:wrap;margin-block:.6rem}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:.45rem .9rem;border-radius:8px;font-weight:600}
+.btn.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.sel{outline:2px solid var(--accent)}
+.fc{min-height:13rem;display:flex;flex-direction:column;justify-content:center;text-align:left;cursor:pointer;width:100%;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:1.2rem}
+.fc .q{font:600 1.25rem/1.3 var(--display)}
+.fc .a{margin-top:.6rem;color:var(--fg)}
+.fc .a:empty{display:none}
+.stat{font:600 .85rem var(--mono);color:var(--muted)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin-block:.6rem}
+summary{cursor:pointer;font-weight:600}
+summary .tag{display:block}
+details[open] summary{margin-bottom:.4rem}
+.note{font-size:.9rem;color:var(--muted)}
+.ansblock{margin-block:.8rem;padding-top:.6rem;border-top:1px solid var(--line)}
+.ansblock h3{font-size:1rem;margin-bottom:.3rem}
+.ansblock ol{padding-left:1.3rem}
+.cheat{columns:1;gap:1rem}
+@media(min-width:42rem){.cheat{columns:2}}
+.cheat .card{break-inside:avoid;margin-block:0 .8rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="row">
+    <h1>Commercial Contract Drafting: Units 1–3</h1>
+    <button class="theme" id="themeBtn" type="button">Theme</button>
+  </div>
+  <div class="row" style="margin-top:.2rem"><span class="note">Exam tomorrow 2 pm. One chunk at a time.</span><span class="pct" id="pct">0 / 0 chunks</span></div>
+  <div class="bar"><i id="barfill"></i></div>
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <a href="#plan">Tonight</a><a href="#hour">1-hour read</a><a href="#u1">Unit 1</a><a href="#u2">Unit 2</a><a href="#u3">Unit 3</a><a href="#cards">Flashcards</a><a href="#qs">Practice</a><a href="#ans">Answer bank</a><a href="#quiz">Anatomy quiz</a><a href="#cram">Cram sheet</a>
+  </nav>
+</header>
+
+<section class="view" id="v-plan"></section>
+<section class="view" id="v-hour"></section>
+<section class="view" id="v-u1"></section>
+<section class="view" id="v-u2"></section>
+<section class="view" id="v-u3"></section>
+<section class="view" id="v-cards"></section>
+<section class="view" id="v-qs"></section>
+<section class="view" id="v-ans"></section>
+<section class="view" id="v-quiz"></section>
+<section class="view" id="v-cram"></section>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const CHUNKS = {
+u1:[
+{id:"1.1",t:"What a contract is for",
+ pts:["The contract is <span class='mark'>a means to an end</span> (Haggard). Goal: a document that satisfies the client's needs and a deal that goes through without hard feelings or litigation.",
+ "Cohen (read in reverse): a good contract <b>clearly sets rights and duties, defines key terms, addresses all issues, has no ambiguity or inconsistency, uses plain English</b>.",
+ "Payne's test: a third party who was not at the negotiation can understand the deal.",
+ "Stark: a contract is the parties' <b>private law</b> and a <b>planning document</b> (looks forward, unlike litigation). Fox: same idea, plus <i>\"Ambiguity is the contract lawyer's enemy.\"</i> Bortolotti: the drafter acts as <i>legislator</i> of the parties.",
+ "Why write it down (Doonan &amp; Foster): evidence, prevent fraud, set future rights, record existing rights, detail complex deals."],
+ hook:"ICA s 2(h): contract = agreement enforceable by law. s 10: free consent, competent parties, lawful consideration and object, not declared void."},
+{id:"1.2",t:"The good contract lawyer: Haggard's 9 steps",
+ pts:["<span class='mark'>Drafting is thinking, not just writing.</span> Writing is step H, 'perhaps the easiest'.",
+ "<b>A Ask why</b> (Director of R&amp;D example: a sudden request means something happened). <b>B Audience</b> (other party, protected class, bad-faith reader, old friend, wider audience, judge/arbitrator). <b>C Factual context</b> (Raffles v Wichelhaus, two ships Peerless). <b>D Content</b> (who/what/when/where/how/why + 'what if'). <b>E Check the law</b>. <b>F Conceptualise</b> (specific/general, precise/vague, concrete/abstract). <b>G Organise</b> (division, classification, sequence). <b>H Write</b>. <b>I Review</b> ('drafters quit too early'; proofread by someone else).",
+ "Stark: skills = analytical, negotiating, business understanding, legal knowledge, eye for detail. The lawyer translates business terms into contract concepts, so is not 'a mere scrivener'.",
+ "Fox issue-spotting: the $3m pipe-threader client who says 'don't spend long on this'. Resolve issues <i>before</i> signing. 'In contract drafting, plagiarism is a virtue' (use precedent).",
+ "Doonan &amp; Foster: obey instructions; if you disagree, advise first, then draft as told and note the advice on file. Bortolotti: coordinate clauses in a coherent whole, not a 'pot pourri'."],
+ hook:"Mnemonic for A–I: <b>A</b>sk · <b>A</b>udience · <b>C</b>ontext · <b>C</b>ontent · <b>C</b>heck law · <b>C</b>onceptualise · <b>O</b>rganise · <b>W</b>rite · <b>R</b>eview."},
+{id:"1.3",t:"Anatomy of a contract",
+ pts:["<b>A Introductory:</b> cover page, title, draft version, preamble, place/date of execution, parties, party numbering, recitals, effective date, nomenclature, numbering, definitions, capitalised terms, interpretation.",
+ "<b>B Operative:</b> rights and obligations, conditions precedent, closing deliverables, post-closing, payments, lock-in, remedial actions, confidentiality, exclusivity, non-compete, non-solicit, damages, LDs, territory, costs, indemnity, LoL, R&amp;W, term, renewal, termination, effect of termination, survival, relationship of parties, force majeure.",
+ "<b>C Boilerplate:</b> further assurance, no set-off, non-reliance, notice, publicity, severability, governing law/jurisdiction, dispute resolution, waiver, assignment, amendment, entire agreement.",
+ "<b>D Signature, schedules, annexures:</b> signatory name, date and place, plus technical detail, price lists, specifications.",
+ "<b>Stark's 11 parts:</b> preamble, recitals, words of agreement, definitions, action sections, other substantive provisions, endgame, general provisions, signature lines, schedules, exhibits.",
+ "<b>Payne's 10 parts:</b> Title, Preamble, Background, Consideration, Definitions, Action sections, Other substantive, Endgame, Boilerplate, Signature lines.",
+ "Placement debate: Haggard puts force majeure and LDs in housekeeping; the class chart puts them in operative. Adams would move definitions to the back."],
+ hook:"Mnemonic: <b>I O B S</b> = Introduce, Operate, Boilerplate, Sign."},
+{id:"1.4",t:"How to read a contract: Burnham's 5 passes",
+ pts:["Reading a contract is <b>non-linear, imaginative, non-literal, transformative, iterative</b>. 'Talk back' to the text. Read before the fact (advice) or after the fact (dispute: start at the disputed term).",
+ "<b>1 Orientation:</b> theme (title, caption, recitals, main exchange), structure (foundation vs cathedral; final vs stepping stone), larger background. Three P's: <b>Predict, Provide, Protect</b>.",
+ "<b>2 Explication:</b> boilerplate (don't skip), rights and duties (shall/will/must/agrees to; every duty has a right), declarations, duration and renewal dates (tickler file), conditions (if/provided/subject to; who controls the event; IF-THEN graphic).",
+ "<b>3 Implication:</b> default rules (omitted, restated or changed?), implied conditions (who performs first?), trade usage / course of dealing / course of performance.",
+ "<b>4 Remediation:</b> is it breach or excused? Damages; is counter-performance still due (material breach)? Specific performance, LDs, limits on remedies.",
+ "<b>5 Evaluation:</b> assemble concerns, completeness (blanks, incorporated documents, non-parties), language weaknesses (substitute each definition into the clause), get expertise."],
+ hook:"Mnemonic: <b>O E I R E</b> = Orient, Explain, Imply, Remedy, Evaluate."},
+{id:"1.5",t:"Finding the deal: transaction, structure, objective",
+ pts:["Ask <b>who, what, when, where, how, why</b> (Haggard's Sally Seller / Bill Buyer). Stark adds <b>how much</b>. Then the 'relentless what ifs'.",
+ "Know the limit: remote risks raise cost and can kill negotiation. Leave them to default rules.",
+ "Audience types: oral deal to memorialise; general deal with details left; potential offeree (include 'barter material' but avoid unconscionability); protected class (no overreaching); bad-faith reader (draft tight); old friend (looser, but 'former friends' sue); wider audience; judge (hostile to harsh terms, so use conciliatory language).",
+ "Deal structure in order: conditions precedent → closing/deliverables → post-closing and payment → ongoing obligations (lock-in, confidentiality, exclusivity, non-compete) → term and exit.",
+ "A&amp;W basics: who are the parties, how/when each performs, payment, start/end, notices, law/jurisdiction. <b>Anyone with rights or obligations should be a party.</b>",
+ "Doonan &amp; Foster: pick the right depth (landlord who finally found a tenant won't want scary rent-review detail)."],
+ hook:"Exam move: start every problem answer with 'the client's commercial objective is…', then risks."},
+{id:"1.6",t:"Allocating rights, obligations and risk: Stark's 7 concepts",
+ pts:["<div class='table'><table><tr><th>Concept</th><th>What</th><th>Verb</th><th>Remedy</th></tr><tr><td>Representation</td><td>Past/present fact to induce</td><td>represents</td><td>Misrepresentation: rescission/damages</td></tr><tr><td>Warranty</td><td>Promise statement is true (indemnity)</td><td>warrants (will for future)</td><td>Damages, no reliance needed</td></tr><tr><td>Covenant</td><td>Promise to do / not do</td><td>shall / shall not</td><td>Damages, specific performance</td></tr><tr><td>Right</td><td>Entitlement; flip side of a covenant</td><td>is entitled to</td><td>Via other side's duty</td></tr><tr><td>Condition</td><td>Uncertain event before obligation</td><td>must / only if / if…then</td><td>No obligation; walk away</td></tr><tr><td>Discretionary authority</td><td>A choice</td><td>may</td><td>None; not exercising is no breach</td></tr><tr><td>Declaration</td><td>Agreed fact/definition/policy</td><td>means / present tense</td><td>None</td></tr></table></div>",
+ "<b>Shall rules (Stark):</b> if no party precedes 'shall' it is wrong ('goods shall be delivered'); 'shall be' and 'shall have' are wrong; never in conditions. Use <b>will</b> for future events and future warranties.",
+ "<b>Risk allocation by qualifying:</b> representations (knowledge, schedule exceptions), covenants (absolute → commercially reasonable efforts → capped → mere request), conditions (satisfactory vs reasonably satisfactory vs substantially in form), discretion (unfettered → consent not unreasonably withheld → exceptions).",
+ "Fox 'softening the edges': materiality, reasonableness, 'to the best of knowledge', ordinary course, past practice. Efforts: Adams says best = reasonable efforts; English law says best endeavours is more onerous (IBM v Rockware; Rhodia v Huntsman; Jet2 v Blackpool).",
+ "Haggard F: <b>precise</b> ('24 hours') vs <b>vague</b> ('reasonable time'): vagueness is a deliberate cushion, but not ambiguity. Do not use contract concepts as headings (Payne)."],
+ hook:"Condition test: 'If the Buyer obtains a mortgage, the Buyer shall buy' (correct). Declaration test: would a party want damages if it were false? If yes, it isn't a declaration."},
+{id:"1.7",t:"How clauses interact",
+ pts:["Payne: parts 'well coordinated'; boilerplate must use <i>this</i> agreement's defined terms.",
+ "Cohen #19: arbitration clause + exclusive court venue = confusion. #7 inconsistent terminology. #8 misleading headings (Haynes v Farmers). #9 unrelated items together.",
+ "<b>Fox's trumping tools:</b> proviso ('provided, however'), <b>notwithstanding</b> (this clause wins), <b>except as otherwise provided</b> / <b>subject to</b> (this clause gives way), <b>without limiting the generality of the foregoing</b>, and inconsistency-between-agreements clauses (bind only parties to both).",
+ "Stark: <b>contextual ambiguity</b> = two inconsistent provisions (Tenant maintains the Building vs Landlord maintains the lobby). 'Say the same thing the same way' (knowledge qualifiers 'officers' vs 'executive officers'). Keep general provisions identical across transaction documents.",
+ "Recitals vs operative part: clear recital beats ambiguous operative; clear operative beats ambiguous recital; both clear but inconsistent → operative wins.",
+ "Haggard division rules: categories mutually exclusive; parts sum to the whole; one principle. Classification: put it where readers look.",
+ "Interaction table to remember: indemnity ↔ LoL cap; confidentiality ↔ survival and cap; exclusivity ↔ carve-outs; dispute resolution ↔ governing law; entire agreement ↔ MoU; force majeure ↔ SLA and termination."],
+ hook:"Bortolotti severability example: a void export ban left the licensee with the licence and free to export. Standard clauses can defeat the bargain."},
+{id:"1.8",t:"Drafting defects and interpretation",
+ pts:["<b>Adams Ch 7 sources of uncertain meaning:</b> ambiguity (lexical, antecedent, contract-reference), insufficient specificity, mistake (Raffles), conflict, failure to address an issue (Sabatini 'private garage'), vagueness. Vagueness is a tool when used with restraint. Creative ambiguity is gamesmanship.",
+ "<b>Stark's 3 ambiguities:</b> semantic (dollars?), syntactic (modifier scope; and/or), contextual (clause conflict). Don't use <b>and/or</b>. Tabulate to show grouping. Move qualifiers: 'pending or, to the Borrower's knowledge, threatened'.",
+ "<b>Labels for defect answers:</b> semantic / syntactic ambiguity · vagueness · insufficient specificity · inconsistency · omission (gap) · agreement to agree · undefined term · wrong cross-reference · incorporation of changing document · passive voice · stuffed or circular definition · unadapted template.",
+ "<b>Dates:</b> 'by', 'within 30 days of', 'between' are ambiguous. Say 'on or before', 'from and including'. Dodds v Walker: one month from 15 July ends 15 Aug; 30 days ends 14 Aug.",
+ "<b>English interpretation (A&amp;W):</b> words → objective reading → context → clear language applies → exclude subjective intent and negotiations → business common sense only if ambiguous. Cases: ICS v West Bromwich, Chartbrook, Rainy Sky, Arnold v Britton, Wood v Capita.",
+ "Wydick: cut surplus words, base verbs not nominalisations, active voice, short sentences, keep modifiers close, avoid lawyerisms and 'shotgunning'.",
+ "Cases from Cohen: McKinnon v Baker (recitals), Tripp v Cotter (parol evidence/merger), Mattel v MGA ('includes'), D.R. Horton v Green (tiny font)."],
+ hook:"Indian hooks: ICA s 29 (uncertain agreements void). Contra proferentem. Evidence Act ss 91–92 (now BSA ss 94–95) = parol evidence."}
+],
+u2:[
+{id:"2.1",t:"Parties and capacity",
+ pts:["Use the <b>full legal name</b> from organisational documents. Add jurisdiction/entity type as an appositive: <i>Internet Inc., a Delaware corporation,</i>. <b>Divisions are not legal entities</b>; name the company.",
+ "Keep addresses out of the preamble (notice clause) (Stark). Payne is looser: if you give one address give both.",
+ "Cohen #21: ABC, Inc. / ABC Transportation / ABC Credit. Never swap an entity and its owner.",
+ "Defined terms for parties: <b>(the \"Executive\")</b> with 'the' inside brackets; never 'hereinafter'; one term per party; same kind of term for both (role terms or short names). Avoid lessor/lessee style look-alikes.",
+ "Several parties: 'individually a Shareholder and collectively the Shareholders'. One entity in two roles: define each capacity.",
+ "Capacity and authority: minors, mental capacity; check the signatory's authority. Signature block: company name, then 'By:' name and title. Notarisation is 'window dressing' unless a statute requires it."],
+ hook:"Indian: ICA ss 11–12 (age of majority, sound mind). Minor's agreement void (Mohori Bibee v Dharmodas Ghose). Company signs via board resolution."},
+{id:"2.2",t:"Title, preamble, recitals, words of agreement",
+ pts:["<b>Title</b> describes the deal ('Horse Purchase Contract'), matches the preamble, centred, bold (Cohen #1; Stark; Payne).",
+ "<b>Preamble</b> (Stark): 'This Supply Agreement, dated March 3, 20XX, is between X, an Indiana corporation (the \"Manufacturer\"), and Y…'. Define 'Agreement' to include schedules and amendments.",
+ "<b>Dated vs dated as of;</b> record real signing date in an Effective Date clause. Never backdate to deceive. Effective Date can be event-based.",
+ "<b>Haggard's 5 uses of recitals:</b> purpose (frustration) · shared facts (mistake) · damages background · why time is of the essence · soften harsh terms (unconscionability). Recitals are not promissory.",
+ "<b>Stark adds:</b> inform third parties, support enforceability (non-compete), clarify intent (Wood v Lucy, Lady Duff-Gordon), explain consideration (guaranty). Her 12 guidelines in short: only if they add value, tell a story, accurate facts, <b>no operative terms</b>, don't incorporate them, usually no price, no WHEREAS/WITNESSETH, no 'desires' statements, define properly, don't use undefined terms.",
+ "<b>Words of agreement:</b> 'Accordingly, the parties agree as follows:'. Reciting consideration cannot create it (gold watch example). State the real exchange (Cohen #6: price, quantity, quality, time of performance/payment)."],
+ hook:"Indian: s 2(d) consideration may move from promisee or any other person. s 25: no consideration = void (exceptions: love and affection registered, past voluntary service, time-barred debt). Inadequacy doesn't void."},
+{id:"2.3",t:"Definitions (Adams Ch 6)",
+ pts:["Purpose: shorten, and <b>say the same thing the same way</b>. Jobs a definition can do: expand/limit, clarify, resolve ambiguity, explain technical terms, express deal concepts, list.",
+ "<b>Strategic:</b> a closed-list 'Force Majeure Event' suits the performing party; criteria-based suits the non-performing party. Definitions set standards (who is an 'Affiliate'?).",
+ "<b>Verbs:</b> <span class='mark'>means</span> = complete; <span class='mark'>includes</span> = enlarging (Mattel v MGA); 'does not include' = limiting. <b>Never</b> 'shall mean', 'means and includes', 'includes only', or a dash instead of a verb.",
+ "<b>Circular:</b> Adams tolerates repeating the term if it adds info; Stark/Cohen/Payne say avoid. <b>True circularity</b> (A by B, B by A): anchor to an external fact. <b>Overlapping:</b> Licensor / Software / Licensor Software.",
+ "<b>Stuffed:</b> shall/must/may inside a definition. 'A party may sue on a representation or covenant, but not on a definition.' Move the obligation to an operative clause.",
+ "<b>Autonomous</b> (own sentence in a definitions section, alphabetical, no article) vs <b>integrated</b> (parenthetical in context, with 'the'; short definitions work best). Mid-sentence placement can change meaning ('all agreements, oral or written (\"Contracts\")…').",
+ "<b>Placement:</b> front (Stark, Haggard, Cohen) vs pared-down at back with on-site definitions for unique terms (Adams) vs index of definitions. Don't define unused terms; define abbreviations; use conventional terms (Business Day, GAAP); no dictionary reliance.",
+ "Payne: definitions not circular, no covenants, more than dictionary meaning, only needed terms."],
+ hook:"Exam move: for a definitions review, mark each term KEEP / DELETE / MERGE / REDRAFT / MOVE with a one-line reason (necessity, overlap, circularity, stuffing, scope, part of speech, placement)."},
+{id:"2.4",t:"Interpretation clauses",
+ pts:["Sits after definitions. States reading rules. <b>Must not enlarge who the parties are</b> (ABC Agreement cl 3.1–3.2).",
+ "Stark's typical rules: defined terms carry across deal documents; references to Sections/Schedules are to this Agreement; 'including' = 'without limitation'; 'Person' includes successors; statutes include amendments; 'dollars' = which currency; 'must' signals a condition.",
+ "Cautions: Adams (part-of-speech rule 'unexpected consequences'); Stark ('or' is not always inclusive); Burnham (headings clause; but misleading headings still hurt); don't send readers to a dictionary.",
+ "Indian practice add-ons (beyond readings): headings for convenience, gender, calendar day vs Business Day, recitals and schedules form part, time periods exclude first day."],
+ hook:"If Adams' 'corresponding meaning' rule comes up: safer to state each defined form than rely on a general rule."},
+{id:"2.5",t:"Operative clauses: performance and scope",
+ pts:["<b>Action sections</b> (Stark Ch 8): subject-matter performance, payment, term, closing date and deliveries. Payne asks for the same four.",
+ "Subject-matter provision starts 'Subject to the provisions of this Agreement, …'. Promises need not mirror (borrower repays, not 'promises to borrow'). Some are self-executing (guaranty, release, grant of security): present tense.",
+ "Closing: fix date or tie to event; rolling closing needs a <b>drop-dead date</b>; list closing deliveries.",
+ "A&amp;W: state who performs, when, how, standards, place, packaging, performance indicators. Conditions precedent: say what happens if unmet (does a contract exist? what survives?). Cohen #11: specify date, time, place.",
+ "Organising other provisions: by concept in timeline order (R&amp;W → covenants → conditions) or by topic (Payne prefers), most important first.",
+ "<b>Scope tools:</b> degree of obligation (Stark landlord-consent ladder), breadth of discretion, Haggard's conceptual choices, softeners (Fox), inferred obligations (Burnham's Musselshell County franchise), <b>name the actor</b> (active voice; 'premises shall be kept in good repair' by whom?).",
+ "Shall vs must: Stark's system (shall covenant, may discretion, must condition, will future) vs Wydick's ('don't use shall'). Either is fine if consistent."],
+ hook:"Indian defaults: s 37 perform promises; s 46 reasonable time; s 47 business hours; s 49 place; s 55 time of the essence (voidable) vs not (compensation only)."},
+{id:"2.6",t:"Payment, invoicing, tax",
+ pts:["Stark: 'drafting monetary payment provisions incorrectly is not a glitch and not generally forgiven.' <b>Stark's 10 guidelines:</b> follow the cash · who pays what to whom, when, why, how · state amount (and currency) · who pays, active voice · calculate before signing · due date · stub periods and timing · how paid (immediately available funds, where) · separate provision per payment type · test formulas.",
+ "A&amp;W: fixed vs variable price; express formulas mathematically (Chartbrook); <b>VAT inclusive?</b>; frequency and method; late-payment interest; is time of payment of the essence?; currency and exchange risk; deductions, set-off, withholding; refundable/advance?; ancillary costs; supporting documents.",
+ "Burnham: 'net 30 from delivery' creates implied conditions; whoever delivers first is a creditor and should protect itself (security, guarantee, progress payments).",
+ "Payne endgame: 'what happens to the money if contract terminates early'. Clause library: payment obligations are carved out of the cap.",
+ "<b>Class cases:</b> RetailCo (30 days from invoice vs 15 from delivery: one trigger); Singapore buyer (define Business Day by place); Arclight cl 14 (fees exclusive of taxes; invoice deemed accepted if not disputed in 7 Business Days)."],
+ hook:"Indian practice: fees exclusive of GST on valid tax invoice; TDS and certificates; late interest; MSMED Act 45-day limit for micro/small suppliers; fix currency and bank charges. (Beyond readings.)"},
+{id:"2.7",t:"Confidentiality",
+ pts:["<b>Types:</b> mutual (default for JVs, M&amp;A, 2–3 yrs); one-way discloser-favourable; one-way recipient-favourable; multilateral.",
+ "<b>Definition of CI:</b> broad catch-all (max protection, may be overbroad) vs marking requirement (clear but leaves unmarked info unprotected). Define 'cautiously and in detail'.",
+ "<b>Five standard exclusions:</b> public through no fault · already known · independently developed · from a third party not bound · legally compelled (prompt notice, cooperate).",
+ "<b>Obligations:</b> restrict disclosure <i>and use</i>; need-to-know recipients bound equivalently (recipient liable for them); security; return/destruction; ownership stays with discloser. Keep the deal terms confidential; control announcements.",
+ "<b>Term:</b> disclosure period 1–3 yrs; survival 2–5 yrs; trade secrets as long as secret. Singhania: can't be indefinite. State survival expressly.",
+ "<b>Remedies:</b> injunction ('damages inadequate'), damages, LDs (reasonable pre-estimate, s 74), indemnity, termination. Carve confidentiality out of the cap or use a super-cap."],
+ hook:"Indian: Niranjan Shankar Golikari v Century Spinning (1967 SC): protect trade secrets, not general skill. Proving leakage is hard (Sandhya Organic). DPDP Act 2023 for personal data (beyond readings)."},
+{id:"2.8",t:"Exclusivity and territory",
+ pts:["Exclusivity = negative covenant by the grantor, paired with positive duties on grantee (efforts, minimums).",
+ "Burnham's Musselshell County: 'exclusive right' implies grantee efforts and no distribution elsewhere, and grantor can't grant anyone else.",
+ "Checklist: who and which products; <b>Territory</b> defined precisely (online sales, travelling use); <b>reserved customers</b> defined and put in as 'Subject to clause X' inside the clause; duration/lock-in; performance conditions (minimum purchases; Arclight cl 16 SLA release); breach consequences; commission on direct sales; grantee non-compete during term.",
+ "Bortolotti: minimum turnover → terminate, cancel exclusivity or shrink Territory; not using the right isn't waiver. Biotronik v Conor: lost resale profits were direct, not consequential.",
+ "A&amp;W: 'promote sales to best of its ability' can require investment."],
+ hook:"Indian: Gujarat Bottling v Coca Cola (1995 SC): in-term negative covenants OK unless unconscionable. Post-term restraints void (s 27). Competition Act 2002 s 3(4) (beyond readings)."},
+{id:"2.9",t:"Schedules, annexures, cross-references",
+ pts:["<b>Schedules</b> = disclosure schedules (supplement R&amp;W or list exceptions; an unscheduled item is a misrepresentation). <b>Exhibits</b> = forms of documents or related agreements. Make attachments part of the contract via the definition of 'Agreement'.",
+ "Don't create empty schedules. Number after the section that calls for it. Adams: don't put the definitions section in an attachment.",
+ "<b>Order of precedence</b> clause when body and schedule conflict. One source of truth for specifications.",
+ "<b>Incorporation by reference:</b> read as if written in; fixed ('as at signing') vs moving ('as amended from time to time'). Moving supplier policies = unilateral variation (Blue Orbit).",
+ "<b>Cross-references:</b> cite section numbers, never 'above/below/hereunder' (Adams); update on every redraft; Payne: easy to follow, not too abundant; decimal numbering keyed to Article.",
+ "Cohen #8, #10: accurate headings; number paragraphs and pages."],
+ hook:"ABC Agreement traps: numbering 1(a), (b), (c), (e), (e), (g); ARTICLE vs SECTION."},
+{id:"2.10",t:"Writing operative clauses well",
+ pts:["State who, what, when, how. Active voice, present tense, singular, short sentences (subject-verb-object together).",
+ "Cut legalese: doublets/triplets (indemnify and hold harmless), 'in the event that', Latin, 'said', 'same', 'such', and/or.",
+ "Tabulate conditions and lists. Use provisos properly; ejusdem generis when listing.",
+ "Business contracts are not consumer plain English, but borrow its clarity (Stark Ch 1). 'If a risk can be perceived, draft for it.'",
+ "Integration: coherent whole (Bortolotti), well coordinated (Payne), same thing same way (Stark), trumping words (Fox).",
+ "Final review (Haggard I; A&amp;W Ch 10): revisit planning, then substance, then style, then proofread; check unauthorised changes and commercial points."],
+ hook:"Payne format: Roman-numeral Articles centred bold; decimals 3.01; bold headings; page numbers bottom centre; no signature on an otherwise blank page."}
+],
+u3:[
+{id:"3.1",t:"Representations and warranties",
+ pts:["Rep = fact at a moment in time; warranty = promise statement is true. <b>Misrepresentation is a tort</b> (rescission; fraud adds damages/punitive). <b>Warranty breach is contract</b> (benefit-of-bargain, no reliance: CBS v Ziff-Davis). Take both.",
+ "Reps cannot be about the future; use a warranty with 'will' or a covenant.",
+ "<b>Maker</b> drafts narrow and qualified (knowledge, materiality, schedule exceptions, caps, time limits). <b>Recipient</b> drafts broad. Stark's no-litigation ladder: flat → except Schedule → to Seller's knowledge → any officer's knowledge → named officers plus diligent inquiry.",
+ "Fox: 'to the best of its knowledge' turns fact into awareness. A&amp;W: knowledge warranty may imply reasonable enquiry (Sindall); use disclosure letter, claim time limits, thresholds and caps.",
+ "Categories: authority and capacity, no conflict, enforceability, compliance with laws, IP, solvency, service conformity (Arclight cl 17).",
+ "Civil-law caution: 'representations' is common-law (Bortolotti)."],
+ hook:"Indian: ICA s 17 fraud, s 18 misrepresentation, s 19 voidable (not if truth discoverable with ordinary diligence), s 73 damages. Sale of Goods Act ss 12–17 conditions vs warranties."},
+{id:"3.2",t:"Breach, default, remedies",
+ pts:["First ask: is it a breach or excused (force majeure, waiver, failed condition, trade usage)? Default ⊃ breach (insolvency, change of control, cross-default).",
+ "Consequences: <b>damages</b> (expectation measure); is counter-performance still due? (material breach; make it express; 'time is of the essence' needs a stated consequence); specific performance (not personal services; unique goods).",
+ "<b>Contractual remedies (Stark):</b> price adjustment, self-help, default interest, injunction, LDs, indemnity, set-off, cumulative vs exclusive.",
+ "<b>Cure:</b> grace periods (e.g. 30 days non-payment, 90 days other); Default → Event of Default after notice and grace; 'has occurred and is continuing'. A&amp;W: any breach vs material breach; need positive step to terminate (Artpower).",
+ "<b>Notices of breach:</b> Stark prefers 'Notice of Intent to Terminate'; state grounds and clause, money due, whether ends on receipt, survival.",
+ "<b>LDs vs penalties:</b> genuine pre-estimate. UK: Cavendish v Makdessi / ParkingEye v Beavis ('legitimate interest' test). Civil law: penalties allowed but reducible. Do LDs cap liability? depends on governing law (Meccaniche Rossi)."],
+ hook:"Indian: s 73 (natural, contemplated loss; no remote loss); <b>s 74</b> (reasonable compensation up to named sum, even without proof of loss: Kailash Nath v DDA; ONGC v Saw Pipes); s 75. Specific Relief Act (2018 amendment: specific performance now general rule; s 42 negative covenants)."},
+{id:"3.3",t:"Indemnity",
+ pts:["Shifts financial burden of specified losses (mostly <b>third-party claims</b>) to the indemnifier. LoL caps; indemnity creates affirmative payment/defence duties.",
+ "<b>Elements:</b> trigger (R&amp;W breach, IP infringement, confidentiality breach, negligence, law violation) · scope of loss (incl. legal fees, settlements) · who is liable · <b>defend vs indemnify</b> (say both: common law doesn't include defence) · notice (prompt; late notice reduces only to extent of prejudice) · cooperation · <b>control of defence</b> (indemnifier controls; indemnitee consent to settlement admitting fault/money/obligations) · duration, cap, basket.",
+ "Scope options: narrow (third-party only) → moderate → broad (first-party too) → IP-specific → mutual.",
+ "<b>IP indemnity:</b> mitigate by (a) procure licence (b) modify (c) replace (d) terminate and refund. Exclusions: customer modifications, unapproved combinations, use outside documentation, continued use after fix.",
+ "Cohen #27: 'indemnify and hold harmless' is a couplet. A&amp;W: indemnities and exemptions apportion risk: check insurable and priced."],
+ hook:"Indian: ICA s 124 (save from loss), s 125 (rights of indemnity-holder: damages, costs, compromise sums). Can claim once liability is absolute (Gajanan Moreshwar)."},
+{id:"3.4",t:"Limitation of liability",
+ pts:["Allocates financial risk by capping and excluding. 'Among the most heavily negotiated terms.'",
+ "<b>Direct</b> (natural result: usually capped) vs <b>indirect/consequential</b> (lost profit, data, reputation: usually excluded). 'Consequential' is ambiguous: Hadley v Baxendale; Biotronik v Conor ($100m resale profits were general damages). <b>Name excluded losses expressly.</b>",
+ "<b>Caps:</b> total contract value · 12-month fees (SaaS) · multiple (2–3×) · fixed sum · insurance limits · tiered / super-cap.",
+ "<b>Carve-outs:</b> IP indemnity · data breach · confidentiality breach · wilful misconduct/gross negligence · payment obligations · death/personal injury · fraud.",
+ "Mutual caps with asymmetric carve-outs is the usual compromise.",
+ "<b>Drafting the interaction:</b> say whether cap and exclusion apply to indemnities ('Notwithstanding clause 23…'). This was the Webhosting problem (A5 Q9)."],
+ hook:"Indian: enforced between commercial parties; can't exclude fraud; unconscionable standard terms struck (Brojo Nath Ganguly); s 73 already excludes remote loss."},
+{id:"3.5",t:"Term, renewal, termination, post-termination",
+ pts:["<b>Term (Stark 8.4):</b> unambiguous begin/end; 'unless sooner terminated'. A&amp;W: separate signing, commencement, length, ending. Make fixed term 'subject to' early termination. Courts won't imply a right to end a fixed term (Jani-King v Pula).",
+ "<b>Renewal:</b> auto vs option; who; length; notice deadline; <b>no 'price to be agreed'</b> (agreement to agree); use % or index. Arclight cl 2: 3 yrs then 1-yr auto-renewal, 90 days' notice.",
+ "<b>Termination grounds:</b> expiry, convenience, insolvency, breach (material? cure?), change of control, long-stop force majeure (Arclight 60 days), failed CPs, SLA failures.",
+ "<b>Stark's 3 endings:</b> neutral · friendly (restore status quo, tie loose ends) · unfriendly (default). <b>Six points:</b> events · consequences of notice · termination date · survival of common-law rights · survival of specific clauses · dispute resolution.",
+ "<b>Post-termination:</b> survival list and durations; money (prepaid fees, accrued fees); return of property/data; transition and exit assistance (Arclight cl 11); location of endgame clauses.",
+ "Dodds v Walker for computing notice periods."],
+ hook:"Indian: s 39 (refusal to perform), s 64 (restore benefits on rescission), s 65 (restitution), s 75 (compensation)."},
+{id:"3.6",t:"Non-compete and non-solicitation",
+ pts:["Three restrictive covenants: <b>confidentiality, non-compete, non-solicit</b> (non-dealing goes further).",
+ "<b>ICA s 27:</b> agreements restraining lawful trade/profession are void, except sale of goodwill (reasonable local limits).",
+ "<span class='mark'>During</span> the term: generally valid unless unconscionable (Niranjan Shankar Golikari; Gujarat Bottling). <span class='mark'>After</span> the term: void, no reasonableness test (Superintendence Co v Krishan Murgai; Pepsi Foods v Bharat Coca-Cola; Percept D'Mark v Zaheer Khan).",
+ "Protectable: trade secrets and business connections, not general skill. Non-solicit is more readily upheld where narrow.",
+ "English comparison: restraint void unless reasonable (Nordenfelt; Herbert Morris v Saxelby; Esso v Harper's). Bhat's time-space-locality rule. Blue-pencil vs reformation (Stark 16.7).",
+ "<b>Drafting in India:</b> state legitimate interest in recitals; restraint during the term; rely on confidentiality/IP/garden leave/notice; narrow non-solicit; define activity, territory, period; injunction under SRA s 42, not forcing personal service."],
+ hook:"Exam move: always mention the Indian/common-law contrast and say what you would draft instead of a post-term non-compete."},
+{id:"3.7",t:"Force majeure and hardship",
+ pts:["Not an English-law concept: without a clause only frustration is left (A&amp;W). Civil law differs (impossibility). CISG art 79 / UNIDROIT 7.1.7: impediment beyond control, unforeseeable, unavoidable.",
+ "<b>Three conditions (Bortolotti):</b> unforeseeable · beyond control · irresistible (impossible or not reasonably sustainable). Cases: ICC 9466 (foreseeable arrests), ICC 5195 (commercial practicability), Sun Oil (others overcame it).",
+ "<b>Structure:</b> general definition → list of events → consequences. Don't copy list-only US clauses. ICC 2003 clause: prove (a) beyond reasonable control (b) not reasonably foreseeable (c) can't reasonably be avoided; sub-contractor tests; relief from notice.",
+ "Add: notice, mitigation, 'to the extent of', are payments excused?, SLA suspension, long-stop termination (Arclight 60 days), tailor events (Burnham: add 'strike').",
+ "<b>Hardship:</b> performance excessively onerous (not impossible). Default pacta sunt servanda; trend to renegotiation (BGB §313, French art 1195). UNIDROIT 6.2.2: request renegotiation; court may adapt or terminate. ICC Hardship Clause 2003: negotiate, then terminate (no judicial rewriting).",
+ "Drafting hardship: trigger thresholds, renegotiation timetable, fallback, interim performance."],
+ hook:"Indian: s 32 (force majeure clauses: Energy Watchdog v CERC); s 56 (Satyabrata Ghose: impracticable ≈ impossible). Cost increase alone isn't frustration. <b>No general hardship doctrine: must be drafted.</b>"},
+{id:"3.8",t:"Governing law and jurisdiction",
+ pts:["Cohen #20: silence → fight over lex loci contractus. Distinguish <b>applicable law</b> from <b>jurisdiction</b>.",
+ "Bortolotti: keep it simple, 'This contract is governed by the laws of [country]'. Avoid limiting words ('with respect to interpretation'). Stark: 'arising under <i>and relating to</i> this Agreement, including torts'; pair with a forum clause in the same place; choose a developed law.",
+ "Mandatory rules survive a choice of law (Ingmar for agents).",
+ "Burnham: choice of law ≠ choice of forum; need both. Cohen #13: exclusive venue clause. Don't contradict arbitration (Cohen #19). Jury waiver is a US point.",
+ "A&amp;W: law/jurisdiction affects insurance cost and enforceability."],
+ hook:"Indian: can choose among courts that already have jurisdiction, not create it (ABC Laminart v AP Agencies). s 28 voids absolute bars on proceedings (arbitration saved). Two Indian parties choosing foreign law: check TDM Infrastructure."},
+{id:"3.9",t:"Dispute resolution",
+ pts:["Litigation vs ADR (arbitration, mediation, conciliation, negotiation). Arbitration: neutrality, confidentiality, New York Convention enforcement.",
+ "<b>Cohen warnings:</b> #17 vague mediation (name mediator, place, hours, cost, start, consequence of refusal) · #18 deadlock-prone arbitrator scheme · #19 arbitration + court venue · #22 'AAA rules' pasted.",
+ "<b>Bortolotti essentials:</b> clear intent to arbitrate · institution or appointment method · scope ('arising out of or in connection with'). <b>Errors:</b> pathological clauses, split tribunals, narrow scope, courts + arbitration, ambiguous institution. <b>Optional:</b> seat (its courts supervise), language, number of arbitrators, amicable steps (keep precise and time-limited).",
+ "Multi-tier: negotiation → mediation → arbitration (Singhania). Arclight cl 6 is the model: authorised reps, 30 days, then arbitration under the 1996 Act, seat Bengaluru, English.",
+ "Stark 15.7: litigation clause items vs arbitration clause items."],
+ hook:"Indian: A&amp;C Act 1996 s 7, 8, 9, 11, 34. Venue may be read as seat (BGS SGS Soma v NHPC). Unilateral sole-arbitrator appointment invalid (Perkins Eastman). Commercial Courts Act s 12A pre-institution mediation."},
+{id:"3.10",t:"Boilerplate in the risk and exit picture",
+ pts:["<div class='table'><table><tr><th>Clause</th><th>Key point</th></tr><tr><td>Entire agreement</td><td>Excludes prior deals; to cover misrepresentation also say no reliance; fraud can't be excluded; carve out NDAs/MoUs. Cohen #15: 24 words beat 174.</td></tr><tr><td>Amendment</td><td>Signed writing only. Courts/CISG 29(2) can still allow conduct to override.</td></tr><tr><td>Waiver</td><td>Generic clauses weak in civil law; draft specific non-waiver.</td></tr><tr><td>Severability</td><td>Make survival depend on essential terms; replace with nearest valid clause; blue pencil vs reformation.</td></tr><tr><td>Assignment</td><td>Rights vs delegation; 'void' removes power; cover change of control, merger, operation of law; written consent (Cohen #23); novation for burdens.</td></tr><tr><td>Notices</td><td>Writing, methods, address, deemed receipt; strict compliance (Mannai v Eagle Star); Cohen #25.</td></tr><tr><td>Others</td><td>Counterparts; third-party rights; further assurance; no set-off; publicity; non-reliance.</td></tr></table></div>",
+ "Stark: 'boilerplate' misleads; each raises real issues, so tailor, and keep identical across transaction documents."],
+ hook:"Indian: scheme of amalgamation (Companies Act 2013 ss 230–232) can move contracts without consent; novation s 62."}
+]};
+
+const EX = {
+"1.1":["Haggard: a house buyer wants a binding commitment so that title and possession pass later. The paper is only the route to that.","Fox: a client says he has agreed to buy a used Model 780 pipe threader from Sellco for $3 million and 'don't spend a lot of time on this'. A good lawyer still asks about serial number, repairs, delivery, risk, testing, payment and warranties.","Doonan &amp; Foster: a memorandum recording the gift of a valuable picture (recording rights already given)."],
+"1.2":["Haggard Step A: a client suddenly wants a written contract with its Director of Research and Development. Something has happened. Find out what, or you draft an 'exemplary' contract that solves nothing.","Haggard Step C: two ships named Peerless sailing from Bombay (Raffles v Wichelhaus). A drafter who knew would name the ship.","Haggard Step D: does a house sale include the drapes, shades and window air-conditioners?","Doonan &amp; Foster: a landlord who finally found a tenant may not want detailed rent-review clauses that scare the tenant off."],
+"1.3":["Haggard's model opening: 'Thompson Seedless Grape Co, Inc. (Seller) and Nubbin Sales, Inc. (Buyer) enter into this contract for the sale of grapes and mutually agree to the following terms…'.","Burnham: 'Residential Lease' tells you a lot, 'Agreement' tells you nothing. 'First Bank of New York (Lender) and John C. Smith (Borrower)' shows a loan; 'Owens Chemical (Company) and John Bartos (Contractor)' shows little.","Burnham: foundation contract (European/Japanese model, details left open) vs cathedral (US style, every contingency covered)."],
+"1.4":["Burnham: 100,000 bushels of wheat means 100,000 bushels plus or minus 5% in the wheat trade (trade usage).","Burnham: a lease requiring oil changes at 'reasonable intervals'; the parties always changed it every 5,000 miles, which fixes the meaning (course of performance).","Burnham: an 'AS IS' clause changes the default by disclaiming the implied warranty of merchantability.","Burnham: if 'transfer' is defined to include 'pledge', a clause banning transfer of shares also bans pledging them (substitution test).","Burnham: a contractor whose price includes $20,000 profit recovers that $20,000 if the owner breaches."],
+"1.5":["Haggard: Sally Seller sells Bill Buyer a first edition book for $500. Who: the two (plus any arbitrator). What: the book. When: next Tuesday. Where: the Student Lounge, third floor. How: sealed sleeve, certified check. Why: stated in the preamble it can prove damages or justify specific performance.","A&amp;W: if the operating company is a shell, make the parent a party or get a guarantee, so you have someone worth suing.","Fox: the same pipe-threader questions as a who/what/when/where/how list."],
+"1.6":["Stark: Sally sells her house to Bob for $200,000. Reps: built in 1953, roof four years old, propane tank exactly half full, walls eggshell white. If she repaints blue after signing, that is a covenant problem, not a misrepresentation.","Stark landlord-consent ladder: 'shall obtain the consent' → 'shall use commercially reasonable efforts' → deemed satisfied if she offers the landlord at least $10,000 → only 'request' consent.","Stark conditions: 'If the Buyer obtains a mortgage, the Buyer shall purchase the House' (correct). Late-notice example: insurance policy requires notice within ten days; as a covenant the insurer still pays, as a condition Bob forfeits.","Stark discretion: 'shall not assign without the Seller's consent' → 'which consent the Seller shall not unreasonably withhold' → 'except to his wife, Lara Raskin'.","Stark declarations: ''Purchase Price' means $200,000' does nothing until a covenant says 'The Buyer shall pay the Seller the Purchase Price'.","Haggard deck exercise: 'Pressure treated 2 x 6 pine planks' is the right level; stain 'compatible with the natural cedar house' is abstract, so name the product and colour."],
+"1.7":["Cohen #19: one paragraph requires binding arbitration in Boulder; the next gives exclusive venue to the District Court of Boulder County. Must they arbitrate or may they sue?","Stark: 'The Tenant shall maintain the entire Building' vs 'The Landlord shall maintain the lobby'. Who maintains the lobby?","Fox: 'Notwithstanding anything in this Section 5 (Covenants) to the contrary, Target shall be permitted to enter into the Portuguese Joint Venture.'","Fox: covenant to insure at industry levels, then $5 million on the Deerfield plant; add 'Without limiting the generality of the foregoing' so $5 million is not treated as the cap.","Haggard: dividing the law school into 'first year law students' and 'female law students' breaks all three division rules.","Stark: 'to the knowledge of each of the Seller's officers' in three reps but 'executive officers' in the fourth; the client lost its claim."],
+"1.8":["Cohen: a 'ton' could be 2,000 or 2,200 pounds.","Adams: 'all agreements, oral or written (Contracts), to which Dynaco is a party' accidentally defines Contracts as every agreement in the world.","Adams, Sabatini v Roybal: a covenant allowed a 'private garage' with no size limit; a 100 by 50 foot garage complied (failure to address an issue).","Adams, Richey v Metaxpert: a promise not to compete 'in the computer gaming business'; did it cover smartphone games?","Stark: 'president and/or general manager' has at least three mutually exclusive meanings. A Canadian maker and US retailer agree on '$10,000': which dollars?","Doonan &amp; Foster: a will leaving 'all my money' (Perrin v Morgan). 'Persons divorced on 1 July 1993' could mean that day or on or before it."],
+"2.1":["Stark: Delaware holding company ABC Inc. has 49 subsidiaries also called ABC Inc. in different states; the state of incorporation tells them apart.","Stark: Bushwick Electric Co. has divisions Bushwick Appliances and Bushwick Engines; neither is a legal entity, so name the company.","Cohen #21: ABC, Inc. owns ABC Transportation, Inc. and ABC Credit, Inc.; or 'Acme, LLC' in one place and its owner 'Johnson' in another.","Stark's form: Internet Inc., a Delaware corporation, (the 'Company')."],
+"2.2":["Cohen #1: 'Horse Purchase Contract' instead of 'Agreement'. Cohen #2: 'This is an Agreement between John Jones and Suzy Smith for the purchase of Jones's 50% interest in the horse known as Silver.'","Stark: 'This Supply Agreement, dated March 3, 20XX, is between Carpetmakers, Inc., an Indiana corporation (the Manufacturer), and Big Retail Corp., a Florida corporation (the Retailer).'","Stark 'as of': an executive starts work May 23, signs July 1; date the contract as of May 23, and record the real signing date in an Effective Date clause.","Stark/Farnsworth: an employer cannot make a promise of a gold watch enforceable by reciting 'in consideration of your past service'.","Stark: Wood v Lucy, Lady Duff-Gordon, where the recitals helped imply a duty of reasonable efforts."],
+"2.3":["Stark: a lease describes 'the 2,500 square feet of storage space shown on Exhibit A' differently in several clauses; define 'Storage Space' once.","Stark: is the brother of a subsidiary's president an 'Affiliate'? The definition decides.","Adams circularity: Bonus Date and Bonus Period each defined by the other; Licensed Products and Licensed Patents likewise.","Stark: ''Song' means any song the Beatles recorded' (narrowing); ''Telephone' excludes a cellular telephone that does not take photographs'; 'E-book' rather than 'Book' signals a changed meaning.","Adams, Mattel v MGA (Bratz): did 'inventions', defined with 'includes, but is not limited to', cover mere ideas?","Stark: 'Intellectual Property… all of which are to be unencumbered as of the Closing Date' is a stuffed definition (condition or covenant?)."],
+"2.4":["ABC Agreement cl 3.1–3.2: 'Company' redefined to include the ABC group and 'Buyer' to include 'associated' companies, silently enlarging who is bound.","Stark: statutes referenced 'as amended from time to time' vs 'as amended to the date of this Agreement' (CERCLA example)."],
+"2.5":["Stark: 'Subject to the provisions of this Agreement, the Company shall hire the Executive, and the Executive shall work for the Company for the Term.' Also: author writes the book, publisher publishes it.","Stark: a loan; the bank promises to lend, the borrower does not promise to borrow but must repay. Self-executing: 'By signing this Security Agreement, the Borrower grants the Lender a security interest in the Borrower's assets.'","Cohen #11 (good version): 'Jones will deliver the horse to Smith at 574 Ridge Road, Durango, Colorado, by 5:00 p.m. on August 1, 2015, at Jones's expense.'","Burnham: 'The premises shall be kept in good repair'. By the landlord or the tenant? Name the actor."],
+"2.6":["Stark: funds immediately available in Chicago are not immediately available in Tokyo; do not say 'cash' (courts read it as currency).","Stark: salary and a bonus need separate provisions; otherwise, is a bonus payable if the executive is terminated for cause?","A&amp;W: if the supply is taxable and the contract is silent, the price may be taken to include VAT; UK late-payment interest is 8% over base plus a fixed sum.","Class: RetailCo (30 days from invoice vs 15 from delivery, paid on day 20); Singapore buyer (Business Day when a holiday in India but not Singapore)."],
+"2.7":["A&amp;W model: 'Each Party shall keep confidential (a) the terms of this agreement; and (b) any confidential information it acquires about the business of the other Party…, for [5] years after termination.'","Clause library: marking requirement, 'marked Confidential or, if oral, identified and confirmed in writing within 30 days'.","Stark: injunction wording, 'monetary damages will be inadequate… entitled to injunctive relief in addition to any other remedies'.","Cases: Niranjan Shankar Golikari v Century Spinning; Shree Gopal Paper Mills (no injunction where no secrets shown)."],
+"2.8":["Burnham: 'Franchisee shall have the exclusive right to distribute Franchisor's products in Musselshell County' implies duties both ways.","Bortolotti, Biotronik v Conor: an exclusive distributor's lost resale profits were direct damages, so not excluded by a consequential-loss clause.","Arclight cl 16: lock-in ends if Nexora fails service levels and does not cure.","A&amp;W: a distributor to 'promote sales to the best of its ability' may have to invest."],
+"2.9":["Stark: 'Schedule 3.10 lists all material contracts' (supplementing) and 'Except as stated in Schedule 3.18' (exception). An unscheduled item is a misrepresentation.","Stark: 'substantially in the form of Exhibit F' sets an objective standard.","Blue Orbit: services under 'the Supplier's standard policies, as amended from time to time' lets one side rewrite the terms.","ABC Agreement: definitions numbered 1(a), (b), (c), (e), (e), (g)."],
+"2.10":["Cohen #27: a 47-word sentence that can be said in 21; a 20-word passive termination clause becomes 15 words active ('Either party may terminate this contract…').","Couplets and triplets: 'due and payable', 'indemnify and hold harmless', 'rest, residue, and remainder'; 'in the event that' for 'if'.","Cohen conclusion: 'Sell, convey, assign, transfer, and deliver' becomes 'sell'."],
+"3.1":["CBS Inc. v Ziff-Davis: breach of warranty gives benefit-of-the-bargain damages without proof of reliance.","Stark no-litigation ladder: flat statement → 'Except as stated in Schedule 3.14' → 'to the Seller's knowledge' → knowledge of any officer → knowledge of three named officers plus what diligent investigation would reveal.","Stark future warranty: 'The machine will operate in accordance with the Specifications for 12 months.'","A&amp;W, Sindall v Cambridgeshire: 'to the best of its knowledge' implies reasonable enquiries."],
+"3.2":["Burnham: liquidated damages wording, '$500 [per day], as liquidated damages and not as a penalty'. 'If Seller delivers after July 17, Buyer does not have to accept the goods' beats a bare 'time is of the essence'.","Stark: price adjustment of 0.5% per week of delay capped at 5% after a 4-week grace period; a play reopening at $10,000 per week; a contractor paying $1,000 per day rising to $2,000.","Stark: owner performs the contractor's work after 5 days' notice and deducts the cost (self-help).","Bortolotti, Meccaniche Rossi v Otto Müller: under German law the buyer could claim more than the 3.6% LD figure."],
+"3.3":["Stark's simple form: 'The Licensor shall indemnify and defend the Licensee against all losses and liabilities arising from third-party claims that the Software infringes any ownership rights of third parties.'","Arclight cl 4: IP indemnity 'subject to the exclusions and procedural requirements'.","EduTrack: EduTrack controls the defence, but no settlement that makes the University admit fault or take on obligations without consent."],
+"3.4":["Burnham: 'shall not be entitled to any consequential damages in excess of $1,000. This limitation shall not apply to damages for injury to the person if the goods are consumer goods.'","Bortolotti, Biotronik v Conor (NY 2014): $100 million of lost resale profits held general damages, not excluded.","Webhosting (A5 Q9): cl 23 excludes indirect loss; cl 32 indemnifies 'all Losses' for confidentiality breach. Which wins?"],
+"3.5":["Stark: 'begins on January 1, 20X5 and ends on December 31, 20X7 (the Term)'. Renewal: 'automatically renews for successive one-year terms unless either party gives notice no later than 30 days before the end of the Term.'","Stark: a litigated clause, 'five years and thereafter successive five-year terms, unless and until terminated by one-year notice'. Did 'unless' reach the initial term?","A&amp;W: Jani-King v Pula (fixed term, no implied right to end it); Harbinger v GEI (support 'in perpetuity' continued).","Stark neutral ending: a grocer switching to organic produce; the owner cancelling for lack of funds."],
+"3.6":["Brahmaputra Tea Co v Scarth: 5 years, 40 miles, still void.","Jet Airways v Jan Peter Ravi Karnik: a 7-year restraint on a pilot. Pepsi Foods v Bharat Coca-Cola: 12 months, struck.","Percept D'Mark v Zaheer Khan: a post-term right to match third-party offers was void.","Krishan Murgai: 'leave' meant voluntary leaving, not dismissal, so draft the trigger carefully."],
+"3.7":["Bortolotti: ICC 9466, a Russian owner's mortgaged vessels arrested by creditors were foreseeable and avoidable. ICC 5195, airport contractor: 'commercial practicability rather than theoretical possibility'. Shipping iron by air is unreasonably costly.","A&amp;W simple clause: 'Neither Party shall have any liability… for delays or failures which result from circumstances beyond the reasonable control of that Party, including labour disputes involving that Party', with prompt notice.","Burnham: if you fear a strike, add 'strike' to the force majeure list."],
+"3.8":["Stark: 'The laws of [state] govern all matters arising under and relating to this Agreement, including torts.' 'Arising under' alone may miss torts.","Cohen #13: 'The exclusive venue for any litigation arising out of this Agreement will be in Boulder County, Colorado.'","Bortolotti: choosing a law does not remove mandatory rules (Ingmar, for agents)."],
+"3.9":["Cohen #17 good mediation clause: named mediator (Jane Johnson of XYZ Mediation, Inc.), place Boulder, max eight hours, costs split equally, starts with a written demand, 14-day default penalty.","Bortolotti: 'statutes of the ICC in Zürich' was held not a clear agreement to arbitrate (Swiss Federal Court 2015, pathological clause).","Arclight cl 6: authorised representatives, 30 days, then arbitration under the 1996 Act, seat Bengaluru, English."],
+"3.10":["Cohen #15: a 24-word merger clause: 'This Agreement sets forth the complete agreement of the parties. There are no promises or representations other than those set forth in this Agreement.'","Mannai v Eagle Star: the 'blue paper' notice example (strict compliance for notices exercising rights).","Stark severability: a $3m non-compete payment; if the non-compete fails, should the rest survive?","Cohen #23: consent to assignment without the word 'written' leaves wiggle room."]
+};
+
+const CARDS = [
+["u1","Haggard's 9 drafting steps?","Ask why · Audience · Context · Content · Check law · Conceptualise · Organise · Write · Review"],
+["u1","Haggard's opening idea?","The contract is a means to an end. Drafting is thinking, not just writing."],
+["u1","Haggard's three conceptual choices?","Specificity/generality · precision/vagueness · concreteness/abstraction"],
+["u1","Haggard's three rules of division?","Parallel categories mutually exclusive · parts add up to the whole · one principle of division"],
+["u1","Haggard: 5 uses of recitals?","Purpose (frustration) · shared facts (mistake) · damages background · why time is of the essence · soften harsh terms"],
+["u1","Burnham's 5 passes?","Orientation · Explication · Implication · Remediation · Evaluation"],
+["u1","Burnham's 5 features of contract reading?","Non-linear · imaginative · non-literal · transformative · iterative"],
+["u1","Burnham's Three P's?","Predict · Provide · Protect"],
+["u1","Stark's seven concepts?","Representations · warranties · covenants · rights · conditions · discretionary authority · declarations"],
+["u1","Verb for covenant / condition / discretion / declaration?","shall · must (or only if / if…then) · may · means or present tense"],
+["u1","Representation vs warranty remedy?","Misrepresentation = tort (rescission, fraud damages). Warranty = contract damages, no reliance needed (CBS v Ziff-Davis)."],
+["u1","When is 'shall' wrong (Stark)?","No party before it ('goods shall be delivered'); 'shall be'; 'shall have'; in a condition."],
+["u1","Anatomy chart: four blocks?","A Introductory · B Operative · C Boilerplate · D Signature/schedules/annexures"],
+["u1","Payne's essential parts?","Title · Preamble · Background · Consideration · Definitions · Action sections · Other substantive · Endgame · Boilerplate · Signature lines"],
+["u1","Fox's trumping tools?","Proviso · notwithstanding · except as otherwise provided / subject to · without limiting the generality · inconsistency-between-agreements"],
+["u1","'Subject to X' vs 'notwithstanding X'?","Subject to: this clause gives way to X. Notwithstanding: this clause overrides X."],
+["u1","Recital vs operative conflict rule (Stark)?","Clear recital beats ambiguous operative; clear operative beats ambiguous recital; both clear → operative wins."],
+["u1","Adams Ch 7 sources of uncertain meaning?","Ambiguity · insufficient specificity · mistake · conflict · failure to address an issue · vagueness"],
+["u1","Stark's three ambiguities?","Semantic · syntactic · contextual (two inconsistent provisions)"],
+["u1","Ambiguity vs vagueness?","Ambiguity: two or more distinct meanings. Vagueness: one meaning, fuzzy edges ('reasonable'). Vagueness can be a deliberate tool."],
+["u1","Raffles v Wichelhaus lesson?","Two ships named Peerless; know the facts and identify the thing precisely (mistake / latent ambiguity)."],
+["u1","English interpretation sequence (A&W)?","Words → objective reading → context → clear language applies → exclude negotiations/subjective intent → business common sense if ambiguous"],
+["u1","Agreement to agree: risk and fix?","May be void for uncertainty (ICA s 29). Fix: formula/index, third-party expert, fallback price, exit right."],
+["u1","Dodds v Walker example?","One month from 15 July ends 15 Aug; 30 days from 15 July ends 14 Aug."],
+["u2","How to name a company party (Stark)?","Full legal name from organisational docs + jurisdiction and entity type appositive; never a division."],
+["u2","Correct form of party defined term?","(the \"Executive\"): 'the' inside brackets, never 'hereinafter', one term per party."],
+["u2","Stark: what to keep out of the preamble?","Addresses (put in notice clause) and 'an individual'."],
+["u2","'Dated' vs 'dated as of'?","Dated = signing day. As of = treated as made earlier; record true signing date in an Effective Date clause; don't deceive third parties."],
+["u2","Why not recite 'good and valuable consideration'?","Reciting cannot create consideration (gold watch). State the real exchange: price, quantity, quality, time of performance/payment."],
+["u2","Stark: should operative terms go in recitals?","No. Court may not enforce them; don't incorporate recitals either."],
+["u2","Definition verbs: which and which not?","means (complete), includes (enlarging), does not include. Never shall mean, means and includes, includes only."],
+["u2","Stuffed definition?","One containing an obligation or condition (shall/must/may). Move it to an operative clause."],
+["u2","Circular vs overlapping definitions?","Circular: A defined by B and B by A (anchor to external fact). Overlapping: terms covering the same ground (Licensor / Software / Licensor Software)."],
+["u2","Autonomous vs integrated definition?","Autonomous: own entry in a definitions section. Integrated: parenthetical in context, with 'the'."],
+["u2","Where do definitions go?","Front (Stark, Haggard, Cohen) vs pared-down at back with on-site definitions (Adams) vs index; shared appendix for multi-document deals."],
+["u2","Stark's 4 action sections?","Subject-matter performance · payment · term · closing date and deliveries"],
+["u2","Stark's ladder for degree of obligation?","Absolute shall obtain → commercially reasonable efforts → capped effort (offer $10k) → merely request"],
+["u2","Stark's 10 payment guidelines (start)?","Follow the cash · who/what/when/why/how · state amount and currency · active voice · calculate before signing · due date · stub periods · method · separate provisions · test formulas"],
+["u2","A&W: payment traps?","VAT inclusive?, late interest, time of essence, currency risk, withholding/set-off, refundable advances."],
+["u2","Five standard confidentiality exclusions?","Public without breach · already known · independently developed · from non-bound third party · legally compelled (with notice)"],
+["u2","Confidentiality remedies?","Injunction (damages inadequate) · damages · LDs (reasonable pre-estimate) · indemnity · termination; carve out of cap or super-cap"],
+["u2","Burnham's Musselshell County point?","'Exclusive right' implies grantee efforts, no sales elsewhere, and grantor can't grant others."],
+["u2","Schedule vs exhibit (Stark)?","Schedule: disclosure info supplementing or excepting R&W. Exhibit: form of document or related agreement."],
+["u2","Why avoid 'above' / 'below' / 'hereunder'?","Contract-reference ambiguity (Adams). Cite specific section numbers."],
+["u3","Four IP indemnity mitigation options?","Procure licence · modify · replace · terminate and refund"],
+["u3","Indemnity procedure essentials?","Prompt notice (prejudice standard) · cooperation · indemnifier controls defence · indemnitee consent to settlements admitting fault or imposing obligations"],
+["u3","Why say 'indemnify and defend'?","Common law indemnity doesn't include defence."],
+["u3","Direct vs consequential loss?","Direct: natural result (capped). Consequential: lost profits/data/reputation (excluded). Name the losses; Biotronik shows 'consequential' is ambiguous."],
+["u3","Cap structures?","Contract value · 12-month fees · multiple · fixed sum · insurance limits · tiered/super-cap"],
+["u3","Standard LoL carve-outs?","IP indemnity · data/confidentiality · wilful misconduct/gross negligence · payment · death/personal injury · fraud"],
+["u3","LDs vs penalty: Indian rule?","ICA s 74: reasonable compensation not exceeding the named sum (Kailash Nath; Saw Pipes)."],
+["u3","UK penalty test?","Cavendish v Makdessi / ParkingEye: out of all proportion to legitimate interest."],
+["u3","Stark's 3 kinds of ending?","Neutral · friendly · unfriendly (default)"],
+["u3","Stark's 6 endgame points?","Termination events · consequences of notice · termination date · survival of common-law rights · survival of specific provisions · dispute resolution"],
+["u3","Renewal drafting rule?","Don't leave price 'to be agreed'. Use % or index; set length, notice deadline, number of renewals."],
+["u3","ICA s 27 in one line?","Restraint of trade void, except sale of goodwill. In-term restraints OK; post-term void (Krishan Murgai)."],
+["u3","Force majeure: three conditions?","Unforeseeable · beyond control · irresistible/unavoidable"],
+["u3","Force majeure vs hardship?","FM: performance impossible/prevented. Hardship: possible but excessively onerous. India has no general hardship doctrine; draft it."],
+["u3","Indian force majeure/frustration sections?","s 32 (contingent contracts; Energy Watchdog) and s 56 (Satyabrata Ghose)."],
+["u3","Governing law vs jurisdiction?","Law decides rules applied; jurisdiction decides which court/tribunal hears it. Need both clauses, consistent with arbitration."],
+["u3","Bortolotti: arbitration clause essentials?","Clear intent · institution or appointment method · scope ('arising out of or in connection with')"],
+["u3","Seat vs venue (India)?","Venue may be treated as seat (BGS SGS Soma). Name the seat."],
+["u3","Assignment clause must cover?","Change of control · merger/operation of law · delegation · affiliate transfers · consent standard · void if breached · novation for burdens"]
+];
+
+const QS = [
+{k:"short",t:"List Stark's seven contract concepts with the verb that signals each and the remedy for breach.",a:"Use the 1.6 table: representation (represents) → misrepresentation; warranty (warrants/will) → damages; covenant (shall) → damages/specific performance; right (is entitled to); condition (must/only if) → no obligation; discretionary authority (may) → none; declaration (means/present tense) → none. Add one sentence: the drafter's skill is translating business terms into these."},
+{k:"short",t:"Distinguish ambiguity from vagueness with a contract example.",a:"Ambiguity = two or more distinct meanings (semantic: 'ton' short vs long; syntactic: modifier scope; Raffles ships). Vagueness = one meaning with fuzzy edges ('reasonable time'). Haggard: vagueness is a deliberate cushion but risky with a bad-faith reader. Fix: define, tabulate, or add objective benchmark."},
+{k:"short",t:"Why shouldn't operative terms be placed in recitals?",a:"Recitals are not promissory (Haggard) and may not be enforced (Stark; McKinnon v Baker). Stark: operative provisions in recitals 'probably will not be enforceable'. Put covenants/R&amp;W/conditions after the words of agreement. Payne: Background has no covenants."},
+{k:"short",t:"What is a stuffed definition? Give an example and a fix.",a:"A definition carrying an obligation (e.g. 'Services… which PPPL shall provide in accordance with the Service Levels'). Adams 6.52–6.58; Stark guidelines 18, 20. Fix: define neutrally, put the obligation in an operative clause. 'You can sue on a covenant, not on a definition.'"},
+{k:"short",t:"Explain how 'subject to' and 'notwithstanding' resolve clause conflict.",a:"Fox 5:3. Subject to X: this clause yields. Notwithstanding X: this clause prevails. Use inside exclusivity vs direct-sales carve-out (A4 Q8). Add an order-of-precedence clause for body vs schedules."},
+{k:"short",t:"Why is post-employment non-compete void in India?",a:"ICA s 27 (void restraints; goodwill exception). Indian courts ask only whether there is a restraint, not reasonableness (Krishan Murgai; Pepsi Foods). In-term restraints are valid unless unconscionable (Niranjan Shankar; Gujarat Bottling). Use confidentiality, IP assignment, notice/garden leave, narrow non-solicit."},
+{k:"short",t:"What should a force majeure clause contain?",a:"General definition + list of events + consequences. Three conditions (unforeseeable, beyond control, unavoidable). Notice, mitigation, 'to the extent of', payment obligations, SLA suspension, long-stop termination (Arclight 60 days). Indian s 32/56 context."},
+{k:"long",t:"Using Haggard's process, explain what a good contract lawyer does before writing and why drafting is more than writing. Illustrate with a 3-year supply agreement.",a:"Skeleton (≈25 min): Intro: contract = means to an end; drafting is intellectual. Body: A Ask why (client's objective; Director of R&amp;D example) → B Audience (counterparty posture, bad-faith reader, judge) → C Context (Raffles) → D Content (who/what/when/where/how/why; what ifs: cost rises, demand shifts, supply disruption; remote risks left to defaults) → E Law (ICA s 10, s 29) → F Conceptualise (precise 'within 24 hours' vs vague; specific vs general) → G Organise (division, classification, sequence) → H Write → I Review (proofread by someone else). Link: Stark's concepts translate business terms; Burnham's Predict/Provide/Protect. Conclude: writing is 'perhaps the easiest' step."},
+{k:"long",t:"Read-and-analyse: apply Burnham's five passes to a services agreement.",a:"Skeleton: define reading as non-linear etc. Then 5 headings. Orientation (title, caption, recitals, exchange; foundation vs cathedral). Explication (boilerplate; rights/duties table; conditions; renewal dates). Implication (defaults, who performs first, usage). Remediation (breach vs excuse, damages, LDs s 74, termination). Evaluation (gaps, blanks, definitions substitution, passive voice, plain English, negotiables). Give 2–3 concrete observations each and end with advice to client."},
+{k:"long",t:"Critically discuss the allocation of risk between indemnity and limitation of liability clauses, and redraft the interaction.",a:"Skeleton: define each (indemnity = affirmative duty for third-party claims; LoL = cap/exclusion). Show collision (A5 Q9: cl 23 vs cl 32; two readings). Library: carve-outs (IP, data, confidentiality, wilful misconduct, payment, death). Cap structures; super-cap. Direct vs consequential (Biotronik). Indian s 73/124/125; Brojo Nath. Redraft: 'Except for liability under clause 32 and for breach of clause [x], neither party is liable for indirect… loss' plus defined 'Losses'. Advice: who bears which risk, insurance alignment."},
+{k:"long",t:"Review the definitions section of a licence agreement (e.g. PPPL–RRRL).",a:"Skeleton: method (necessity, overlap, circularity, stuffing, scope, part of speech, placement). Table with KEEP/DELETE/MERGE/REDRAFT/MOVE. Cover: Software/Licensed Software/Software Platform (merge); Authorised User/User/Permitted User (overlap, circular); Services and Service Levels (stuffed); Support/Support Request (circular); Control (noun vs verb); Business Day (place); Improvements (overlap with Software); Licensed Affiliates (new). Cite Adams Ch 6 and Payne. Missing terms: Usage Data, Effective Date, Term."},
+{k:"long",t:"Spot and fix drafting defects in a given clause (A4/A5 style).",a:"Four-step method per clause: (1) name the defect with the textbook label; (2) quote the words and give both readings applied to the facts (do the date/arithmetic); (3) cite authority (Adams, Stark, Cohen, Burnham, A&amp;W, ICA); (4) fix: the question to ask the client plus a redraft. Reuse the ten one-line fixes in the Cram sheet."},
+{k:"long",t:"Discuss restraint of trade and confidentiality in employment/commercial contracts in India.",a:"Skeleton: three covenant types (Bhat). s 27 and goodwill exception. In-term vs post-term table with cases. Protectable interests (trade secrets, not skill). Non-solicit vs non-dealing. Compare English reasonableness (Nordenfelt, Herbert Morris, Esso). Drafting advice: legitimate interest recital, in-term restraint, confidentiality/IP/garden leave, severability, remedy via SRA s 42 but no forced service. Mention DPDP and trade-secret proof problems."}
+];
+
+const CRAM = [
+{t:"Lists to say out loud",b:["Haggard A–I: Ask · Audience · Context · Content · Check law · Conceptualise · Organise · Write · Review","Burnham: Orientation · Explication · Implication · Remediation · Evaluation","Stark 7: rep · warranty · covenant · right · condition · discretion · declaration","Anatomy: Introductory · Operative · Boilerplate · Signature/schedules","Adams Ch 7: ambiguity · specificity · mistake · conflict · failure to address · vagueness","Stark endgame: events · consequences · date · common law survival · clause survival · dispute resolution"]},
+{t:"Ten reusable fixes",b:["Undefined trigger → define event, actor, evidence","Modifier ambiguity → tabulate","Vague standard → objective benchmark","Agreement to agree → formula / expert / fallback + exit","Renewal gap → length, price, notice, no repeat","Conflict → delete / subject to / notwithstanding / precedence","Endgame silence → money, data, accrued rights","Survival unclear → list clauses and periods","Passive voice → name actor, deadline, consequence","Unadapted template → change of control, merger, delegation, consent standard, void transfers"]},
+{t:"Indian sections",b:["s 10 valid contract · s 23 unlawful · s 25 no consideration void","s 27 restraint of trade · s 28 legal proceedings · s 29 uncertainty","s 32 contingent · s 56 frustration · s 62 novation","s 73–75 damages / penalty / rescission","s 124–125 indemnity","s 17–19 fraud / misrepresentation / voidable","Sale of Goods Act ss 9–10 price; ss 12–17 conditions/warranties","A&C Act 1996 ss 7, 8, 9, 11, 34"]},
+{t:"Cases to name",b:["Raffles v Wichelhaus (ships Peerless)","McKinnon v Baker (recitals)","Mattel v MGA (includes)","ICS · Chartbrook · Rainy Sky · Arnold · Wood v Capita","Dodds v Walker (months)","Niranjan Shankar · Gujarat Bottling · Krishan Murgai","Satyabrata Ghose · Energy Watchdog","Kailash Nath · Saw Pipes (s 74)","Cavendish v Makdessi · ParkingEye","Biotronik v Conor (consequential)"]},
+{t:"Answer shape for any long answer",b:["1. Client's commercial objective","2. Key risks, ranked","3. Clause analysis (label, mechanism, reading A vs B)","4. Redraft in precise words","5. Practical advice and one decision for the client","Cite reading first, textbook second, Indian law third."]},
+{t:"Before you walk in",b:["Read each question twice; answer the sub-parts in order","One defect per paragraph; always give the redraft","Do the date/money arithmetic on the page","Write 'Indian law hook' sentence in every long answer","Leave 5 minutes to re-read","Sleep matters more than another hour tonight"]}
+];
+
+const ANS = [
+{u:"u1",t:"Purpose of a contract and the good contract lawyer",
+ q5:"What does a good commercial contract do? (5)",
+ five:["It is a <b>means to an end</b> (Haggard): it must satisfy the client's needs and let the deal go through without hard feelings or litigation.","Cohen, read in reverse: it <b>states rights and duties clearly, defines key terms, covers foreseeable issues, has no ambiguity or inconsistency, and uses plain English</b>.","Payne's test: a third party who was not at the negotiation can understand the deal.","Stark: it is the parties' <b>private law</b> and a <b>planning document</b>; it should be specific yet flexible, advance the client's goals and cut its risks.","Example: Haggard's house buyer wants a binding commitment so that title and possession pass later. Indian hook: ICA ss 2(h), 10."],
+ q10:"Explain what makes a good contract lawyer, using Haggard's drafting process. (10)",
+ ten:[["Intro","Drafting is 'an intellectually demanding, creative, problem-solving process' and not mere writing (Haggard). Writing is only step H."],["Before writing","<b>Ask why</b> (find the real problem: the Director of R&amp;D example), <b>identify the audience</b> (other party, bad-faith reader, judge), <b>understand the factual context</b> (Raffles: two ships Peerless), <b>determine content</b> (who/what/when/where/how/why plus 'what ifs'), <b>check the law</b>."],["Shaping","<b>Conceptualise</b> (specific vs general, precise vs vague, concrete vs abstract) and <b>organise</b> (division, classification, sequence)."],["Finishing","<b>Write</b> plainly and then <b>review</b>: drafters 'quit too early'; revisit planning, then substance, then style, then proofread by someone else."],["Skills (other readings)","Stark: analytical skill, negotiation, business understanding, legal knowledge, eye for detail; translating business terms into contract concepts so you are 'not a mere scrivener'. Fox: spot issues before signing (the $3m pipe-threader). Doonan &amp; Foster: advise first, then follow instructions and note the advice on file."],["Indian hook","ICA s 10 and s 29 frame what must be present and certain."],["Conclusion","A good lawyer solves the client's real problem, drafts within the law, and produces a document a stranger can read."]]},
+{u:"u1",t:"Anatomy of a contract",
+ q5:"Name the four blocks of the anatomy of a contract and give examples. (5)",
+ five:["<b>A Introductory:</b> title, preamble, parties, recitals, effective date, definitions, interpretation.","<b>B Operative:</b> rights and obligations, conditions precedent, payments, confidentiality, exclusivity, indemnity, limitation of liability, R&amp;W, term, termination, survival, force majeure.","<b>C Boilerplate:</b> further assurance, notice, severability, governing law, dispute resolution, waiver, assignment, amendment, entire agreement.","<b>D Signature, schedules, annexures.</b>","Why it matters: it shows where a clause belongs and what is missing. Stark's version has 11 parts; Payne's has 10."],
+ q10:"Compare how Haggard, Stark and the class chart organise a contract. Where do they differ? (10)",
+ ten:[["Intro","All agree on one order: open, define, deal, exit, housekeeping, sign."],["Class chart","Four blocks A–D as above. Vocabulary (definitions, capitals, interpretation) sits in the introduction because the reader needs it first."],["Haggard","Introductory paragraph (with 'mutually agree' for consideration) → recitals (Background) → definitions → substantive provisions (often chronological) → housekeeping → signatures."],["Stark","Eleven parts: preamble, recitals, words of agreement, definitions, action sections, other substantive provisions, endgame, general provisions, signature lines, schedules, exhibits."],["Payne / Burnham / A&amp;W","Payne: ten essential parts incl. a separate <b>Endgame</b>. Burnham: description, caption, recitals, transition, definitions, operative language, boilerplate, closing; transition language 'can be disregarded'. A&amp;W add status of document, cover page, date, parties, recitals, operative provisions, schedules, signatures."],["Differences","Force majeure and LDs: housekeeping (Haggard) vs operative (chart). Definitions: front (Stark, Haggard) vs back (Adams). Endgame: separate part (Payne, Stark) vs inside operative block (chart)."],["Conclusion","Use the chart as the map; note the alternative in your answer."]]},
+{u:"u1",t:"Burnham's five passes for reading a contract",
+ q5:"List Burnham's five passes. (5)",
+ five:["<b>Orientation:</b> theme, structure, larger background (Predict, Provide, Protect).","<b>Explication:</b> boilerplate, rights and duties, declarations, duration, conditions.","<b>Implication:</b> default rules, implied conditions, trade usage, course of dealing.","<b>Remediation:</b> breach or excuse, damages, material breach, specific performance, LDs.","<b>Evaluation:</b> concerns, completeness, language weaknesses, expert input."],
+ q10:"Apply Burnham's five passes to a services agreement you are asked to review. (10)",
+ ten:[["Intro","Reading a contract is non-linear, imaginative, non-literal, transformative and iterative; read before the fact (advice) or after (dispute)."],["1 Orientation","Title and caption (Lender/Borrower tells you more than Company/Contractor), recitals, main exchange. Foundation (details left open) or cathedral (everything covered)? Final agreement or stepping stone such as an MoU?"],["2 Explication","Do not skip boilerplate. List duties by their words (shall, will, must) and the matching rights; look for inferred duties (Musselshell County franchise). Diarise start, end and renewal-notice dates. Conditions: who controls the event?"],["3 Implication","What would law supply if silent? Does an 'AS IS' clause change the default? Who performs first and so becomes a creditor? Trade usage (100,000 bushels ±5%) and course of performance (oil change every 5,000 miles)."],["4 Remediation","Is non-performance excused (force majeure, waiver, failed condition)? Expectation damages ($20,000 profit). Is the other side's performance still due? Make materiality express; 'time is of the essence' needs a stated consequence."],["5 Evaluation","Blanks, incorporated documents, obligations placed on non-parties; plain English; substitute each definition into the clause ('transfer' including 'pledge'); compare a current form."],["Conclusion","End with a list of issues to raise and the changes you would propose."]]},
+{u:"u1",t:"Stark's seven building blocks and risk allocation",
+ q5:"Explain representations, warranties, covenants and conditions with the verb and remedy for each. (5)",
+ five:["<b>Representation:</b> statement of past or present fact to induce a party to act; signalled by 'represents'; remedy misrepresentation (rescission; fraud adds damages).","<b>Warranty:</b> promise that the statement is true (an indemnity); 'warrants', or 'will' for the future; damages without proof of reliance (CBS v Ziff-Davis).","<b>Covenant:</b> promise to do or not do; 'shall'; damages or specific performance.","<b>Condition:</b> uncertain event that must occur before an obligation; 'must' / 'only if' / 'if…then'; failure means no duty to perform.","Remaining three: right ('is entitled to'), discretionary authority ('may'), declaration ('means', present tense)."],
+ q10:"Using Stark, explain how the choice and wording of contract concepts allocates risk. (10)",
+ ten:[["Intro","The drafter translates business terms into seven concepts; the concept chosen and how it is qualified decide who bears the risk."],["Reps and warranties","Truth is tested at one moment: repainting walls after signing is a covenant issue, not a misrep (Sally/Bob). Qualifiers move risk: flat → 'except Schedule 3.14' → 'to the Seller's knowledge' → named officers. The recipient wants both a rep (rescission) and a warranty (damages without reliance)."],["Covenants","Degree of obligation: 'shall obtain consent' (seller bears risk) → 'commercially reasonable efforts' → deemed met if $10,000 offered → only 'request'."],["Conditions","Including a condition puts risk on the party entitled to performance (mortgage condition). Condition vs covenant: late insurance notice is forfeiture as a condition, damages only as a covenant. Standard: 'satisfactory' vs 'reasonably satisfactory' vs 'substantially in form of Exhibit B'."],["Discretion and declarations","Assignment: unfettered consent → 'not unreasonably withheld' → carve-out for wife Lara Raskin. A declaration cannot be breached; ''Purchase Price' means $200,000' needs a covenant to pay."],["Drafting rules","Use 'shall' only after a named party; 'will' for the future; 'must' for conditions. Do not use concepts as headings (Payne)."],["Conclusion","Always ask whose side you act for and where the risk lands."]]},
+{u:"u1",t:"Ambiguity, vagueness and drafting defects",
+ q5:"Distinguish ambiguity from vagueness and name three drafting defects. (5)",
+ five:["<b>Ambiguity:</b> two or more distinct meanings (semantic: 'ton'; syntactic: modifier scope).","<b>Vagueness:</b> one meaning with fuzzy edges ('reasonable'); can be a deliberate cushion (Haggard).","<b>Conflict:</b> two clauses answer the same question differently (Cohen #19).","<b>Failure to address an issue:</b> Sabatini, 'private garage' with no size limit.","<b>Agreement to agree:</b> price 'by mutual agreement' with no fallback; ICA s 29."],
+ q10:"Identify and classify the sources of uncertain meaning in contracts and explain how a drafter removes each. (10)",
+ ten:[["Intro","Adams Ch 7: six sources; courts lump them as 'ambiguity' but they work differently."],["Ambiguity","Lexical (homonymy/polysemy: 'foreclosure'), antecedent (Loso: 'said cost'), contract-reference ('hereunder'). Fix: define, restate, cite section numbers."],["Syntactic (Stark)","'pending or threatened to the Borrower's knowledge'; 'and/or' (president and/or general manager). Fix: move qualifier, tabulate, drop and/or."],["Insufficient specificity / mistake","Richey ('computer gaming business' vs smartphones); Raffles (two Peerless ships). Fix: name the thing precisely and know the facts."],["Conflict / omission","Tenant vs Landlord maintains lobby; Sabatini. Fix: 'subject to' / 'notwithstanding', precedence clause; ask 'what if' (Haggard)."],["Vagueness","Use only where little is at stake; narrow it; or add benchmark. Creative ambiguity is gamesmanship (United Rentals)."],["Dates","'By', 'within 30 days of' are ambiguous; Dodds v Walker (1 month vs 30 days)."],["Indian hook / conclusion","ICA s 29 voids uncertain agreements; contra proferentem. Remove ambiguity because the drafter bears the risk."]]},
+{u:"u1",t:"How clauses interact (Fox trumping, consistency)",
+ q5:"Explain 'subject to' and 'notwithstanding' with an example. (5)",
+ five:["Contracts contain clauses that can conflict; the careful drafter says which wins (Fox 5:3).","'<b>Subject to clause X</b>': this clause yields to X.","'<b>Notwithstanding clause X</b>': this clause overrides X.","Example: PharmaCo exclusivity: 'Subject to clause 7.2, PharmaCo appoints… exclusive'; 'Notwithstanding clause 3.1, PharmaCo may sell directly to Institutional Customers.'","Add an order-of-precedence clause for body vs schedules."],
+ q10:"Discuss how drafters ensure the clauses of a contract work together. (10)",
+ ten:[["Intro","Many disputes come from two sensible clauses pulling apart (Payne: parts 'well coordinated')."],["Consistency of language","One term for one thing (Cohen #7); say the same thing the same way (Stark: 'officers' vs 'executive officers')."],["Trumping tools (Fox)","Proviso; 'notwithstanding'; 'except as otherwise provided'; 'without limiting the generality of the foregoing' (Deerfield plant $5m insurance); inconsistency-between-agreements clause (binds only parties to both)."],["Recitals vs operative","Clear recital beats ambiguous operative; clear operative beats ambiguous recital; both clear → operative."],["Organisation","Haggard: categories mutually exclusive, sum to the whole, one principle; classify where readers look."],["Key interactions","Indemnity ↔ cap; confidentiality ↔ survival; exclusivity ↔ carve-outs; arbitration ↔ court venue (Cohen #19); fixed term ↔ early termination ('subject to')."],["Conclusion","Do a final coherence review; Bortolotti: avoid a 'pot pourri' of clauses."]]},
+{u:"u1",t:"Plain English and Cohen's list",
+ q5:"Why does Cohen satirise bad contracts and what are three of his points? (5)",
+ five:["Satire: bad contracts keep litigation profitable; read each point in reverse.","#1 generic title → use a descriptive title ('Horse Purchase Contract').","#19 inconsistent provisions (arbitration + exclusive court venue).","#5 undefined or circular definitions; #15 no merger clause.","#27 legalese: long sentences, passive voice, doublets, Latin."],
+ q10:"Using Cohen, Wydick and Payne, explain plain-English drafting in contracts. (10)",
+ ten:[["Intro","Plain English reduces misunderstanding; business contracts are not consumer documents but borrow its clarity (Stark)."],["Cohen's rules","Short intro, no WHEREAS/WITNESSETH, accurate headings, number paragraphs, one topic per paragraph, state date/time/place, 24-word merger clause, readable font."],["Wydick","Cut surplus words; base verbs not nominalisations; active voice (passive hides the actor); short sentences; keep subject-verb-object together; avoid lawyerisms and 'shotgunning'."],["Payne's error list","Archaic language, legalese, wordiness, passive, double negatives, dangling modifiers, dual verbs, boilerplate not conformed to terms."],["Example","47-word sentence cut to 21; 'indemnify and hold harmless' is a couplet; 'Sell, convey, assign, transfer and deliver' becomes 'sell'."],["Conclusion","Clear writing is risk management, not decoration."]]},
+
+{u:"u2",t:"Parties, preamble and recitals",
+ q5:"What should a preamble and recitals contain and avoid? (5)",
+ five:["Preamble: name of agreement, date, parties with full legal name and entity type (Stark): 'Internet Inc., a Delaware corporation'.","Define parties parallel: (the \"Manufacturer\") / (the \"Retailer\"); never 'hereinafter'.","Never name a division; Cohen #21: ABC, Inc. vs its subsidiaries.","Recitals: purpose, shared facts, background for damages, why time is of the essence, soften harsh terms (Haggard).","Avoid operative terms, WHEREAS, price, and undefined terms in recitals (Stark's guidelines)."],
+ q10:"Discuss the function and legal effect of recitals. How should they be drafted? (10)",
+ ten:[["Intro","Recitals explain the 'why' of the deal; they are not promissory."],["Uses","Haggard's five: frustration, mistake, damages, time of the essence, unconscionability. Stark adds: inform third parties, support enforceability (non-compete), clarify intent (Wood v Lucy), explain consideration (guaranty)."],["Legal effect","Haggard: part of the contract but create no duties; facts may be conclusive. Stark: not part of the binding terms; operative provisions in recitals 'probably will not be enforceable' (McKinnon v Baker)."],["Conflict rules","Clear recital + ambiguous operative → recital; clear operative + ambiguous recital → operative; both clear → operative."],["Drafting rules (Stark)","Only if useful; tell a story; accurate facts; chronology; no operative terms; do not incorporate; generally no price; plain headings; no 'desires' statements."],["Words of agreement","'Accordingly, the parties agree as follows:'. Reciting consideration cannot create it (gold watch)."],["Indian hook","ICA s 2(d), s 25: state the real exchange in the operative clauses."],["Conclusion","Short Background, facts only, nothing a party must do."]]},
+{u:"u2",t:"Definitions and interpretation",
+ q5:"State five rules for drafting good definitions. (5)",
+ five:["Define only terms that need it; use them consistently with initial capitals.","Use <b>means</b> for complete, <b>includes</b> for enlarging; never 'shall mean' or 'means and includes'.","No circular or overlapping definitions (Adams); anchor to an external fact.","No obligations in definitions ('stuffed': shall, must, may).","Choose placement: front, back with on-site definitions, or index."],
+ q10:"Critically discuss the principles of drafting defined terms (Adams Ch 6). (10)",
+ ten:[["Intro","Definitions save repetition and keep meaning consistent; failure to say the same thing the same way invites two constructions (Stark, Storage Space)."],["Functions","Expand/limit, clarify, resolve ambiguity, explain technical terms, express deal concepts, list."],["Verbs","<b>Means</b> complete; <b>includes</b> enlarges but 'creates mischief' (Mattel v MGA: were ideas 'inventions'?); combine 'W means X and includes Y but does not include Z'."],["Faults","Circular (Bonus Date/Bonus Period); overlapping (Licensor/Software/Licensor Software); stuffed (obligation inside); unused terms; defined after use; dictionary reliance. Adams tolerates mild repetition; Stark, Cohen, Payne do not."],["Forms","Autonomous (own entry, alphabetical) vs integrated (parenthetical, with 'the'; mid-sentence placement can change meaning, Dynaco 'Contracts')."],["Placement","Front (Stark, Haggard, Cohen) vs back plus on-site (Adams) vs index vs shared appendix."],["Strategy","Definitions set standards and favour a side (closed-list vs criteria 'Force Majeure Event'; who is an 'Affiliate')."],["Interpretation clauses","Stark's typical rules (including = without limitation, statutes as amended); must not enlarge the parties (ABC cl 3.1–3.2)."],["Conclusion","A definition is a tool; every defined term must earn its place."]]},
+{u:"u2",t:"Operative clauses and payment",
+ q5:"What should a payment clause contain? (5)",
+ five:["Who pays whom, how much, currency, when, why, how (Stark: 'follow the cash').","Due date and trigger, one only (RetailCo problem).","Method: immediately available funds, where (Chicago vs Tokyo).","Tax (VAT/GST inclusive?), interest on late payment, set-off, withholding.","What happens to the money on early termination (Payne)."],
+ q10:"Discuss how action sections and payment provisions should be drafted. (10)",
+ ten:[["Intro","Stark: wrong payment drafting is 'not generally forgiven'. Action sections come first because they are 'where the action is'."],["Action sections","Subject-matter performance ('Subject to the provisions of this Agreement, the Company shall hire…'), payment, term, closing date and deliveries; self-executing grants use present tense."],["Stark's guidelines","Follow the cash; state amount; active voice; calculate before signing; due date; stub periods; method; separate provision per payment; test formulas."],["A&amp;W","Fixed vs variable price; formula in maths (Chartbrook); VAT; interest; time of essence; currency risk; deductions; refundable advances; ancillary costs."],["Implied conditions","'Net 30 from delivery': payment not due until delivery (Burnham); first performer is a creditor and needs security, guarantee or progress payments."],["Class cases","RetailCo (two triggers), Singapore buyer (define Business Day by place), Arclight cl 14 (fees exclusive of tax; invoice deemed accepted after 7 Business Days)."],["Indian practice","GST invoice, TDS, interest, MSMED 45-day limit (beyond readings); ICA s 46, s 55."],["Conclusion","One trigger, one place, every number checked."]]},
+{u:"u2",t:"Confidentiality and exclusivity",
+ q5:"What are the standard exclusions and remedies in a confidentiality clause? (5)",
+ five:["Exclusions: public without breach; already known; independently developed; received from a non-bound third party; legally compelled (prompt notice).","Obligations: no disclosure <i>or use</i>; need-to-know recipients bound; security; return/destruction.","Term: disclosure period plus survival (2–5 years); trade secrets while secret.","Remedies: injunction (damages inadequate), damages, LDs, indemnity, termination.","Carve confidentiality out of the liability cap or super-cap it."],
+ q10:"Discuss the drafting of a confidentiality clause, with reference to the Indian position. (10)",
+ ten:[["Intro","Confidentiality protects information shared in the deal, standalone (NDA) or as a clause."],["Type","Mutual, one-way (discloser/recipient favourable), multilateral; identify direction of information flow (Singhania)."],["Definition","'Most critical part': broad catch-all vs marking requirement (30 days to confirm oral disclosure). Define cautiously and in detail."],["Exclusions and obligations","As in the five-mark list; recipient answers for its employees and advisers."],["Term and survival","Not indefinite (Singhania); state whether obligations survive termination."],["Remedies","Injunction, damages (hard to quantify), LDs (reasonable estimate; s 74), indemnity; carve-out from cap (Defects set 2 Q9)."],["Indian law","Golikari: protects trade secrets, not general skill; Shree Gopal Paper Mills (no secrets shown); leakage hard to prove (Sandhya Organic). DPDP Act for personal data."],["Exclusivity link","Exclusivity is a negative covenant paired with grantee duties (Burnham, Musselshell). Define Territory; reserve customers 'Subject to…'; lock-in; minimums (Bortolotti); in-term OK (Gujarat Bottling), post-term void (s 27)."]]},
+
+{u:"u3",t:"Representations and warranties; breach and remedies",
+ q5:"Distinguish a representation from a warranty and state the remedies. (5)",
+ five:["Representation: statement of past/present fact made to induce reliance.","Warranty: promise that the statement is true; operates as an indemnity.","Misrepresentation is a tort: rescission; fraud adds damages.","Breach of warranty is contract: benefit-of-bargain damages, no reliance (CBS v Ziff-Davis).","Recipient takes both; maker narrows by knowledge, materiality and disclosure schedule."],
+ q10:"Discuss the consequences of breach and how a contract can pre-agree remedies. (10)",
+ ten:[["Intro","First ask whether non-performance is a breach or excused (force majeure, waiver, failed condition, trade usage)."],["Damages","Expectation measure ($20,000 profit). Indian ICA s 73: natural or contemplated loss, no remote loss."],["Counter-performance","Is it still due? Material breach; state it expressly. 'Time is of the essence' needs a consequence ('Buyer does not have to accept the goods')."],["Contract remedies (Stark)","Price adjustment (0.5% per week, cap 5%), self-help, default interest, injunction, LDs, indemnity, set-off, cumulative vs exclusive."],["Cure and default","Grace periods (30 days non-payment); Default → Event of Default; 'has occurred and is continuing'; notice should state grounds, money due, effect, survival."],["LDs vs penalty","Reasonable pre-estimate. UK: Cavendish v Makdessi ('legitimate interest'). India: s 74, reasonable compensation up to the sum (Kailash Nath; Saw Pipes)."],["Specific performance","Not for personal services; Specific Relief Act 2018 makes it the general rule."],["Conclusion","Spell out the if/thens (Payne)."]]},
+{u:"u3",t:"Indemnity and limitation of liability",
+ q5:"Explain the key elements of an indemnity clause. (5)",
+ five:["Trigger: R&amp;W breach, IP infringement, confidentiality breach, negligence.","Scope: losses, damages, costs, legal fees; usually third-party claims.","Duty to <b>defend</b> as well as indemnify.","Procedure: prompt notice, cooperation, indemnifier controls defence, consent for settlements admitting fault.","IP indemnity: procure licence, modify, replace, or terminate and refund."],
+ q10:"Discuss how limitation of liability and indemnity clauses interact and how to draft that interaction. (10)",
+ ten:[["Intro","LoL caps and excludes; indemnity creates affirmative payment duties. Without drafting, one can swallow the other."],["Indemnity","Elements as above plus duration, cap, basket; scope narrow → broad; Indian ICA ss 124–125."],["LoL structure","Direct loss capped; indirect/consequential excluded. 'Consequential' is ambiguous (Biotronik, $100m lost resale profits were direct), so name the losses."],["Caps","Contract value; 12-month fees; multiple; fixed sum; insurance limits; super-cap."],["Carve-outs","IP indemnity, data/confidentiality, wilful misconduct/gross negligence, payment, death/personal injury, fraud."],["The collision","Webhosting: cl 23 excludes indirect loss; cl 32 indemnifies 'all Losses'. Fix: 'Except for liability under clause 32…' or a super-cap, and define 'Losses'."],["Indian law","Enforced between commercial parties; not for fraud; unconscionable terms (Brojo Nath)."],["EduTrack model","12-month cap, but IP indemnity, confidentiality and data breach, fraud outside it."]]},
+{u:"u3",t:"Term, termination and post-termination",
+ q5:"What should be covered when a contract ends? (5)",
+ five:["Termination events: expiry, convenience, breach (with cure), insolvency, change of control, long-stop force majeure.","Notice: grounds, effective date, consequences.","Money: prepaid fees, accrued rights, refunds.","Return of property, data and confidential information.","Survival list and transition assistance."],
+ q10:"Discuss the drafting of term, renewal and termination provisions. (10)",
+ ten:[["Intro","Stark: endgame provisions govern how the deal ends; place them together near the end."],["Term","Unambiguous start and end; 'unless sooner terminated'; make fixed term 'subject to' early termination (A&amp;W); no implied right to end a fixed term (Jani-King)."],["Renewal","Auto-renewal vs option; length; notice deadline; never 'price to be agreed' (agreement to agree); Arclight cl 2 (3 years then 1-year, 90 days' notice)."],["Grounds","Material breach with cure, insolvency, change of control, force majeure long-stop (60 days), SLA failures (EduTrack: 3 in rolling 6 months)."],["Stark's three endings","Neutral, friendly (restore status quo, tie loose ends), unfriendly (notice, cure, remedy)."],["Six endgame points","Events; consequences of notice; termination date; survival of common-law rights; survival of specific clauses; dispute resolution."],["Post-termination","Survival with durations; refunds; accrued fees (Coraline); data return and deletion; exit assistance (Arclight cl 11, Meridian)."],["Indian hook","ICA ss 39, 64, 65, 75."]]},
+{u:"u3",t:"Non-compete and non-solicitation (India)",
+ q5:"State the Indian law on non-compete clauses. (5)",
+ five:["ICA s 27: restraint of lawful trade is void; only exception is sale of goodwill within reasonable local limits.","During the term: valid unless unconscionable (Niranjan Shankar Golikari; Gujarat Bottling).","After the term: void; no reasonableness test (Krishan Murgai; Pepsi Foods; Percept D'Mark).","Trade secrets and connections are protectable, not general skill.","Draft confidentiality, IP, notice and narrow non-solicit instead."],
+ q10:"Critically analyse restraint of trade clauses in employment and commercial contracts in India. (10)",
+ ten:[["Intro","Three covenants: confidentiality, non-compete, non-solicit (Bhat)."],["Section 27","Void 'to that extent'; only goodwill exception. Stricter than English law."],["In-term","Valid: employees' fidelity, exclusive dealing (Gujarat Bottling)."],["Post-term","Void: Brahmaputra Tea (5 years, 40 miles); Jet Airways (7-year pilot); Pepsi Foods (12 months); Percept (post-term right to match)."],["Protectable interests","Trade secrets, business connections; Robb v Green; not skill."],["English comparison","Nordenfelt; Herbert Morris; Esso: void unless reasonable; B2B judged more leniently; blue-pencil vs reformation."],["Non-solicit","More readily upheld if narrow; non-dealing harder."],["Drafting","Legitimate interest in recitals; in-term restraint; precise activity, territory, period; severability; SRA s 42 injunction but not forcing service."]]},
+{u:"u3",t:"Force majeure and hardship",
+ q5:"What are the essentials of a force majeure clause? (5)",
+ five:["Definition: event beyond reasonable control, not reasonably foreseeable, not avoidable.","List of events (and a general limb); tailor (strike, pandemic).","Notice and mitigation; relief 'to the extent of' the event.","Payment obligations and SLAs: say what happens.","Long-stop termination (Arclight 60 days). Indian hook: ICA ss 32, 56."],
+ q10:"Distinguish force majeure from hardship and discuss how each should be drafted. (10)",
+ ten:[["Intro","Force majeure excuses non-performance; hardship addresses performance that is possible but excessively onerous."],["Force majeure basis","Not an English concept (only frustration); CISG art 79 and UNIDROIT 7.1.7."],["Three conditions (Bortolotti)","Unforeseeable (ICC 9466), beyond control, irresistible (ICC 5195: practicability; iron by air)."],["Drafting","General test + list + consequences; avoid list-only US clauses; ICC 2003 clause; notice, mitigation, subcontractor test."],["Hardship","pacta sunt servanda default; trend to renegotiation (BGB §313, French art 1195); UNIDROIT 6.2: request renegotiation, tribunal may adapt/terminate; ICC Hardship Clause: negotiate then terminate."],["Drafting hardship","Trigger threshold, renegotiation timetable, fallback (expert/terminate), interim performance."],["India","s 32 (Energy Watchdog), s 56 (Satyabrata Ghose); cost increase alone not frustration; no general hardship doctrine, so draft it."]]},
+{u:"u3",t:"Governing law, jurisdiction and dispute resolution",
+ q5:"Distinguish governing law, jurisdiction and arbitration clauses. (5)",
+ five:["Governing law: which rules apply (Bortolotti: keep it simple).","Jurisdiction: which court hears the dispute; need a separate forum clause (Burnham).","Arbitration: private tribunal; needs intent, institution/appointment, scope, seat.","They must not conflict (Cohen #19).","Cohen #20: silence → fight over lex loci contractus."],
+ q10:"Discuss the drafting of dispute resolution clauses with reference to Cohen and Bortolotti. (10)",
+ ten:[["Intro","Dispute resolution decides who decides, where and how."],["Governing law","'arising under and relating to… including torts' (Stark); avoid limiting words; mandatory rules survive (Ingmar)."],["Jurisdiction","Exclusive venue (Cohen #13); neutral forum; Indian parties cannot confer jurisdiction on a court that has none (ABC Laminart); s 28."],["Cohen's warnings","#17 vague mediation (name mediator, place, hours, cost); #18 deadlock arbitrator scheme; #22 'AAA rules' pasted."],["Bortolotti","Essentials and typical errors (pathological clause; split tribunals; narrow scope; courts + arbitration); optional seat, language, number of arbitrators."],["Multi-tier","Negotiation → mediation → arbitration; Arclight cl 6 model."],["India","A&amp;C Act 1996; BGS SGS Soma (venue as seat); Perkins Eastman (unilateral appointment invalid); s 12A Commercial Courts Act."]]},
+{u:"u3",t:"Boilerplate",
+ q5:"Explain why boilerplate matters, with three examples. (5)",
+ five:["Stark: 'boilerplate' misleads; each clause raises real issues.","Entire agreement: excludes earlier deals; to cover misrepresentation add non-reliance; fraud cannot be excluded.","Assignment: cover change of control, merger, operation of law, delegation; 'written' consent.","Notices: method, address, deemed receipt (Mannai v Eagle Star).","Conform to this agreement's defined terms (Payne)."],
+ q10:"Discuss the main boilerplate clauses and the drafting risks of copying a template. (10)",
+ ten:[["Intro","Anatomy block C; Burnham warns not to gloss over it."],["Entire agreement","Cohen #15: 24 words; carve out NDAs/MoUs; no-reliance wording."],["Amendment and waiver","Signed writing; courts/CISG may allow conduct to override; draft specific non-waiver for key rights."],["Severability","Make survival depend on essential terms; replace with nearest valid clause; Bortolotti export-ban licence example."],["Assignment","Void vs breach; novation for burdens; Kopper Kettles (change of control not caught)."],["Notices","Writing, method, deemed receipt; Cohen #25 (sent or received?)."],["Others","Counterparts, third-party rights, further assurance, no set-off, publicity."],["Template risk","Cohen #22 cut-and-paste; keep identical across transaction documents (Stark)."]]}
+];
+
+const PLAN = [
+ ["6:35–6:50","Warm-up: say the five lists on the Cram sheet out loud (Haggard, Burnham, Stark 7, Anatomy, Adams Ch 7)."],
+ ["6:50–7:35","Unit 1: chunks 1.1 to 1.8. Read the points, then answer the flashcards for Unit 1."],
+ ["7:35–7:45","Break. Water, walk, no phone."],
+ ["7:45–8:30","Unit 2: chunks 2.1 to 2.10. Focus on 2.3 definitions and 2.6 to 2.9 (class cases)."],
+ ["8:30–8:40","Break."],
+ ["8:40–9:20","Unit 3: chunks 3.1 to 3.10. Make 3.2, 3.4, 3.5, 3.6, 3.7 your priorities."],
+ ["9:20–9:50","Practice: pick 2 long questions and write bullet outlines from memory, then check the skeletons."],
+ ["9:50–10:00","Cram sheet once, then sleep. Do not start new material."]
+];
+
+/* ---------- HELPERS ---------- */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let doneMap = store.get("ccd-done",{});
+let planMap = store.get("ccd-plan",{});
+
+function renderUnit(key,title,intro){
+  const el = $("#v-"+key);
+  el.innerHTML = "<h2>"+title+"</h2><p class='note'>"+intro+"</p>" + CHUNKS[key].map(c=>{
+    const d = !!doneMap[c.id];
+    return "<article class='card"+(d?" done":"")+"' id='c"+c.id.replace('.','_')+"'>"+
+      "<div class='chead'><div><span class='tag'>Chunk "+c.id+"</span><h3>"+c.t+"</h3></div>"+
+      "<label><input type='checkbox' data-id='"+c.id+"'"+(d?" checked":"")+"> Done</label></div>"+
+      "<ul>"+c.pts.map(p=>p.startsWith("<div")?"<li style='list-style:none;margin-left:-1.15rem'>"+p+"</li>":"<li>"+p+"</li>").join("")+"</ul>"+
+      (EX[c.id]?"<div class='ex'><b>Examples to quote</b><ul>"+EX[c.id].map(x=>"<li>"+x+"</li>").join("")+"</ul></div>":"")+
+      "<div class='hook'><b>Remember / Indian hook</b>"+c.hook+"</div></article>";
+  }).join("");
+}
+
+function updateProgress(){
+  const all = Object.values(CHUNKS).flat();
+  const n = all.filter(c=>doneMap[c.id]).length;
+  $("#pct").textContent = n+" / "+all.length+" chunks";
+  $("#barfill").style.width = Math.round(100*n/all.length)+"%";
+}
+
+function renderPlan(){
+  const el=$("#v-plan");
+  el.innerHTML = "<h2>Tonight, 6:35 to 10:00</h2>"+
+  "<p>You've already read to page 127. Tonight is about <span class='mark'>recall, not re-reading</span>. Read a chunk, close your eyes, say the main list, then flip the cards.</p>"+
+  "<ul class='plan'>"+PLAN.map((p,i)=>"<li><span class='time'>"+p[0]+"</span><label style='display:flex;gap:.5rem;cursor:pointer'><input type='checkbox' data-plan='"+i+"'"+(planMap[i]?" checked":"")+"><span>"+p[1]+"</span></label></li>").join("")+"</ul>"+
+  "<div class='card'><h3>ADHD-friendly rules for tonight</h3><ul><li>25 minutes on, 5 off. One chunk is about 5 minutes.</li><li>After every chunk, tick 'Done'. The bar at the top is your score.</li><li>If a chunk feels dense, only read the highlighted words and the 'Remember' box, then come back.</li><li>Flashcards beat re-reading: say the answer out loud before you flip.</li><li>Priority if you run short: Burnham, Stark 7, defects method, definitions (2.3), indemnity/LoL (3.3, 3.4), termination (3.5), restraint of trade (3.6), force majeure (3.7).</li></ul></div>"+
+  "<div class='card'><h3>The exam in one picture</h3><p>Your instructor's rubric rewards five things, in this order: <b>understand the transaction → spot and rank risks → analyse clauses → redraft precisely → practical client advice.</b> Use that as the skeleton for every long answer. For short answers: define, give the rule or source, give one example.</p></div>";
+}
+
+/* flashcards */
+let deck=[], idx=0, shown=false, filter="all", known=store.get("ccd-known",{});
+function buildDeck(){
+  deck = CARDS.map((c,i)=>({u:c[0],q:c[1],a:c[2],i})).filter(c=>filter==="all"||c.u===filter||(filter==="todo"&&!known[c.i]));
+  if(filter==="todo") deck = CARDS.map((c,i)=>({u:c[0],q:c[1],a:c[2],i})).filter(c=>!known[c.i]);
+  idx=0; shown=false;
+}
+function renderCards(){
+  const el=$("#v-cards");
+  const kcount=Object.keys(known).length;
+  const f=[["all","All"],["u1","Unit 1"],["u2","Unit 2"],["u3","Unit 3"],["todo","Not yet known"]];
+  el.innerHTML="<h2>Flashcards</h2><p class='note'>Say the answer out loud, then tap the card. Mark 'Got it' or 'Again'.</p>"+
+  "<div class='btnrow'>"+f.map(x=>"<button class='btn"+(filter===x[0]?" sel":"")+"' data-f='"+x[0]+"'>"+x[1]+"</button>").join("")+"<button class='btn' id='shuf'>Shuffle</button></div>"+
+  "<div id='cardbox'></div><p class='stat' id='cstat'></p>";
+  drawCard();
+}
+function drawCard(){
+  const box=$("#cardbox"); if(!box) return;
+  if(!deck.length){box.innerHTML="<div class='card'>Nothing left in this set. Pick another filter.</div>";$("#cstat").textContent="";return}
+  const c=deck[idx];
+  box.innerHTML="<button class='fc' id='fc' type='button'><span class='tag'>"+({u1:"Unit 1",u2:"Unit 2",u3:"Unit 3"})[c.u]+" · card "+(idx+1)+" of "+deck.length+"</span><span class='q'>"+c.q+"</span><span class='a'>"+(shown?c.a:"")+"</span>"+(shown?"":"<span class='note' style='margin-top:.8rem'>Tap to reveal</span>")+"</button>"+
+  "<div class='btnrow'><button class='btn' id='again'>Again</button><button class='btn pri' id='got'>Got it</button><button class='btn' id='skip'>Next</button></div>";
+  $("#cstat").textContent="Known: "+Object.keys(known).length+" of "+CARDS.length;
+}
+function nextCard(){idx=(idx+1)%deck.length;shown=false;drawCard()}
+
+/* practice */
+function renderQs(){
+  $("#v-qs").innerHTML="<h2>Practice questions</h2><p class='note'>Write your own bullet outline first (even 3 minutes), then open the skeleton.</p>"+
+  QS.map((q,i)=>"<details><summary><span class='tag'>"+(q.k==="short"?"Short answer":"Long essay")+"</span>"+q.t+"</summary><p>"+q.a+"</p></details>").join("")+
+  "<h2>Assignment problem patterns</h2><div class='table'><table><tr><th>Problem</th><th>Defect label</th><th>Fix in one line</th></tr>"+
+  [["Alpha Foods: 'approval of the order'","Semantic ambiguity + vague trigger","Define Order Approval Date; calendar vs business days"],
+   ["CloudServe: 'two hours during Business Hours'","Syntactic ambiguity","Split by severity; define Business Hours and 'respond'"],
+   ["HealthPlus: 'adequate stock'","Vagueness","Weeks-of-sales benchmark; forecast duty"],
+   ["BuildCo: 'reasonable extension'","Stacked vague standards; no mechanics","Delay Event list, notice, extension equals actual delay"],
+   ["SteelCo: price 'by mutual agreement'","Agreement to agree (s 29)","Index + expert + exit"],
+   ["FinLedger: 'renew on same terms'","Insufficient specificity","Length, price, notice, one renewal only"],
+   ["RetailCo: 30 days vs 15 days","Inconsistency","One trigger; precedence clause"],
+   ["PharmaCo: exclusive vs direct sales","Conflict + undefined term","Subject to / notwithstanding; define Institutional Customers"],
+   ["FactoryCo: 'no further obligations'","Endgame silence (money)","Pro-rata refund rules; accrued rights survive"],
+   ["Meridian: 'cease Services'","No exit / transition","Transition period, data return and deletion"],
+   ["Coraline: cl 11.2 vs 7.3","Conflict, survival","'Except as provided in 7.3'; survival clause"],
+   ["Kopper Kettles assignment","Unadapted template","Change of control, merger, delegation, void transfers"]
+  ].map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>").join("")+"</table></div>";
+}
+
+function renderCram(){
+  $("#v-cram").innerHTML="<h2>Cram sheet</h2><p class='note'>Read this last, before bed and tomorrow morning.</p><div class='cheat'>"+
+  CRAM.map(c=>"<div class='card'><h3>"+c.t+"</h3><ul>"+c.b.map(x=>"<li>"+x+"</li>").join("")+"</ul></div>").join("")+"</div>";
+}
+
+/* ---------- ROUTER ---------- */
+const VIEWS=["plan","hour","u1","u2","u3","cards","qs","ans","quiz","cram"];
+/* ---------- 1-HOUR READ ---------- */
+let hrLeft=3600, hrTimer=null;
+function fmt(s){const m=Math.floor(s/60),r=s%60;return String(m).padStart(2,"0")+":"+String(r).padStart(2,"0")}
+function renderHour(){
+  const U={u1:["Unit 1: reading and understanding",20],u2:["Unit 2: core clauses",12],u3:["Unit 3: risk, breach and exit",17]};
+  const lists=c=>"<div class='card'><h3>"+c.t+"</h3><ul>"+c.b.map(x=>"<li>"+x+"</li>").join("")+"</ul></div>";
+  $("#v-hour").innerHTML="<h2>1-hour read</h2><p class='note'>For just before you walk in. Read straight down. Every topic has the five points you must be able to write, plus the spine of a 10-mark answer. Examples and cases are inside the points.</p>"+
+  "<div class='card'><div class='chead'><div><span class='tag'>Timer</span><h3 id='hrclock' style='font-family:var(--mono)'>"+fmt(hrLeft)+"</h3></div><div class='btnrow'><button class='btn pri' data-hr='go'>Start / pause</button><button class='btn' data-hr='reset'>Reset</button></div></div><p class='note'>Plan: 5 min lists · 20 min Unit 1 · 12 min Unit 2 · 17 min Unit 3 · 6 min final check.</p></div>"+
+  "<h2>Minutes 0–5: lists and answer shape</h2>"+lists(CRAM[0])+lists(CRAM[4])+
+  ["u1","u2","u3"].map(u=>"<h2>"+U[u][0]+" ("+U[u][1]+" min)</h2>"+ANS.filter(a=>a.u===u).map(a=>
+    "<div class='card'><h3>"+a.t+"</h3><ul>"+a.five.map(x=>"<li>"+x+"</li>").join("")+"</ul><div class='hook'><b>10-mark spine</b>"+a.ten.map(x=>x[0]).join(" → ")+"</div></div>").join("")).join("")+
+  "<h2>Final 6 minutes</h2>"+lists(CRAM[2])+lists(CRAM[3])+lists(CRAM[5]);
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-hr]");if(!t)return;
+  if(t.dataset.hr==="go"){
+    if(hrTimer){clearInterval(hrTimer);hrTimer=null}
+    else hrTimer=setInterval(()=>{hrLeft=Math.max(0,hrLeft-1);const c=$("#hrclock");if(c)c.textContent=fmt(hrLeft);if(!hrLeft){clearInterval(hrTimer);hrTimer=null}},1000);
+  } else {if(hrTimer){clearInterval(hrTimer);hrTimer=null}hrLeft=3600;const c=$("#hrclock");if(c)c.textContent=fmt(hrLeft)}
+});
+/* ---------- ANATOMY QUIZ ---------- */
+const BLK={A:"A Introductory",B:"B Operative",C:"C Boilerplate",D:"D Signature / schedules"};
+const SORT=[["Recitals","A","Context for the deal, so introductory."],["Interpretation","A","Reading rules sit with definitions, before the deal."],["Effective date","A","Listed in the introductory block of the chart."],["Payments","B","Core exchange of the deal."],["Indemnity","B","Risk allocation is operative."],["Territory","B","Scope of rights, so operative."],["Non-compete","B","A restrictive covenant, so operative."],["Survival of clauses","B","Part of the exit, which the chart puts in the operative block."],["Force majeure","B","On the chart it is the last operative clause (many precedents put it in boilerplate)."],["Further assurance","C","Standard administrative rule."],["Waiver","C","Boilerplate."],["Entire agreement","C","Boilerplate, usually the last clause."],["Governing law and jurisdiction","C","Boilerplate on the chart."],["Name of signatory","D","Execution block."],["Annexures","D","Detail attached at the end."]];
+const ORD=[
+{t:"Block A: introductory clauses",tip:"The reader first learns what the document is, who is in it, why, and how to read it.",items:["Title of agreement","Preamble","Date of execution","Description of parties","Recitals","Effective date","Definition of terms used","Interpretation"]},
+{t:"Block B: operative clauses (the life of the deal)",tip:"Follow the chart: duties and conditions, then money, then protections and risk, then term and exit.",items:["Rights and obligations of the parties","Conditions precedent","Payments","Confidentiality","Indemnity","Limitation of liability","Representations and warranties","Term","Termination","Survival of clauses"]},
+{t:"Block C: boilerplate clauses",tip:"Chart order, ending with entire agreement.",items:["Further assurance","No set-off or counterclaim","Non-reliance","Notice","Publicity","Severability","Governing law and jurisdiction","Dispute resolution mechanism","Waiver","Assignment","Amendments","Entire agreement"]},
+{t:"Whole contract: one clause per stage",tip:"A then B then C then D. Schedules come after the signature block on the chart.",items:["Title of agreement","Description of parties","Recitals","Definition of terms used","Payments","Confidentiality","Termination","Force majeure","Dispute resolution mechanism","Entire agreement","Name of signatory","Annexures"]},
+{t:"Arclight–Nexora mini (from the class assignment)",tip:"Matches the answer key for the 25-clause exercise, shortened.",items:["Title and date of execution (Clause 12)","Description of parties (Clause 8)","Recitals (Clause 13)","Definitions (Clause 5)","Rights and obligations (Clause 9)","Payments (Clause 14)","Confidentiality (Clause 19)","Term and renewal (Clause 2)","Termination (Clause 18)","Force majeure (Clause 1)","Dispute resolution (Clause 6)","Entire agreement (Clause 7)","Signature block (Clause 3)"]}
+];
+let qmode="sort", qOrder=[], qChecked=false, qAns={}, qSortChecked=false;
+function shuffle(a){const b=a.slice();do{for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}}while(a.length>1&&b.every((x,i)=>x===a[i]));return b}
+let sortDeck=[];
+function newSort(){sortDeck=shuffle(SORT).slice(0,10);qAns={};qSortChecked=false}
+function newOrd(i){qOrder=shuffle(ORD[i].items);qChecked=false}
+function renderQuiz(){
+  const el=$("#v-quiz");
+  const modes=[["sort","1 Sort into blocks"]].concat(ORD.map((o,i)=>[String(i),(i+2)+" "+["Block A","Block B","Block C","Whole contract","Arclight mini"][i]]));
+  let h="<h2>Anatomy quiz</h2><p class='note'>Based on the class Anatomy of a Contract chart. Try from memory, then check.</p><div class='btnrow'>"+modes.map(m=>"<button class='btn"+(qmode===m[0]?" sel":"")+"' data-qa='mode' data-v='"+m[0]+"'>"+m[1]+"</button>").join("")+"</div>";
+  if(qmode==="sort"){
+    h+="<p>Tap A, B, C or D for each clause.</p>"+sortDeck.map((s,i)=>{
+      const a=qAns[i];let st="";
+      if(qSortChecked){st=a===s[1]?"<span style='color:var(--good)'>Correct. </span>":"<span style='color:var(--bad)'>Answer: "+BLK[s[1]]+". </span>";st+="<span class='note'>"+s[2]+"</span>"}
+      return "<div class='card'><b>"+s[0]+"</b><div class='btnrow'>"+["A","B","C","D"].map(k=>"<button class='btn"+(a===k?" sel":"")+"' data-qa='pick' data-i='"+i+"' data-v='"+k+"'>"+k+"</button>").join("")+"</div>"+st+"</div>"}).join("")+
+      "<div class='btnrow'><button class='btn pri' data-qa='checksort'>Check</button><button class='btn' data-qa='newsort'>New set</button></div>";
+    if(qSortChecked){const n=sortDeck.filter((s,i)=>qAns[i]===s[1]).length;h+="<p class='stat'>Score: "+n+" / "+sortDeck.length+"</p>"}
+  } else {
+    const r=ORD[+qmode];
+    h+="<h3>"+r.t+"</h3><p class='note'>"+r.tip+" Use the arrows to move a clause.</p><div>"+qOrder.map((x,i)=>{
+      let st="";if(qChecked){const ok=r.items[i]===x;st=ok?"var(--good)":"var(--bad)"}
+      return "<div class='card' style='display:flex;gap:.6rem;align-items:center;padding:.5rem .8rem;"+(qChecked?"border-color:"+st:"")+"'><span class='stat' style='width:1.6rem'>"+(i+1)+"</span><span style='flex:1;min-width:0'>"+x+"</span><button class='btn' data-qa='up' data-i='"+i+"' aria-label='Move up'>↑</button><button class='btn' data-qa='down' data-i='"+i+"' aria-label='Move down'>↓</button></div>"}).join("")+"</div>"+
+      "<div class='btnrow'><button class='btn pri' data-qa='checkord'>Check</button><button class='btn' data-qa='showord'>Show answer</button><button class='btn' data-qa='neword'>Reshuffle</button></div>";
+    if(qChecked){const n=qOrder.filter((x,i)=>r.items[i]===x).length;h+="<p class='stat'>In the right place: "+n+" / "+r.items.length+"</p>"}
+  }
+  el.innerHTML=h;
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-qa]");if(!t)return;
+  const a=t.dataset.qa,i=+t.dataset.i;
+  if(a==="mode"){qmode=t.dataset.v;if(qmode==="sort")newSort();else newOrd(+qmode)}
+  else if(a==="pick"){qAns[i]=t.dataset.v}
+  else if(a==="checksort"){qSortChecked=true}
+  else if(a==="newsort"){newSort()}
+  else if(a==="up"&&i>0){[qOrder[i-1],qOrder[i]]=[qOrder[i],qOrder[i-1]];qChecked=false}
+  else if(a==="down"&&i<qOrder.length-1){[qOrder[i+1],qOrder[i]]=[qOrder[i],qOrder[i+1]];qChecked=false}
+  else if(a==="checkord"){qChecked=true}
+  else if(a==="showord"){qOrder=ORD[+qmode].items.slice();qChecked=true}
+  else if(a==="neword"){newOrd(+qmode)}
+  const y=window.scrollY;renderQuiz();window.scrollTo(0,y);
+});
+function renderAns(){
+  const names={u1:"Unit 1",u2:"Unit 2",u3:"Unit 3"};
+  $("#v-ans").innerHTML="<h2>Answer bank</h2><p class='note'>For tomorrow morning. Each topic has a sample 5-mark and 10-mark question with an answer you can adapt. A 5-marker needs about five separate points. A 10-marker needs an intro, five or six developed points with one example or case, and a one-line conclusion. Write the outline from memory first, then open the answer.</p>"+
+  ["u1","u2","u3"].map(u=>"<h2>"+names[u]+"</h2>"+ANS.filter(a=>a.u===u).map(a=>
+    "<details><summary><span class='tag'>"+names[u]+"</span>"+a.t+"</summary>"+
+    "<div class='ansblock'><h3>5-mark: "+a.q5+"</h3><ul>"+a.five.map(x=>"<li>"+x+"</li>").join("")+"</ul></div>"+
+    "<div class='ansblock'><h3>10-mark: "+a.q10+"</h3><ol>"+a.ten.map(x=>"<li><b>"+x[0]+".</b> "+x[1]+"</li>").join("")+"</ol></div></details>").join("")).join("");
+}
+function route(){
+  const h=(location.hash||"#plan").slice(1);
+  const v=VIEWS.includes(h)?h:"plan";
+  VIEWS.forEach(x=>{$("#v-"+x).classList.toggle("on",x===v)});
+  document.querySelectorAll("#tabs a").forEach(a=>a.setAttribute("aria-current",a.getAttribute("href")==="#"+v?"true":"false"));
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- EVENTS ---------- */
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.id){
+    if(t.checked)doneMap[t.dataset.id]=1;else delete doneMap[t.dataset.id];
+    store.set("ccd-done",doneMap);
+    t.closest(".card").classList.toggle("done",t.checked);
+    updateProgress();
+  }
+  if(t.dataset.plan!==undefined){
+    if(t.checked)planMap[t.dataset.plan]=1;else delete planMap[t.dataset.plan];
+    store.set("ccd-plan",planMap);
+  }
+});
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button"); if(!t) return;
+  if(t.id==="fc"){shown=!shown;drawCard()}
+  else if(t.id==="got"){known[deck[idx].i]=1;store.set("ccd-known",known);nextCard()}
+  else if(t.id==="again"){delete known[deck[idx].i];store.set("ccd-known",known);nextCard()}
+  else if(t.id==="skip"){nextCard()}
+  else if(t.id==="shuf"){deck.sort(()=>Math.random()-.5);idx=0;shown=false;drawCard()}
+  else if(t.dataset.f){filter=t.dataset.f;buildDeck();renderCards()}
+  else if(t.id==="themeBtn"){
+    const r=document.documentElement;
+    const cur=r.getAttribute("data-theme");
+    const dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+    r.setAttribute("data-theme",dark?"light":"dark");
+  }
+});
+
+/* ---------- INIT ---------- */
+renderPlan();
+renderUnit("u1","Unit 1: Reading and understanding contracts","Eight chunks. Tick each when you can explain it without looking.");
+renderUnit("u2","Unit 2: Core clauses and operative provisions","Ten chunks. Definitions (2.3) is the most testable.");
+renderUnit("u3","Unit 3: Risk, breach and exit","Ten chunks. Pair each with its Indian-law hook.");
+buildDeck();renderCards();renderQs();renderAns();newSort();renderQuiz();renderCram();renderHour();updateProgress();route();
+</script>
