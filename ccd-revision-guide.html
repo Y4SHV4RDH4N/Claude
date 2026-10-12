@@ -96,7 +96,7 @@ details[open] summary{margin-bottom:.4rem}
   <div class="row" style="margin-top:.2rem"><span class="note">Exam tomorrow 2 pm. One chunk at a time.</span><span class="pct" id="pct">0 / 0 chunks</span></div>
   <div class="bar"><i id="barfill"></i></div>
   <nav class="tabs" id="tabs" aria-label="Sections">
-    <a href="#plan">Tonight</a><a href="#u1">Unit 1</a><a href="#u2">Unit 2</a><a href="#u3">Unit 3</a><a href="#cards">Flashcards</a><a href="#qs">Practice</a><a href="#ans">Answer bank</a><a href="#cram">Cram sheet</a>
+    <a href="#plan">Tonight</a><a href="#u1">Unit 1</a><a href="#u2">Unit 2</a><a href="#u3">Unit 3</a><a href="#cards">Flashcards</a><a href="#qs">Practice</a><a href="#ans">Answer bank</a><a href="#quiz">Anatomy quiz</a><a href="#cram">Cram sheet</a>
   </nav>
 </header>
 
@@ -107,6 +107,7 @@ details[open] summary{margin-bottom:.4rem}
 <section class="view" id="v-cards"></section>
 <section class="view" id="v-qs"></section>
 <section class="view" id="v-ans"></section>
+<section class="view" id="v-quiz"></section>
 <section class="view" id="v-cram"></section>
 </div>
 
@@ -654,7 +655,57 @@ function renderCram(){
 }
 
 /* ---------- ROUTER ---------- */
-const VIEWS=["plan","u1","u2","u3","cards","qs","ans","cram"];
+const VIEWS=["plan","u1","u2","u3","cards","qs","ans","quiz","cram"];
+/* ---------- ANATOMY QUIZ ---------- */
+const BLK={A:"A Introductory",B:"B Operative",C:"C Boilerplate",D:"D Signature / schedules"};
+const SORT=[["Recitals","A","Context for the deal, so introductory."],["Interpretation","A","Reading rules sit with definitions, before the deal."],["Effective date","A","Listed in the introductory block of the chart."],["Payments","B","Core exchange of the deal."],["Indemnity","B","Risk allocation is operative."],["Territory","B","Scope of rights, so operative."],["Non-compete","B","A restrictive covenant, so operative."],["Survival of clauses","B","Part of the exit, which the chart puts in the operative block."],["Force majeure","B","On the chart it is the last operative clause (many precedents put it in boilerplate)."],["Further assurance","C","Standard administrative rule."],["Waiver","C","Boilerplate."],["Entire agreement","C","Boilerplate, usually the last clause."],["Governing law and jurisdiction","C","Boilerplate on the chart."],["Name of signatory","D","Execution block."],["Annexures","D","Detail attached at the end."]];
+const ORD=[
+{t:"Block A: introductory clauses",tip:"The reader first learns what the document is, who is in it, why, and how to read it.",items:["Title of agreement","Preamble","Date of execution","Description of parties","Recitals","Effective date","Definition of terms used","Interpretation"]},
+{t:"Block B: operative clauses (the life of the deal)",tip:"Follow the chart: duties and conditions, then money, then protections and risk, then term and exit.",items:["Rights and obligations of the parties","Conditions precedent","Payments","Confidentiality","Indemnity","Limitation of liability","Representations and warranties","Term","Termination","Survival of clauses"]},
+{t:"Block C: boilerplate clauses",tip:"Chart order, ending with entire agreement.",items:["Further assurance","No set-off or counterclaim","Non-reliance","Notice","Publicity","Severability","Governing law and jurisdiction","Dispute resolution mechanism","Waiver","Assignment","Amendments","Entire agreement"]},
+{t:"Whole contract: one clause per stage",tip:"A then B then C then D. Schedules come after the signature block on the chart.",items:["Title of agreement","Description of parties","Recitals","Definition of terms used","Payments","Confidentiality","Termination","Force majeure","Dispute resolution mechanism","Entire agreement","Name of signatory","Annexures"]},
+{t:"Arclight–Nexora mini (from the class assignment)",tip:"Matches the answer key for the 25-clause exercise, shortened.",items:["Title and date of execution (Clause 12)","Description of parties (Clause 8)","Recitals (Clause 13)","Definitions (Clause 5)","Rights and obligations (Clause 9)","Payments (Clause 14)","Confidentiality (Clause 19)","Term and renewal (Clause 2)","Termination (Clause 18)","Force majeure (Clause 1)","Dispute resolution (Clause 6)","Entire agreement (Clause 7)","Signature block (Clause 3)"]}
+];
+let qmode="sort", qOrder=[], qChecked=false, qAns={}, qSortChecked=false;
+function shuffle(a){const b=a.slice();do{for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}}while(a.length>1&&b.every((x,i)=>x===a[i]));return b}
+let sortDeck=[];
+function newSort(){sortDeck=shuffle(SORT).slice(0,10);qAns={};qSortChecked=false}
+function newOrd(i){qOrder=shuffle(ORD[i].items);qChecked=false}
+function renderQuiz(){
+  const el=$("#v-quiz");
+  const modes=[["sort","1 Sort into blocks"]].concat(ORD.map((o,i)=>[String(i),(i+2)+" "+["Block A","Block B","Block C","Whole contract","Arclight mini"][i]]));
+  let h="<h2>Anatomy quiz</h2><p class='note'>Based on the class Anatomy of a Contract chart. Try from memory, then check.</p><div class='btnrow'>"+modes.map(m=>"<button class='btn"+(qmode===m[0]?" sel":"")+"' data-qa='mode' data-v='"+m[0]+"'>"+m[1]+"</button>").join("")+"</div>";
+  if(qmode==="sort"){
+    h+="<p>Tap A, B, C or D for each clause.</p>"+sortDeck.map((s,i)=>{
+      const a=qAns[i];let st="";
+      if(qSortChecked){st=a===s[1]?"<span style='color:var(--good)'>Correct. </span>":"<span style='color:var(--bad)'>Answer: "+BLK[s[1]]+". </span>";st+="<span class='note'>"+s[2]+"</span>"}
+      return "<div class='card'><b>"+s[0]+"</b><div class='btnrow'>"+["A","B","C","D"].map(k=>"<button class='btn"+(a===k?" sel":"")+"' data-qa='pick' data-i='"+i+"' data-v='"+k+"'>"+k+"</button>").join("")+"</div>"+st+"</div>"}).join("")+
+      "<div class='btnrow'><button class='btn pri' data-qa='checksort'>Check</button><button class='btn' data-qa='newsort'>New set</button></div>";
+    if(qSortChecked){const n=sortDeck.filter((s,i)=>qAns[i]===s[1]).length;h+="<p class='stat'>Score: "+n+" / "+sortDeck.length+"</p>"}
+  } else {
+    const r=ORD[+qmode];
+    h+="<h3>"+r.t+"</h3><p class='note'>"+r.tip+" Use the arrows to move a clause.</p><div>"+qOrder.map((x,i)=>{
+      let st="";if(qChecked){const ok=r.items[i]===x;st=ok?"var(--good)":"var(--bad)"}
+      return "<div class='card' style='display:flex;gap:.6rem;align-items:center;padding:.5rem .8rem;"+(qChecked?"border-color:"+st:"")+"'><span class='stat' style='width:1.6rem'>"+(i+1)+"</span><span style='flex:1;min-width:0'>"+x+"</span><button class='btn' data-qa='up' data-i='"+i+"' aria-label='Move up'>↑</button><button class='btn' data-qa='down' data-i='"+i+"' aria-label='Move down'>↓</button></div>"}).join("")+"</div>"+
+      "<div class='btnrow'><button class='btn pri' data-qa='checkord'>Check</button><button class='btn' data-qa='showord'>Show answer</button><button class='btn' data-qa='neword'>Reshuffle</button></div>";
+    if(qChecked){const n=qOrder.filter((x,i)=>r.items[i]===x).length;h+="<p class='stat'>In the right place: "+n+" / "+r.items.length+"</p>"}
+  }
+  el.innerHTML=h;
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-qa]");if(!t)return;
+  const a=t.dataset.qa,i=+t.dataset.i;
+  if(a==="mode"){qmode=t.dataset.v;if(qmode==="sort")newSort();else newOrd(+qmode)}
+  else if(a==="pick"){qAns[i]=t.dataset.v}
+  else if(a==="checksort"){qSortChecked=true}
+  else if(a==="newsort"){newSort()}
+  else if(a==="up"&&i>0){[qOrder[i-1],qOrder[i]]=[qOrder[i],qOrder[i-1]];qChecked=false}
+  else if(a==="down"&&i<qOrder.length-1){[qOrder[i+1],qOrder[i]]=[qOrder[i],qOrder[i+1]];qChecked=false}
+  else if(a==="checkord"){qChecked=true}
+  else if(a==="showord"){qOrder=ORD[+qmode].items.slice();qChecked=true}
+  else if(a==="neword"){newOrd(+qmode)}
+  const y=window.scrollY;renderQuiz();window.scrollTo(0,y);
+});
 function renderAns(){
   const names={u1:"Unit 1",u2:"Unit 2",u3:"Unit 3"};
   $("#v-ans").innerHTML="<h2>Answer bank</h2><p class='note'>For tomorrow morning. Each topic has a sample 5-mark and 10-mark question with an answer you can adapt. A 5-marker needs about five separate points. A 10-marker needs an intro, five or six developed points with one example or case, and a one-line conclusion. Write the outline from memory first, then open the answer.</p>"+
@@ -707,5 +758,5 @@ renderPlan();
 renderUnit("u1","Unit 1: Reading and understanding contracts","Eight chunks. Tick each when you can explain it without looking.");
 renderUnit("u2","Unit 2: Core clauses and operative provisions","Ten chunks. Definitions (2.3) is the most testable.");
 renderUnit("u3","Unit 3: Risk, breach and exit","Ten chunks. Pair each with its Indian-law hook.");
-buildDeck();renderCards();renderQs();renderAns();renderCram();updateProgress();route();
+buildDeck();renderCards();renderQs();renderAns();newSort();renderQuiz();renderCram();updateProgress();route();
 </script>
