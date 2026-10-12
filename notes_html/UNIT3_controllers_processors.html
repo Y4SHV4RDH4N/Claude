@@ -1,0 +1,2461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>UNIT3_controllers_processors</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<nav><a href="index.html">← All notes</a></nav>
+<header id="title-block-header">
+<h1 class="title">UNIT3_controllers_processors</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#unit-3--controllers-processors--joint-controllers-condensed-from-your-5-readings-c1c5"
+id="toc-unit-3--controllers-processors--joint-controllers-condensed-from-your-5-readings-c1c5">UNIT
+3 — CONTROLLERS, PROCESSORS &amp; JOINT CONTROLLERS (condensed from your
+5 readings C1–C5)</a>
+<ul>
+<li><a href="#0-the-big-picture-read-this-first"
+id="toc-0-the-big-picture-read-this-first">0. THE BIG PICTURE (read this
+first)</a></li>
+<li><a
+href="#c1-edpb-guidelines-072020-on-the-concepts-of-controller-and-processor-in-the-gdpr"
+id="toc-c1-edpb-guidelines-072020-on-the-concepts-of-controller-and-processor-in-the-gdpr">C1.
+EDPB GUIDELINES 07/2020 on the concepts of controller and processor in
+the GDPR</a></li>
+<li><a
+href="#c2-cimina-2020--the-data-protection-concepts-of-controller-processor-and-joint-controllership-under-regulation-eu-20181725-era-forum-oct-2020"
+id="toc-c2-cimina-2020--the-data-protection-concepts-of-controller-processor-and-joint-controllership-under-regulation-eu-20181725-era-forum-oct-2020">C2.
+CIMINA (2020) — "The data protection concepts of 'controller',
+'processor' and 'joint controllership' under Regulation (EU) 2018/1725"
+(<em>ERA Forum</em>, Oct 2020)</a></li>
+<li><a
+href="#c3-edpb-opinion-222024-on-certain-obligations-following-from-the-reliance-on-processors-and-sub-processors-adopted-7-october-2024"
+id="toc-c3-edpb-opinion-222024-on-certain-obligations-following-from-the-reliance-on-processors-and-sub-processors-adopted-7-october-2024">C3.
+EDPB OPINION 22/2024 on certain obligations following from the reliance
+on processor(s) and sub-processor(s) (adopted <strong>7 October
+2024</strong>)</a></li>
+<li><a
+href="#c4-baquero-restrepo-amaríles-et-al-2025--the-compliance-gap-in-data-supply-chains-contract-specification-languages-and-smart-contracts-as-compliance-technologies-artificial-intelligence-and-law"
+id="toc-c4-baquero-restrepo-amaríles-et-al-2025--the-compliance-gap-in-data-supply-chains-contract-specification-languages-and-smart-contracts-as-compliance-technologies-artificial-intelligence-and-law">C4.
+BAQUERO, RESTREPO AMARÍLES et al. (2025) — "The compliance gap in data
+supply chains: contract specification languages and smart contracts as
+compliance technologies" (<em>Artificial Intelligence and
+Law</em>)</a></li>
+<li><a
+href="#c5-the-key-cjeu-cases--unit-3-connection-to-the-dpdp-act-2023"
+id="toc-c5-the-key-cjeu-cases--unit-3-connection-to-the-dpdp-act-2023">C5.
+THE KEY CJEU CASES + UNIT 3 CONNECTION TO THE DPDP ACT 2023</a></li>
+</ul></li>
+<li><a href="#unit-3-exam-toolkit" id="toc-unit-3-exam-toolkit">UNIT 3
+EXAM TOOLKIT</a>
+<ul>
+<li><a href="#1-which-role-decision-method-use-in-problem-questions"
+id="toc-1-which-role-decision-method-use-in-problem-questions">1. "Which
+role?" decision method (use in problem questions)</a></li>
+<li><a href="#2-role-summary-table" id="toc-2-role-summary-table">2.
+Role summary table</a></li>
+<li><a href="#3-likely-essay-questions--skeletons"
+id="toc-3-likely-essay-questions--skeletons">3. Likely essay questions —
+skeletons</a></li>
+<li><a href="#4-cheat-sheet--numbers-names-quotes"
+id="toc-4-cheat-sheet--numbers-names-quotes">4. Cheat sheet — numbers,
+names, quotes</a></li>
+<li><a href="#5-common-traps" id="toc-5-common-traps">5. Common
+traps</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="unit-3--controllers-processors--joint-controllers-condensed-from-your-5-readings-c1c5">UNIT
+3 — CONTROLLERS, PROCESSORS &amp; JOINT CONTROLLERS (condensed from your
+5 readings C1–C5)</h1>
+<p><em>Source: your "Controllers, Processors &amp; Joint Controllers —
+essay-ready summaries" PDF. † marks where your notes flag their own
+add-on/general knowledge. Where your notes flag an error in a source,
+it's marked <strong>⚠ slip</strong>.</em></p>
+<h2 id="0-the-big-picture-read-this-first">0. THE BIG PICTURE (read this
+first)</h2>
+<ul>
+<li><strong>Why roles matter:</strong> the GDPR allocates responsibility
+<strong>by role</strong>. Whether an entity is a <strong>controller,
+joint controller, processor, recipient or third party</strong> decides
+<strong>who must comply, who can be fined, and against whom data
+subjects can exercise rights.</strong></li>
+<li><strong>Accountability anchor:</strong> <strong>Art 5(2)</strong>
+(controller responsible for, and must be able to <em>demonstrate</em>,
+compliance with Art 5(1) principles) → <strong>Art 24</strong>
+(appropriate TOMs) → <strong>Art 28</strong> (rules on engaging
+processors).</li>
+<li><strong>Four framing points (EDPB Guidelines 07/2020):</strong>
+<ol type="1">
+<li>Concepts and criteria <strong>have not changed since Directive
+95/46/EC</strong> → CJEU cases under the Directive <strong>still
+apply</strong>.</li>
+<li>Concepts are <strong>functional</strong>: roles follow <strong>what
+parties actually do</strong>, not contractual labels. Allocation "should
+stem from an analysis of the factual elements… and as such is
+<strong>not negotiable</strong>". AG Mengozzi (<em>Jehovah's
+Witnesses</em>): "excessive formalism would make it easy to circumvent"
+the rules.</li>
+<li>Concepts are <strong>autonomous</strong> (EU data protection law,
+not IP/competition law).</li>
+<li>"Controller" read "<strong>in a sufficiently broad way, favouring as
+much as possible effective and complete protection of data
+subjects</strong>" (avoid gaps/circumvention) "while at the same time
+<strong>not diminishing the role of the processor</strong>" (<em>Google
+Spain</em> C-131/12; <em>Wirtschaftsakademie</em> C-210/16; <em>Fashion
+ID</em> C-40/17).</li>
+</ol></li>
+<li><strong>The five readings:</strong> | # | Reading | Core message |
+|---|---|---| | C1 | EDPB Guidelines 07/2020 (v2.1, 2021/2022) | The
+authoritative framework: roles, tests, Art 26 &amp; Art 28 consequences
+| | C2 | Cimina (2020), EDPS — Regulation 2018/1725 | Same concepts for
+<strong>EU institutions</strong>; <strong>joint controllership</strong>
+via CJEU trilogy | | C3 | EDPB Opinion 22/2024 |
+<strong>Processor/sub-processor chains</strong>: controller must know
+the whole chain; verification; transfers; "unless required by law"
+wording | | C4 | Baquero, Restrepo Amaríles et al. (2025) |
+<strong>Compliance gap</strong> in data supply chains; contract
+specification languages (<strong>Symboleo</strong>) + smart contracts |
+| C5 | CJEU cases + Unit 3 link to <strong>DPDP Act 2023</strong> (Data
+Fiduciary / Processor, s 8) | Case line <em>Google Spain →
+Wirtschaftsakademie → Jehovah's Witnesses → Fashion ID</em>; India
+comparison |</li>
+<li><strong>Master theme tying them:</strong> the law puts
+<strong>ultimate responsibility on the controller</strong>, yet many
+controllers (esp. SMEs, public bodies) face <strong>take-it-or-leave-it
+contracts and opaque chains</strong>. EDPB answers with <strong>legal
+duties</strong> (verify, know the chain, no excuse for "practical
+difficulties"); C4 answers with <strong>technology</strong> (formalise
+contracts + monitor on blockchain); C5 shows how <strong>India</strong>
+concentrates everything on the fiduciary without the Art 28
+machinery.</li>
+</ul>
+<hr />
+<h2
+id="c1-edpb-guidelines-072020-on-the-concepts-of-controller-and-processor-in-the-gdpr">C1.
+EDPB GUIDELINES 07/2020 on the concepts of controller and processor in
+the GDPR</h2>
+<p><strong>Status/timeline:</strong> adopted under <strong>Art
+70(1)(e)</strong> GDPR; consultation draft <strong>2 Sept 2020</strong>;
+final <strong>v2.0 on 7 July 2021</strong>; corrected <strong>v2.1 on 20
+Sept 2022</strong>. <strong>Replaces Art 29 WP Opinion 1/2010
+(WP169).</strong> Part I = concepts; Part II = consequences of each
+role; <strong>annex flowchart</strong>.</p>
+<h3 id="the-controller--art-47-five-building-blocks">The controller —
+Art 4(7): five building blocks</h3>
+<p>Controller = "natural or legal person, public authority, agency or
+other body which, <strong>alone or jointly with others, determines the
+purposes and means</strong> of the processing of personal data"; where
+<strong>Union or Member State law</strong> determines purposes and
+means, that law may <strong>designate the controller</strong> or the
+criteria for choosing it.</p>
+<ol type="1">
+<li><strong>Type of entity</strong> — no limit (organisation,
+individual, group; e.g. the religious community together with its
+members in <em>Jehovah's Witnesses</em>). <strong>In practice the
+controller = the organisation, not its CEO, an employee, compliance
+officer or department.</strong> A marketing department running a
+campaign with considerable independence still acts for Company ABC (the
+controller). <strong>Employees' processing is presumed under the
+organisation's control</strong>, unless an employee
+<strong>unlawfully</strong> uses data for own purposes (e.g. setting up
+own company) → organisation must prevent via measures such as
+<strong>training</strong>. Employees = "persons acting under the
+authority of the controller" (Art 29), <strong>not</strong>
+controllers/processors. In <strong>company groups</strong>, each
+entity's role must be checked.</li>
+<li><strong>"Determines"</strong> = influence through decision-making
+power. Questions: "<strong>why</strong> is this processing taking
+place?" and "<strong>who decided</strong> it should take place for a
+particular purpose?"</li>
+<li><strong>"Alone or jointly with others"</strong> — several entities
+may control the same processing; a party can be controller without
+taking every decision.</li>
+<li><strong>"Purposes and means"</strong> = the core.
+<strong>Purpose</strong> = "an anticipated outcome that is intended or
+that guides your planned actions" (the <strong>why</strong>);
+<strong>means</strong> = "how a result is obtained or an end is
+achieved" (the <strong>how</strong>). Controller must decide
+<strong>both</strong>; <strong>a processor can never determine the
+purpose.</strong></li>
+<li><strong>"Of the processing of personal data"</strong> — control may
+attach to a <strong>single operation</strong> or a <strong>set of
+operations</strong>, the <strong>whole processing or only one
+stage</strong> (<em>Fashion ID</em>). Chain operations that look
+disconnected at micro level, each with own purpose, may at <strong>macro
+level</strong> form "a set of operations" pursuing a joint purpose with
+jointly defined means → <strong>joint control</strong>. Actor can be
+controller <strong>even if it doesn't deliberately target personal data
+or wrongly thinks it processes none.</strong> <strong>Access to the data
+is not necessary</strong> (<em>Wirtschaftsakademie</em>): an entity that
+outsources processing but has determinative influence (e.g. adjusting
+parameters deciding whose data is processed) is a controller.</li>
+</ol>
+<h3 id="sources-of-control-essential-vs-non-essential-means">Sources of
+control; essential vs non-essential means</h3>
+<ul>
+<li><strong>Legal provisions</strong> — <strong>explicit</strong>
+competence (law designates controller or criteria; "will be
+determinative") or <strong>implicit</strong> (law sets a task requiring
+processing / obliges a body to retain or provide data; the body charged
+= controller; e.g. municipality obliged by law to pay welfare benefits
+based on claimants' finances).</li>
+<li><strong>Factual influence</strong> — judged on all circumstances;
+same entity can be controller for some operations, processor for others.
+Some roles are <strong>"naturally attached"</strong> to an activity via
+traditional roles or professional expertise: <strong>employer→employees,
+publisher→subscribers, association→members.</strong> <strong>Law firm
+representing Company ABC</strong> = controller (considerable
+independence on what info to use and how; processing "linked to the
+functional role" of a law firm). <strong>Email service provider</strong>
+= controller of traffic/billing data but <strong>not</strong> of message
+content where it only transmits messages (sender controls content).</li>
+<li><strong>Contracts help but aren't decisive:</strong> a contractual
+statement of roles can be followed if no reason to doubt it reflects
+reality, but "<strong>it is not possible either to become a controller
+or to escape controller obligations simply by shaping the contract in a
+certain way where the factual circumstances say something
+else</strong>". Calling someone a "subcontractor" doesn't make it a
+processor (<strong>WP29 SWIFT opinion, WP128</strong>). Even for a
+pre-defined service the controller must <strong>actively
+approve</strong> how processing is done; processor can't later change
+essential elements without approval. Cloud provider with
+<strong>standardised take-it-or-leave-it contract</strong> → Company X
+remains controller (it chose that provider for its own purposes);
+provider is processor insofar as it acts on customers'
+behalf/instructions.</li>
+<li><strong>KEY CONCEPT — essential vs non-essential means:</strong> | |
+Essential means | Non-essential means | |---|---|---| | Definition |
+"traditionally and inherently reserved to the controller" and "closely
+linked to the purpose and the scope" | "more practical aspects of
+implementation" | | Examples | <strong>type of personal data</strong>
+("which data?"); <strong>duration/retention</strong> ("for how long?");
+<strong>categories of recipients</strong> ("who shall have access?");
+<strong>categories of data subjects</strong> ("whose data?") | choice of
+<strong>hardware or software</strong>, <strong>detailed security
+measures</strong> | | Who decides | <strong>Controller only</strong>
+(together with purpose decide whether processing is lawful, necessary,
+proportionate) | <strong>May be left to processor</strong> | Even then
+controller must stipulate elements in the contract (e.g. instruction to
+take all <strong>Art 32</strong> measures + duties to assist), remains
+responsible under <strong>Art 24</strong>, and must be "<strong>fully
+informed about the means that are used</strong>". Advisable to document
+at least necessary TOMs in the contract.</li>
+<li><strong>Worked examples (know these):</strong>
+<ul>
+<li><strong>Payroll administrator</strong> given clear instructions by
+<strong>Employer A</strong> (payments, retention, disclosures), choosing
+only software and internal access = <strong>processor</strong>.
+<strong>Bank B</strong> receiving data to make payments and
+independently deciding what to keep and for how long =
+<strong>controller</strong> → transfer = disclosure between two
+controllers.</li>
+<li><strong>Accounting firm C</strong> auditing A's books without
+detailed instructions, deciding purpose/data/retention/technical means
+under auditing laws = <strong>controller</strong>; but if law imposed no
+specific obligations and A gave very detailed instructions, C would be
+<strong>processor</strong> (difference: core professional activity vs
+limited ancillary task).</li>
+<li><strong>Hosting provider</strong> storing encrypted data without
+knowing if it's personal = <strong>processor</strong>; so is a
+<strong>call centre</strong> using own software but whose security
+measures Company X approved.</li>
+<li><strong>Market researcher XYZ:</strong> ABC gives the questions and
+receives only statistics → <strong>ABC controller (without any access to
+data), XYZ processor</strong>; but if XYZ collected data independently
+with own methodology and produced statistics for ABC without
+instructions → <strong>XYZ sole controller, ABC has no
+role.</strong></li>
+</ul></li>
+</ul>
+<h3 id="joint-controllers--art-261">Joint controllers — Art 26(1)</h3>
+<p>"Where two or more controllers <strong>jointly determine the purposes
+and means</strong> of processing, they shall be joint controllers."
+Existed under the Directive; GDPR adds <strong>specific rules</strong>;
+CJEU clarified in <em>Wirtschaftsakademie</em>, <em>Jehovah's
+Witnesses</em>, <em>Fashion ID</em>. Assessment is <strong>factual not
+formal</strong>; "jointly" = "together with" or "not alone".
+<strong>Overarching criterion: joint participation of two or more
+entities in the determination of purposes AND means (must cover
+both).</strong></p>
+<ul>
+<li><strong>Two forms of joint participation:</strong>
+<ol type="1">
+<li><strong>Common decision</strong> — deciding together with a common
+intention.</li>
+<li><strong>Converging decisions</strong> — decisions that
+"<strong>complement each other and are necessary for the processing to
+take place in such manner that they have a tangible impact on the
+determination of the purposes and means</strong>". Must concern
+<strong>purposes and means</strong>, not other commercial matters (all
+commercial arrangements involve converging decisions). <strong>Key
+test:</strong> whether the processing <strong>would not be possible
+without both parties' participation</strong>, in the sense that each
+party's processing is "<strong>inseparable, i.e. inextricably
+linked</strong>". A processor also participates but <strong>not for its
+own purposes</strong>.</li>
+</ol></li>
+<li><strong>Three refining principles:</strong> (1) <strong>Access to
+data not required</strong> (<em>Jehovah's Witnesses</em>: members took
+notes door-to-door; community was joint controller without access or
+written instructions because it organised/coordinated the activity and
+knew in general processing took place to spread the faith). (2)
+<strong>Joint control covers only the jointly determined
+operations</strong>; for earlier/later operations decided alone, an
+entity is <strong>sole controller</strong> (<em>Fashion ID</em>). (3)
+<strong>"Joint" does not mean "equal"</strong> — operators may be
+involved "<strong>at different stages</strong>" and "<strong>to
+different degrees</strong>" (<em>Wirtschaftsakademie</em>).</li>
+<li><strong>Jointly determined purposes</strong> may be identical,
+common, or closely linked/<strong>complementary</strong> (e.g. mutual
+benefit from same operation) provided each participates in determining
+purposes and means. <em>Fashion ID</em>: embedding Facebook's "Like"
+button served economic interests of both retailer and Facebook;
+<em>Wirtschaftsakademie</em>: fan-page statistics helped Facebook's
+advertising and the administrator's promotion. <strong>Mutual benefit is
+"not decisive"</strong> — "the mere existence of a mutual benefit (for
+ex. commercial)" doesn't create joint control; an entity with no purpose
+of its own that is "<strong>merely being paid for services
+rendered</strong>" is a <strong>processor</strong>.</li>
+<li><strong>Jointly determined means</strong> — each party needn't
+decide all means. Where one entity provides a platform/standardised
+tool, the entity that <strong>decides to use it for its own purpose also
+participates in determining the means</strong>: "the use of an already
+existing technical system does not exclude joint controllership when
+users … can decide on the processing". Fan-page admin defined parameters
+(target audience, objectives); Fashion ID, by embedding the button,
+"exerted a decisive influence" over collection and transmission to
+Facebook. <strong>A common system does not always produce joint
+control</strong>, esp. where processing is <strong>separable</strong> or
+the provider has <strong>no purpose of its own</strong> ("a mere
+commercial benefit … is not sufficient to qualify as a purpose").</li>
+<li><strong>Examples:</strong> <strong>Travel agency</strong> sending
+bookings to airline and hotels = three separate controllers; but if they
+build a <strong>common booking platform</strong> for package deals,
+agree essential means and market jointly → <strong>joint controllers for
+the platform and marketing, sole controllers otherwise.</strong>
+<strong>Co-branding companies</strong> jointly running a marketing event
+= joint controllers for the event. <strong>Clinical trial:</strong>
+investigator and sponsor who <strong>draft the protocol
+together</strong> = joint controllers; investigator who simply accepts
+sponsor's protocol = processor. <strong>"global matchz"
+headhunter:</strong> no formal joint decision, but X's decision to run
+the matching service and Y's decision to feed it CVs are
+<strong>complementary, inseparable, necessary converging
+decisions</strong> → joint controllers for finding candidates; X alone
+controls own database; Y alone controls hiring. <strong>Joint health
+study:</strong> party that merely ran the analysis for the others with
+no purpose of its own = <strong>processor</strong> even if it chose
+non-essential means.</li>
+<li><strong>NO joint control in 3 situations:</strong> (1) <strong>mere
+exchange of data between separate controllers</strong> (employer sending
+employee data to tax authorities under legal obligation); (2)
+<strong>shared infrastructure where each entity decides its own
+purposes</strong> (group companies sharing a database hosted by parent —
+parent = processor for storage — each deciding on its own data, access,
+retention); (3) <strong>chain of successive operations with independent
+purposes and means</strong> (authority compiling legally mandated
+statistics from data other bodies must send it = only controller of the
+statistics; senders responsible for accuracy).</li>
+</ul>
+<h3 id="the-processor-third-parties-and-recipients">The processor, third
+parties and recipients</h3>
+<ul>
+<li><strong>Processor — Art 4(8):</strong> processes personal data
+"<strong>on behalf of</strong> the controller". Any actor (even an
+individual) can be one; processors <strong>can be held liable and
+fined</strong>. Two basic conditions:
+<ol type="1">
+<li><strong>Separate entity</strong> — one <strong>group
+company</strong> can be processor for another, but <strong>a department
+cannot</strong> be processor for another department of the same entity;
+employees/temporary staff under controller's direct authority fall under
+<strong>Art 29</strong>.</li>
+<li><strong>Processing on behalf of</strong> the controller = "serving
+someone else's interest"; recalls legal concept of
+<strong>delegation</strong>. Processor follows instructions <strong>at
+least on purpose and essential means</strong>; <strong>lawfulness (Art 6
+/ Art 9) derives from the controller's activity</strong>; processor may
+have <strong>some discretion over TOMs</strong> but <strong>may not
+process for its own purposes</strong>.</li>
+</ol></li>
+<li><strong>Processor going beyond instructions → Art 28(10):</strong>
+infringes GDPR and is <strong>treated as a controller</strong> for that
+processing. <strong>MarketinZ example:</strong> contract called it
+GoodProductZ's "data processor" for advertising; it used the customer
+database to <strong>develop its own business</strong> → became
+controller for that processing, an infringement.</li>
+<li><strong>Not every service provider is a processor</strong> — role
+stems "from its concrete activities in a specific context", not entity
+type. <strong>Taxi company whose platform lets businesses book airport
+taxis for employees</strong> = controller (designed the platform,
+decides categories and retention). <strong>General IT support
+provider</strong> with "systematic and inevitable" access =
+<strong>processor</strong> needing an Art 28 contract; <strong>IT
+consultant fixing a bug with purely incidental, very limited
+access</strong> = <strong>neither processor nor controller</strong>
+(customer relies on Art 32 measures). <strong>Standardised cloud service
+used by a municipality's schools</strong> = processor, but municipality
+must ensure its <strong>specific storage and deletion
+instructions</strong> are respected "regardless of what is generally
+offered in the standardized service", since the controller "must make
+the final decision to <strong>actively approve</strong> the way the
+processing is carried out, at least insofar as concerns the
+<strong>essential means</strong>."</li>
+<li><strong>Third party (Art 4(10))</strong> = anyone other than data
+subject, controller, processor, and persons under their direct authority
+authorised to process (e.g. employees). <strong>Employee accessing data
+without authorisation for own purposes = third party</strong> (and
+controller if processing for own purposes). Another company in the same
+group = third party; so are cleaners; <strong>parent company requesting
+subsidiaries' employee data for group statistics = third party that then
+becomes controller of its own statistics.</strong></li>
+<li><strong>Recipient (Art 4(9))</strong> = anyone to whom data are
+<strong>disclosed</strong>, third party or not, <strong>except public
+authorities receiving data in a particular inquiry under the
+law</strong> (e.g. tax/customs — Recital 31). A processor receiving data
+is a recipient; so are the airlines/hotels/excursion providers to which
+travel agency ExploreMore sends data (all controllers).</li>
+</ul>
+<h3
+id="controllerprocessor-relationship--the-art-28-contract">Controller–processor
+relationship &amp; the Art 28 contract</h3>
+<ul>
+<li><strong>GDPR novelty:</strong> processors now have <strong>direct
+obligations</strong> — records (<strong>Art 30(2)</strong>), security
+(<strong>Art 32</strong>), DPO in some cases (<strong>Art 37</strong>),
+notifying controller of breaches without undue delay (<strong>Art
+33(2)</strong>), <strong>Chapter V</strong> transfer rules and (in
+EDPB's reading) the <strong>Art 28(3)</strong> duties such as
+assistance.</li>
+<li><strong>Art 28(1) sufficient guarantees:</strong> controller may use
+only processors providing <strong>sufficient guarantees</strong> of
+appropriate TOMs and must <strong>assess</strong> them and be able to
+<strong>prove</strong> it took the GDPR's requirements into serious
+consideration. Processor demonstrates via documents (privacy policy,
+information security policy, <strong>external audit reports,
+certifications such as ISO 27000</strong>). <strong>Case-by-case risk
+assessment; no exhaustive list</strong>, though <strong>Recital
+81</strong> points to expert knowledge, reliability, resources, market
+reputation; adherence to <strong>approved code of conduct or
+certification (Art 28(5))</strong> helps. <strong>Continuing
+obligation</strong>: "does not end at the moment where the controller
+and processor conclude a contract" → verify at appropriate intervals
+incl. audits/inspections.</li>
+<li><strong>A contract or other legal act is mandatory:</strong> in
+<strong>writing, incl. electronic form (Art 28(9))</strong>; non-written
+agreements insufficient however thorough; signatures recommended. Must
+<strong>bind the processor</strong> and set out the controller's
+obligations too; an "other legal act" (e.g. national law) must be
+supplemented if content missing. <strong>Absence of contract =
+infringement for which both controller and processor are
+responsible</strong> → SA may fine both; <strong>pre-GDPR contracts not
+updated to Art 28(3) are also an infringement.</strong> Yet the contract
+<strong>doesn't decide whether the relationship exists</strong> (factual
+analysis can set it aside; a relationship can exist without a contract,
+in breach of Art 28(3)). EDPB recommends gathering the Art 28 terms
+<strong>in one place (e.g. an annex)</strong>.</li>
+<li><strong>Standard contractual clauses (SCCs)</strong> — parties may
+draft own terms or use SCCs in whole/part (<strong>Art 28(6)</strong>),
+adopted by the <strong>Commission (Art 28(7))</strong> or by an
+<strong>SA through the consistency mechanism (Art 28(8))</strong> (e.g.
+Danish SA's clauses in <strong>EDPB Opinion 14/2019</strong>).
+<strong>Not to be confused with Art 46(2) transfer SCCs.</strong> SCCs
+optional, but if used the clauses must stay the same (blanks may be
+filled; non-contradictory clauses added).</li>
+<li><strong>Power imbalance:</strong> contracts often drafted
+unilaterally by providers; SCCs "<strong>may contribute to rebalancing
+the negotiating positions</strong>"; provider drafting "is not in itself
+problematic". But "<strong>the imbalance in the contractual power of a
+small data controller with respect to big service providers should not
+be considered as a justification for the controller to accept clauses …
+which are not in compliance</strong>", nor can it "discharge the
+controller from its data protection obligations". A controller that
+freely accepts such terms "has also accepted full responsibility".
+<strong>Modifications must be directly notified to and approved by the
+controller</strong>; "the mere publication of these modifications on the
+processor's website is not compliant with Article 28".</li>
+<li><strong>Contract content:</strong> "should not merely restate the
+provisions of the GDPR"; must give "<strong>more specific, concrete
+information</strong> as to how the requirements will be met and which
+level of security is required"; "far from being a pro-forma exercise"
+(<strong>Recital 79</strong> — clear allocation of responsibilities).
+Must describe: <strong>subject-matter</strong> ("video surveillance
+recordings of people entering and leaving a high-security facility"),
+<strong>duration</strong>, <strong>nature and purpose</strong>
+("filming" and "archiving of images" to detect unlawful entry),
+<strong>type of personal data</strong> "in the most detailed manner as
+possible" (not merely "personal data pursuant to Art 4(1)" but e.g.
+"health records"), <strong>categories of data subjects</strong>, and the
+<strong>controller's obligations and rights</strong> (instructing,
+supervising, auditing).</li>
+<li><strong>THE EIGHT MANDATORY CLAUSES OF ART 28(3)
+(memorise):</strong> | # | Clause | Content | |---|---|---| | 1 |
+<strong>(a) Documented instructions</strong> | Incl. on
+<strong>third-country transfers</strong>, unless EU/Member State law
+requires otherwise → processor must <strong>inform controller first
+unless that law forbids it</strong>. EDPB recommends an annex with
+procedure/template for further instructions. Without authorisation for
+transfers, processor can't use a third-country sub-processor or its own
+non-EU divisions | | 2 | <strong>(b) Confidentiality</strong> | Persons
+authorised to process bound by an "appropriate" contractual or statutory
+duty; covers employees/temporary staff on need-to-know basis | | 3 |
+<strong>(c) Art 32 security</strong> | Processor takes all Art 32
+measures; contract must describe the measures in enough detail for
+controller to assess, require <strong>approval before changes</strong>,
+and provide for regular review | | 4 | <strong>(d) Sub-processor
+conditions</strong> | Respect Art 28(2) and (4) | | 5 | <strong>(e) Data
+subject rights</strong> | Assist "insofar as this is possible", from
+forwarding requests promptly to technical extraction; <strong>controller
+still decides admissibility</strong>; <strong>Chapter III deadlines
+cannot be extended</strong> because processor must supply info | | 6 |
+<strong>(f) Arts 32–36</strong> | Assist with security, <strong>breach
+notification, DPIAs, prior consultation</strong>; notifies breaches to
+controller "<strong>without undue delay</strong>" (possibly within hours
+in contract); may be authorised to notify SA/data subjects directly but
+<strong>legal responsibility stays with controller</strong>; for DPIAs
+the controller takes the initiative; "<strong>the duty of assistance
+does not consist in a shift of responsibility</strong>" | | 7 |
+<strong>(g) Deletion/return</strong> | At end of services <strong>delete
+or return</strong> all data at controller's choice (may be set at outset
+and changed later); secure deletion confirmed within agreed time | | 8 |
+<strong>(h) Compliance info &amp; audits</strong> | Provide <strong>all
+information necessary to demonstrate compliance</strong>, allow and
+contribute to <strong>audits incl. inspections</strong>; processor may
+suggest an auditor but <strong>final choice of auditor and of remote vs
+on-site audit is the controller's</strong>; audit costs are a commercial
+matter but "<strong>clearly disproportionate or excessive</strong>" fees
+that would make Art 28(3)(h) "purely theoretical" not allowed |</li>
+<li><strong>Infringing instructions:</strong> Art 28(3) also requires
+the processor to <strong>immediately inform</strong> the controller if,
+in its opinion, an instruction <strong>infringes data protection
+law</strong>; controller then assesses. Contract should set consequences
+(termination if controller persists; suspension of the instruction until
+controller confirms, amends or withdraws).</li>
+<li><strong>Sub-processors (Art 28(2) and (4)):</strong> "chains of
+subcontracting are becoming increasingly complex" while controller
+"retains its pivotal role"; need <strong>prior specific or general
+written authorisation</strong> before any data entrusted. Processor must
+list intended sub-processors with <strong>location, tasks, proof of
+safeguards</strong>.
+<ul>
+<li><strong>Specific authorisation:</strong> covers a
+<strong>named</strong> sub-processor for a specific activity and time;
+<strong>a request left unanswered within the timeframe counts as
+DENIED.</strong></li>
+<li><strong>General authorisation:</strong> annexed list + selection
+criteria; processor informs controller "<strong>in due time</strong>" of
+changes so it can object; <strong>failure to object in time =
+authorisation</strong>. <strong>Key difference = meaning of the
+controller's silence.</strong> Changes must be <strong>actively
+flagged</strong>; merely giving access to a list updated from time to
+time is not enough.</li>
+<li><strong>Art 28(4):</strong> processor must impose <strong>"the same
+data protection obligations"</strong> on sub-processor by contract,
+<strong>including audit rights</strong>, since "the whole chain … needs
+to be regulated by written agreements". "Same" read
+<strong>functionally</strong> (substance must match, not words;
+obligations irrelevant to the sub-processor's task needn't be included).
+<strong>Initial processor remains fully liable</strong> to the
+controller for its sub-processors → should propose only those with
+sufficient guarantees.</li>
+</ul></li>
+<li><strong>Liability:</strong> <strong>Art 82(2)</strong> processor
+liable for damage only if it breached <strong>processor-specific
+obligations</strong> or acted <strong>outside/contrary to lawful
+instructions</strong>; <strong>Art 82(4)</strong> each party involved is
+<strong>jointly and severally liable for entire damage</strong> to
+ensure effective compensation, with <strong>recourse between them (Art
+82(5))</strong>. Breaches of <strong>Arts 25–39</strong> incl. Arts 26
+and 28 can attract fines up to <strong>€10 million or 2% (Art
+83(4)(a))</strong>.</li>
+</ul>
+<h3 id="the-art-26-arrangement-between-joint-controllers">The Art 26
+arrangement between joint controllers</h3>
+<ul>
+<li>Joint controllers must determine their respective responsibilities
+"<strong>in a transparent manner</strong>" (Art 26(1)) — "who does what"
+— to avoid reduced protection or "<strong>a negative conflict of
+competence</strong>" where no one complies. One party's <strong>dominant
+influence</strong> "does not negate the joint controllership and cannot
+serve to exempt either party".</li>
+<li>Art 26(1) mentions "<strong>in particular</strong>" data subject
+rights and <strong>Arts 13–14</strong> information → list
+<strong>non-exhaustive</strong>. EDPB adds: <strong>Art 5 principles,
+legal basis, security, breach notification, DPIAs, use of processors,
+transfers, contact with data subjects and SAs.</strong> <strong>Each
+controller needs its own legal basis</strong> and must prevent
+incompatible further use (joint control doesn't authorise purposes
+beyond joint scope).</li>
+<li>Allocation is <strong>flexible, need not be equal</strong>
+(<em>Wirtschaftsakademie</em>); should reflect who is <strong>competent
+and in a position to act</strong>, and be <strong>documented</strong>.
+But some duties <strong>cannot be divided</strong>: with shared tools
+<strong>both must ensure purpose limitation and security</strong>. GDPR
+doesn't specify legal form; EDPB recommends a <strong>binding contract
+or legal act</strong> (so one can seek the other's liability for its
+allocated part and both can demonstrate compliance), in <strong>clear
+and plain language</strong>.</li>
+<li><strong>Towards data subjects:</strong> arrangement must
+"<strong>duly</strong>" (accurately) <strong>reflect the parties' roles
+(Art 26(2))</strong>; its "<strong>essence</strong>" must be made
+available. EDPB: essence should cover at least all <strong>Arts
+13–14</strong> information, stating which joint controller is
+responsible for each element, and the <strong>contact point</strong>.
+Controllers choose means (e.g. privacy policy). Contact point
+<strong>recommended but not mandatory</strong>.</li>
+<li><strong>Crucially, data subjects are NOT bound by the
+arrangement</strong> and may exercise rights <strong>against each
+controller (Art 26(3))</strong> — e.g. against the one in their Member
+State; requiring them to use the contact point would be an
+"<strong>excessive burden</strong>" → controllers should forward
+requests internally. <strong>SAs also not bound</strong> (by
+joint-controller qualification or contact point) and may approach any of
+them (<strong>Art 58</strong>).</li>
+</ul>
+<h3 id="the-flowchart--debates">The flowchart &amp; debates</h3>
+<ul>
+<li><strong>Flowchart logic:</strong> check legal appointment/legal task
+→ does a party decide <strong>purposes, which data, which individuals,
+whether and to whom data are disclosed, how long kept</strong>? If so =
+<strong>controller</strong>; if it merely acts on another's
+instructions, deciding at most <strong>non-essential means</strong> =
+<strong>processor</strong>. In doubtful cases: <strong>benefit beyond
+payment for services</strong> or a <strong>relationship with the data
+subjects as employees/customers/members</strong> points to control;
+<strong>following documented instructions with no purpose of
+own</strong> points to processing. Last step: would processing be
+<strong>impossible without more than one party's decisive
+influence</strong>? → <strong>joint controllers</strong> for whole
+processing or particular stages.</li>
+<li><strong>Debates:</strong> (i) <strong>functional approach</strong>
+prevents circumvention but creates uncertainty — EDPB eases by following
+contracts that reflect reality. (ii) <strong>Expansion of joint
+control</strong> via the CJEU trilogy closes gaps but critics warn of
+<strong>over-inclusion</strong>, small parties bound by platform terms
+they can't influence, vague boundaries (<strong>AG Bobek in <em>Fashion
+ID</em></strong> warned against making everyone responsible for
+everything†). Answers: <strong>"joint ≠ equal"</strong>, <strong>control
+limited to particular phases</strong>, <strong>commercial benefit alone
+isn't enough</strong>. (iii) <strong>Power imbalance</strong> stance can
+be criticised for ignoring a cloud market where <strong>SMEs cannot
+negotiate</strong> (responses: SCCs, certification, collective
+procurement†).</li>
+<li><strong>India link:</strong> <strong>DPDP Act 2023 s 8(1)</strong> =
+fiduciary responsible "irrespective of any agreement to the contrary";
+<strong>s 8(2)</strong> requires processors to act under "a valid
+contract" but <strong>prescribes no contract content</strong>, has
+<strong>no Art 26-style arrangement rules</strong> and <strong>no
+equivalent of Art 28(10)</strong> → lacks the machinery these Guidelines
+elaborate.</li>
+</ul>
+<hr />
+<h2
+id="c2-cimina-2020--the-data-protection-concepts-of-controller-processor-and-joint-controllership-under-regulation-eu-20181725-era-forum-oct-2020">C2.
+CIMINA (2020) — "The data protection concepts of 'controller',
+'processor' and 'joint controllership' under Regulation (EU) 2018/1725"
+(<em>ERA Forum</em>, Oct 2020)</h2>
+<p><em>Written by a Legal Officer at the <strong>EDPS</strong> (in a
+personal capacity). Summarises novelties of the <strong>EU institutions'
+data protection regulation</strong> for the three concepts, esp.
+<strong>joint controllership</strong> as interpreted by the
+CJEU.</em></p>
+<h3 id="why-it-matters-the-regulation">Why it matters; the
+Regulation</h3>
+<ul>
+<li>EU institutions, bodies, offices and agencies
+(<strong>EUIs</strong>) are <strong>not governed by the GDPR</strong>
+but by its sister instrument <strong>Regulation (EU) 2018/1725
+("EUDPR")</strong>, which <strong>repealed Regulation 45/2001</strong>,
+supervised by the <strong>EDPS</strong>. <strong>Deliberately aligned
+with the GDPR</strong>: provisions mirror GDPR's but with different
+numbers.</li>
+<li><strong>Mapping (memorise):</strong> | Concept | EUDPR | GDPR |
+|---|---|---| | Controller definition | <strong>Art 3(8)</strong> | Art
+4(7) | | Processor definition | <strong>Art 3(12)</strong> | Art 4(8) |
+| Accountability | <strong>Arts 4(2) and 26</strong> | Arts 5(2), 24 | |
+Processors | <strong>Art 29</strong> | Art 28 | | <strong>Joint
+controllers</strong> | <strong>Art 28</strong> | <strong>Art 26</strong>
+| | Data subject rights | Arts 17–24 | Chs III | | Information duties |
+<strong>Arts 15 and 16</strong> | Arts 13–14 | | Compensation |
+<strong>Art 65</strong> | Art 82 |</li>
+<li>Because texts run in parallel, <strong>CJEU case law carries
+across</strong> to EUIs. <strong>Timing note:</strong> Cimina wrote
+<strong>before final EDPB Guidelines 07/2020</strong>; relies on the
+<strong>September 2020 consultation draft</strong> and <strong>EDPS
+Guidelines of 7 Nov 2019</strong> on the same concepts.</li>
+</ul>
+<h3 id="the-controller-art-38--six-elements">The controller (Art 3(8)) —
+six elements</h3>
+<p>Controller = "the Union institution or body or the
+<strong>directorate-general</strong> or any other organisational entity
+which, alone or jointly with others, determines the purposes and means
+of the processing of personal data; where the purposes and means … are
+determined by a specific Union act, the controller or the specific
+criteria for its nomination can be provided for by Union law".</p>
+<ol type="1">
+<li><strong>Who can be a controller:</strong> includes a
+<strong>DG</strong> (department of Commission etc.) and "any other
+organisational entity" → <strong>a DG can be a controller in its own
+right.</strong> <em>Differs from GDPR</em> where *<em>EDPB says a
+department can't be controller; the organisation is.</em></li>
+<li><strong>"Alone or jointly with others"</strong> → opens door to
+joint control; CJEU confirms each actor has its own obligations.</li>
+<li><strong>"Determines"</strong> = <strong>factual influence</strong>
+over a specific operation (<em>Wirtschaftsakademie</em>, <em>Fashion
+ID</em>, AG <strong>Bot</strong> and <strong>Bobek</strong> Opinions).
+Factual evaluation: reason for the processing, <strong>who initiated it,
+who benefits</strong>.</li>
+<li><strong>"Purposes and means"</strong> = heart. Controller decides
+purpose as a matter of fact; "means" = <strong>TOMs</strong> used to
+carry it out. Following EDPB: <strong>essential means</strong> (type of
+data, retention, data subjects, who has access, recipients) =
+controller; <strong>non-essential means</strong> (software/hardware
+choice, detailed technical security measures) = may be decided by
+processor under general instructions.
+<ul>
+<li><strong>⚠ Wording tension to flag in an essay:</strong> Cimina
+writes "<strong>although purposes and means are linked, it is not
+necessary for an entity to equally determine both in order to be
+considered a controller</strong>." On its own this <strong>conflicts
+with the final EDPB Guidelines</strong> (controller must decide
+<strong>both</strong> purpose and means).
+<strong>Reconciliation:</strong> controller must always decide
+<strong>purpose + essential means</strong>, but need not decide
+<strong>every aspect of the means equally</strong> (non-essential means
+may be delegated). Her sentence permits delegating non-essential means;
+it <strong>doesn't make means optional.</strong></li>
+</ul></li>
+<li><strong>Control relates to "the processing"</strong> — Art 3(3): any
+operation or set of operations; control may cover the whole or part
+(decisive in <em>Fashion ID</em>).</li>
+<li><strong>EUI-specific:</strong> where a Union act determines purposes
+and means, it may <strong>designate</strong> the controller; even
+without express designation, controller found through <strong>implicit
+competence</strong> (law assigns a task to an EUI that requires
+processing).</li>
+</ol>
+<ul>
+<li><strong>Art 26:</strong> controller bears <strong>main
+responsibility for compliance and duty to demonstrate it</strong>;
+towards data subjects (Arts 17–24) it is "<strong>the main point of
+reference</strong>". CJEU has <strong>broadened data subject protection
+by extensively expanding joint controllership</strong>, building on the
+broad reading of "controller" in <em><strong>Google Spain</strong></em>
+(C-131/12) — justified by need for <strong>effective and complete
+protection</strong>.</li>
+<li><strong>Liability — where Regulation departs most from
+GDPR:</strong> <strong>Art 65</strong> gives anyone who suffers
+<strong>material or non-material damage</strong> a right to compensation
+from the EUI "<strong>subject to the conditions provided for in the
+Treaties</strong>". Unlike Art 82 GDPR, it is <strong>brief and silent
+on how liability is split between controller and processor</strong> →
+read with <strong>Art 340 TFEU</strong> (Union makes good damage caused
+by its institutions per general principles common to Member States'
+laws) and <strong>Art 268 TFEU</strong> (CJEU jurisdiction). <strong>No
+case law yet</strong> → allocation will be settled by the CJEU.</li>
+</ul>
+<h3 id="the-processor-art-312">The processor (Art 3(12))</h3>
+<ul>
+<li>Defined <strong>exactly as Art 4(8) GDPR</strong>: processes
+personal data "<strong>on behalf of</strong> the controller".</li>
+<li><strong>Striking EUI point:</strong> DGs are listed as possible
+<strong>controllers</strong> but <strong>not as possible
+processors</strong>. Yet, as the EDPS observes, DGs often process data
+<strong>on behalf of other DGs</strong> as "<strong>support
+DGs</strong>" or business owners, in a role similar to a processor's,
+sometimes reinforced by <strong>Service Level Agreements (SLAs)</strong>
+→ EDPS recommends <strong>internal arrangements identifying exact tasks
+and responsibilities</strong> of support DGs.</li>
+<li><strong>Essence of the role:</strong> processing on behalf of the
+controller, in its interest, following its instructions.
+<strong>Processor is not a mere tool</strong> — keeps "<strong>a
+considerable degree of autonomy</strong>" in deciding how to provide
+services and choosing non-essential means; may propose/advise but
+controller decides whether to accept without imposing every element. If
+a processor goes beyond its mandate and decides purpose and essential
+means → may become <strong>controller or joint controller</strong>
+depending on scope of deviation (e.g. whether it departed from
+instructions to comply with data protection principles). <strong>Reusing
+data for its own purposes = clear breach.</strong> GDPR reaches same
+result in <strong>Art 28(10)</strong>.</li>
+<li><strong>Art 29(1):</strong> controller may use only processors
+offering <strong>sufficient guarantees</strong> of appropriate TOMs;
+accountability means it must <strong>assess</strong> and
+<strong>prove</strong>. <strong>Due diligence:</strong> check
+privacy/records-management/information-security policies, external audit
+reports, processor's reliability &amp; expertise on breaches/security →
+only then contract; <strong>keep verifying compliance
+regularly</strong>. EDPS adds: processor should not outsource further
+without <strong>prior authorisation</strong>, keep controller informed
+of changes with a <strong>right to object</strong>, pass <strong>same
+contractual obligations</strong> to any subcontractor; a processor
+subject to GDPR → GDPR compliance is one element of sufficient
+guarantees. Processor must also <strong>assist</strong> with data
+subject rights and with <strong>Arts 33–41</strong> (security, breach
+notification, DPIAs, <strong>confidentiality of electronic
+communications</strong>) → controller must set clear rules and precise
+instructions in the contract.</li>
+<li><strong>Processor liability "still more limited in scope"</strong>
+than controller's (Recitals 45 and 50 and Art 29 strengthen processors'
+responsibilities, but): controller may be liable for damage from an
+infringement <strong>or a breach of contract</strong>; processor liable
+when it <strong>acts outside the controller's mandate or breaches its
+own obligations under the Regulation</strong>. Can be <strong>entirely
+liable if it bears the main responsibility</strong> for the damage;
+<strong>if it followed strict instructions it is not liable.</strong>
+Towards data subjects, controller is the main responsible party;
+processor answers only if shown to have acted beyond mandate.
+<strong>Compare Art 82(2) GDPR</strong> (processor liable only for
+processor-specific breach/outside or contrary to lawful instructions)
+and <strong>Art 82(4)</strong> (joint and several liability for whole
+damage)†.</li>
+</ul>
+<h3 id="joint-controllership-under-art-28">Joint controllership under
+Art 28</h3>
+<ul>
+<li>Not new (Reg 45/2001 and Directive 95/46 already referred to "alone
+or jointly"). <strong>Novelty = full dedicated provision, Art 28 (= Art
+26 GDPR).</strong> <strong>Art 28(1):</strong> joint controllers exist
+"where two or more controllers or one or more controllers together with
+one or more controllers <strong>other than Union institutions and
+bodies</strong> jointly determine the purposes and means". Can link
+<strong>two EUIs</strong>, or an EUI and an <strong>outside
+actor</strong> (management portal provider; national public authority).
+Outside party is subject to the GDPR but <strong>Art 28 of the
+Regulation still applies in full.</strong></li>
+<li><strong>Each joint controller must have the possibility or right to
+determine purpose and essential means</strong> — by agreement, or
+(following <em>Fashion ID</em> and EDPB) by <strong>converging</strong>
+on purpose and essential means where the processing "<strong>would not
+be feasible without the participation of both parties</strong>". Cimina:
+"in substance, a <strong>general level of complementarity and unity of
+purpose</strong> may already be enough to trigger joint controllership,
+if these elements are jointly determined." <strong>Access to data not
+needed</strong> (lack of access may affect a party's level of
+responsibility, <strong>not its role</strong>). <strong>Distinguishing
+joint from separate controllership</strong> (each pursuing own purposes)
+is difficult in practice; if parties neither jointly determine nor
+converge on purpose and essential means → <strong>separate
+controllers</strong>. <strong>EUI example:</strong> institution
+processing data for <strong>security purposes</strong> and, after an
+incident, transferring data to authorities for investigation →
+<strong>each a separate controller</strong>.</li>
+<li><strong>Art 28(1) arrangement:</strong> joint controllers determine
+responsibilities "in a transparent manner", "<strong>in
+particular</strong>" for <strong>data subject rights and information
+duties</strong>, "<strong>by means of an arrangement</strong>",
+<strong>unless and in so far as Union or Member State law already does
+so.</strong> Cimina: clear allocation = "<strong>an essential condition
+for the protection of the rights and freedoms of data
+subjects</strong>". <strong>Responsibility need not be equal</strong> —
+<em>Wirtschaftsakademie</em>: "the existence of joint responsibility
+does not necessarily imply equal responsibility … those operators may be
+involved at different stages … and to different degrees" → assessed
+<strong>case by case, by stage</strong> (e.g. the party that deals with
+data subjects will likely take on that responsibility).
+<ul>
+<li><strong>Arrangement mandatory unless law allocates the
+roles.</strong> If EU legislation gives a clear allocation (even
+partial) in the <strong>operative part of the act or at the latest in an
+implementing or delegated act</strong>, no further arrangement needed —
+<strong>EDPS recommends such allocation in legislation</strong>;
+otherwise arrangement fills the gaps. Form: <strong>Memorandum of
+Understanding (MoU) or contract</strong>; an <strong>SLA</strong> may
+supplement an MoU with technical detail, and EDPS accepts that
+<strong>an SLA alone can suffice if it contains all required
+elements.</strong> Must be <strong>agreed by all joint controllers, not
+adopted unilaterally by one EUI</strong>, and define scope (subject
+matter, duration, nature and purpose, categories of data and data
+subjects). Substance should cover: roles/responsibilities;
+<strong>information duties under Arts 15 and 16</strong>; <strong>a
+contact point</strong> for requests; cooperation in replying to data
+subjects and in DPIAs; any processor engaged.</li>
+<li><strong>Art 28(2):</strong> "<strong>the essence of the arrangement
+shall be made available to the data subject</strong>" — through the data
+protection statement, separately, in a common notice, or by one
+designated controller.</li>
+<li><strong>"Irrespective of the terms of the arrangement"</strong> the
+data subject may exercise rights "<strong>in respect of and against each
+of the controllers</strong>" → Chapter III rights cannot be limited.
+Because organisationally complex → include <strong>cooperation
+obligations</strong> and a <strong>specific contact point</strong> (EDPS
+recommends a single one, e.g. email). "<strong>It is insufficient for a
+joint controller to merely forward a data subject's request to the
+responsible data controller: it must, in fact, also ensure that adequate
+follow-up is provided.</strong>" <strong>Art 65</strong> governs joint
+controllers' liability <strong>in the same way as a single
+controller's.</strong></li>
+</ul></li>
+</ul>
+<h3
+id="the-cjeu-trilogy-all-decided-under-directive-9546-but-with-the-new-framework-in-mind">The
+CJEU trilogy (all decided under Directive 95/46, but with the new
+framework in mind)</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Case</th>
+<th>Facts</th>
+<th>Holding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em><strong>Wirtschaftsakademie Schleswig-Holstein</strong></em>
+(<strong>C-210/16, 5 June 2018</strong>, Grand Chamber)</td>
+<td>German education company ran a <strong>Facebook fan page</strong>.
+<strong>Facebook Insights</strong> (free, <strong>non-negotiable
+terms</strong>) gave administrators <strong>anonymous visitor
+statistics</strong> gathered through <strong>cookies with a unique user
+code active for 2 years</strong>. ULD (Schleswig-Holstein authority)
+ordered page <strong>deactivated</strong>; company argued processing was
+Facebook's</td>
+<td><strong>Joint controller with Facebook Ireland</strong>: by
+<strong>defining parameters</strong> (target audience, objectives,
+promotion of its activities) it took part in determining purposes and
+means; could request anonymised demographic (age, sex, relationships,
+occupations), lifestyle/interest and geographic data. <strong>Using a
+platform didn't exempt it.</strong> <strong>Access unnecessary</strong>;
+joint responsibility ≠ equal responsibility. Mahieu &amp; van Hoboken:
+"the responsibility of a controller should be dependent on the
+<strong>stages of the processing</strong> in which it is involved and on
+the <strong>degree of this involvement</strong>". Cimina accepts the
+<strong>imbalance between small administrator and Facebook</strong> but
+says it doesn't defeat the ruling since aim is "fundamental and complete
+protection"</td>
+</tr>
+<tr class="even">
+<td><em><strong>Jehovan todistajat / Jehovah's Witnesses</strong></em>
+(<strong>C-25/17, 10 July 2018</strong>)</td>
+<td>Finnish authority prohibited the community from collecting data in
+<strong>door-to-door preaching</strong>; members noted <strong>names,
+addresses, religious beliefs, family circumstances</strong> as memory
+aids, without people's knowledge. Community gave <strong>no written
+instructions</strong> but made maps allocating areas, recorded
+preachers/publications, kept list of people refusing visits</td>
+<td>(1) <strong>Manual processing covered</strong> where data forms or
+is meant to form part of a <strong>filing system</strong> — notes
+qualified, <strong>no need for data sheets, lists or search
+methods</strong>. (2) <strong>Community and preaching members = joint
+controllers</strong>: by <strong>organising, coordinating,
+encouraging</strong> the preaching it participated in determining
+purposes and means, with general knowledge data were collected to spread
+the faith; <strong>absence of written instructions or access didn't
+exclude it.</strong> Control can arise from <strong>organisation
+alone</strong>; <strong>individuals can be joint controllers with an
+organisation</strong></td>
+</tr>
+<tr class="odd">
+<td><em><strong>Fashion ID</strong></em> (<strong>C-40/17, 29 July
+2019</strong>)</td>
+<td>Online clothing retailer embedded Facebook's <strong>"Like"
+button</strong>; visitors' data transmitted
+<strong>automatically</strong> to Facebook Ireland <strong>without
+awareness, whether or not members or clicked</strong>.
+<strong>Verbraucherzentrale NRW</strong> sued; <strong>OLG
+Düsseldorf</strong> referred</td>
+<td><strong>Joint controller with Facebook for collection and disclosure
+by transmission</strong>: embedding the plug-in "<strong>exerted a
+decisive influence</strong>", for own <strong>commercial
+advantage</strong> (publicity/visibility on Facebook). <strong>NOT a
+controller for Facebook's subsequent processing</strong> (couldn't
+determine purposes/means). Duties follow same line: <strong>inform at
+collection (identity and purposes)</strong>; where consent needed,
+obtain it <strong>only for operations it jointly controlled</strong>.
+EDPB generalised: for any preceding/subsequent operations an entity
+decides alone → <strong>sole controller</strong>.
+<strong>"Phase-oriented" approach narrows the breadth of
+<em>Wirtschaftsakademie</em></strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Cimina's 7 conclusions (CJEU clarifications):</strong> (1)
+full and complete protection of data subjects is key → they must always
+be able to exercise rights easily and know each entity's role; (2)
+specific influence over processing for <strong>one's own
+purposes</strong>, by participating in purposes and essential means, may
+be enough for joint control; (3) an entity is joint controller
+<strong>only for operations in which it participates</strong> → duty to
+inform data subjects of its identity and purpose at collection; (4)
+joint control ≠ necessarily equal responsibility; (5) <strong>lack of
+written guidance/instructions doesn't exclude decisive
+influence</strong>; (6) clearly defined roles foster data subject
+protection and underline <strong>accountability</strong>; (7) <strong>no
+access to data doesn't exclude joint control.</strong></li>
+</ul>
+<h3 id="critical-assessment">Critical assessment</h3>
+<p>Beyond the wording issue on purposes/means: (1)
+<strong>Over-inclusiveness</strong> of <em>Wirtschaftsakademie</em> and
+<em>Jehovah's Witnesses</em> — every site with a plug-in or fan page
+becomes a co-controller; unclear liability and <strong>compliance
+burdens for small actors who cannot influence large platforms</strong>.
+<em>Fashion ID</em>'s phase limit, "joint ≠ equal" and later EDPB "mere
+commercial benefit alone doesn't create joint control" moderate this;
+<strong>AG Bobek (Fashion ID)</strong> warned against making everyone
+responsible for everything†. (2) <strong>Power imbalance:</strong>
+fan-page admin had no negotiating power over Facebook yet was jointly
+responsible; EDPB Guidelines refuse to let small controllers hide behind
+imbalance (→ <em>Compliance Gap</em> reading, C4). (3) <strong>EUDPR
+liability gap:</strong> Art 65's vague reference to the Treaties leaves
+allocation between EUI controllers and processors unclear until CJEU
+rules. (4) <strong>DGs can be controllers but not processors</strong> —
+an internal-organisation nuance unique to the EU institutions.</p>
+<hr />
+<h2
+id="c3-edpb-opinion-222024-on-certain-obligations-following-from-the-reliance-on-processors-and-sub-processors-adopted-7-october-2024">C3.
+EDPB OPINION 22/2024 on certain obligations following from the reliance
+on processor(s) and sub-processor(s) (adopted <strong>7 October
+2024</strong>)</h2>
+<h3 id="background-and-questions">Background and questions</h3>
+<ul>
+<li><strong>Scenario:</strong> a public body moves to the cloud; the
+cloud provider (initial processor) relies on subcontractors, who may use
+further subcontractors. Under <strong>Art 4(8)</strong> the term
+"processor" covers not only the initial processor but also the
+processor's processor "<strong>and so on along the processing
+chain</strong>". GDPR governs the chain mainly via <strong>Art
+28</strong>: controller may use only processors with <strong>sufficient
+guarantees (28(1))</strong>; processor needs controller's <strong>prior
+written authorisation</strong> for sub-processors (28(2)); contract must
+contain <strong>Art 28(3)</strong> clauses; each processor must pass
+<strong>same data protection obligations</strong> to sub-processors
+(28(4)). Above these: <strong>accountability (Art 5(2))</strong> and
+<strong>Art 24</strong> (TOMs in light of risk).</li>
+<li><strong>Trigger:</strong> <strong>EDPB Coordinated Enforcement
+Framework (CEF) report of 17 Jan 2023</strong> on public sector's use of
+cloud-based services identified <strong>eight challenges</strong> and
+left the extent of some obligations unclear. On <strong>5 July
+2024</strong> the <strong>Danish SA</strong> asked the Board for an
+opinion under <strong>Art 64(2)</strong> ("matter of general
+application"). Deadline extended under <strong>Art 64(3)</strong> (8
+weeks + 6); <strong>Opinion adopted 7 Oct 2024, signed by Chair Anu
+Talus.</strong> Admissible because it concerned interpretation of
+<strong>Arts 5(2), 24, 28</strong>, was reasoned, and hadn't already
+been answered (Guidelines 07/2020 gave only partial guidance).</li>
+<li><strong>Limits of the Opinion:</strong> Board did
+<strong>not</strong> decide who is controller/processor in any
+arrangement ("primarily up to the parties", subject to SA checks); did
+<strong>not</strong> address <strong>liability to data subjects (Art
+82)</strong>; stressed that meeting the <strong>Art 28(1) verification
+duty doesn't mean the controller complies with other provisions</strong>
+(lawfulness, <strong>Art 32 security</strong>, <strong>Chapter
+V</strong>).</li>
+<li><strong>Danish SA's questions:</strong> <strong>Q1 (controller's
+duties along the chain):</strong> 1.1 must the controller identify
+<strong>all sub-processors or only the first line</strong>, and how far
+must it verify safeguards of (sub-)processors and the <strong>content of
+sub-processing contracts</strong>? 1.2 how far must it, under
+<strong>Art 28(1) and Art 44</strong>, assess and show that protection
+isn't undermined when (sub-)processors <strong>transfer data outside the
+EEA</strong> on its instructions? 1.3 do these obligations <strong>vary
+between low-risk and high-risk</strong> processing? <strong>Q2 (contract
+wording):</strong> 2 must the contract contain the <strong>Art 28(3)(a)
+exception</strong> "unless required to do so by Union or Member State
+law to which the processor is subject"? 2a is a <strong>broader
+exception</strong> covering third-country law, "unless required to do so
+by law or binding order of a governmental body", <strong>in itself an
+infringement</strong>? 2b should such a broader exception be read as a
+<strong>documented instruction</strong> from the controller?</li>
+</ul>
+<h3 id="q11--knowing-the-whole-chain">Q1.1 — Knowing the whole
+chain</h3>
+<ul>
+<li><strong>Controller must know the whole chain, not just the first
+line.</strong> Guidelines 07/2020: "although the chain may be quite
+long, the controller retains its pivotal role". <strong>"Identity" =
+name and address of each processor, a contact person (name, position,
+contact details) and a description of the processing</strong> with a
+clear delimitation of responsibilities where there are several
+sub-processors. Mirrors <strong>Annex IV of Commission
+Controller–Processor SCCs (Decision 2021/915)</strong> and <strong>Annex
+III of International Transfer SCCs (Decision 2021/914)</strong>.</li>
+<li><strong>Three reasons:</strong> (1) <strong>choice of recipients,
+incl. processors, is one of the essential means</strong> of processing
+(which data used, how long, who has access and whose data) which only
+the controller may make. (2) <strong>Art 28(2) authorisation system
+depends on it</strong>: under specific authorisation the controller
+approves each sub-processor individually (silence = refusal); under
+general authorisation it approves an initial list and must have enough
+time to object to changes which the processor must actively flag. (3)
+<strong>Processors are "recipients" (Art 4(9))</strong>, so transparency
+and data subject rights depend on knowing them: <strong>Arts 13(1)(e)
+and 14(1)(e)</strong> require recipient information "<strong>as specific
+and concrete as possible</strong>" (WP29 transparency guidelines:
+generally means <strong>naming</strong> them); <strong>Art
+30(1)(d)</strong> requires them in the <strong>RoPA</strong>.
+<em><strong>RW v Österreichische Post</strong></em> (<strong>C-154/21,
+12 Jan 2023</strong>): <strong>Art 15(1)(c)</strong> access right gives
+data subject the actual <strong>identity of recipients</strong> unless
+identification impossible or request manifestly unfounded/excessive;
+under <strong>Art 19</strong> data subject may learn which specific
+recipients were told of rectification/erasure/restriction.</li>
+<li><strong>Conclusion:</strong> controllers should have the identity of
+all processors and sub-processors "<strong>readily available at all
+times</strong>" → answer access requests without undue delay, react
+quickly to breaches along the chain, cope if chain breaks (sub-processor
+unreachable, unwilling or insolvent). Applies "<strong>regardless of the
+risk</strong>". To make workable: processor should <strong>proactively
+provide</strong> the info and <strong>keep it up to date</strong>, in a
+format the contract may specify.</li>
+</ul>
+<h3 id="verifying-sufficient-guarantees-how-risk-affects-it">Verifying
+"sufficient guarantees"; how risk affects it</h3>
+<ul>
+<li><strong><em>Proximus</em> (C-129/21):</strong> Arts 5(2) and 24
+"impose general accountability and compliance requirements", obliging
+controllers to "take appropriate steps to prevent any infringements";
+accountability remains with controller <strong>even when using
+processors</strong>. <strong>Central principle:</strong> "<strong>the
+engagement of processors should not lower the level of protection for
+the rights of data subjects compared to a situation where the processing
+is carried out directly by the controller</strong>" — applies to
+sub-processors and sub-sub-processors. Controller must ensure the
+<strong>whole chain</strong> consists only of processors with sufficient
+guarantees and be able to prove it took GDPR requirements into serious
+consideration, "even if the chain of processing can be long and
+complex". <strong>Due diligence in both selection and
+oversight.</strong></li>
+<li><strong>Initial processor:</strong> verification <strong>case by
+case</strong> (nature, scope, context, purposes, risks). <strong>Codes
+of conduct (Art 40)</strong> and <strong>certification (Art 42)</strong>
+can help demonstrate (<strong>Art 28(5)</strong>).
+<strong>Non-exhaustive methods:</strong> questionnaire; requests for
+documentation; publicly available information; certifications or audit
+reports from trustworthy third parties; <strong>on-site audits</strong>.
+Guarantees must be demonstrated "to the controller's satisfaction";
+verification <strong>repeated at appropriate intervals</strong>.</li>
+<li><strong>Risk (Q1.3):</strong> risk-based approach doesn't let a
+controller "<strong>neglect or deviate from its obligations</strong>"
+because it considers the risk "low". Following <strong><em>Natsionalna
+agentsia za prihodite</em> (C-340/21)</strong>: the duty to implement
+appropriate TOMs <strong>always applies</strong>; only the
+<strong>measures vary</strong>. Art 28(1) doesn't mention risk but
+implies it; for <strong>high-risk processing</strong> (e.g. special
+categories) controller may set <strong>stricter TOMs</strong> processors
+must be able to meet. <strong>Answer:</strong> the obligation to verify
+sufficient guarantees "<strong>should apply regardless of the
+risk</strong>", but its <strong>extent varies</strong> — lower risk
+allows less extensive verification; higher risk makes verification of
+the <strong>entire chain</strong> more important (controller may check
+sub-processing contracts itself or require extended verification and
+documentation from the initial processor). <strong>Separates the
+existence of the duty from its intensity.</strong></li>
+</ul>
+<h3
+id="relying-on-the-processor-without-giving-up-responsibility">Relying
+on the processor without giving up responsibility</h3>
+<ul>
+<li>Verifying a long chain could be impossible, so the Board eases it:
+(1) processor must <strong>assist (Art 28(3)(e),(f))</strong> and make
+available <strong>all information necessary to demonstrate
+compliance</strong> and allow <strong>audits (28(3)(h))</strong> —
+controller may rely on this "provided that the information … actually
+demonstrates compliance", and processor should share proactively; duties
+pass down chain under <strong>28(4)</strong>. (2) <strong>Before a
+sub-processor is engaged</strong>, a general authorisation should be
+supplemented with <strong>criteria</strong> (TOMs, expertise,
+reliability, resources); processor supplies <strong>list of intended
+sub-processors with locations, tasks, proof of safeguards</strong>;
+initial processor proposes only those with sufficient guarantees and
+<strong>remains fully liable</strong> to the controller (Art
+28(4)).</li>
+<li><strong>No burden shift:</strong> processor's Art 28(4) duty
+"<strong>does not lift the responsibility of the controller</strong>".
+<strong>Key sentence:</strong> "the ultimate decision on whether to
+engage a specific sub-(sub-)processor and the pertaining responsibility,
+including with respect to verifying the sufficiency of the guarantees
+provided by the (sub-)processor, <strong>remains with the
+controller</strong>." SAs should ask whether the controller can show
+verification "<strong>has taken place to the controller's
+satisfaction</strong>". Controller may rely on processor's information
+and build on it, but where incomplete, inaccurate or raising questions,
+or risk warrants, controller must <strong>ask for more and verify,
+complete or correct it</strong>; for high-risk processing it should
+<strong>increase verification across the chain</strong>.
+<strong>"Reliance is allowed; blind reliance is not."</strong></li>
+</ul>
+<h3 id="the-sub-processing-contracts-and-the-art-284-flow-down">The
+sub-processing contracts and the Art 28(4) flow-down</h3>
+<ul>
+<li><strong>Art 28(4)</strong> directly obliges processors to impose
+"<strong>the same data protection obligations</strong>" on
+sub-processors; <strong>Art 28(3)(d)</strong> makes this contractual too
+→ initial processor "<strong>legally and contractually
+required</strong>" to pass them down. "<strong>Same</strong>" read
+functionally (identical wording not required); under <strong>Module
+Three of the Transfer SCCs</strong> the exporter warrants it has done
+so. If a sub-processor fails: "<strong>ultimate responsibility</strong>"
+rests with controller, but initial processor "<strong>will remain liable
+to the controller</strong>" (contractual claim).</li>
+<li><strong>Can controller see the contracts?</strong> <strong>Art
+28(3)(h)</strong> requires the processor to provide them on request;
+<strong>Clause 7.7(c) Controller–Processor SCCs</strong> and
+<strong>Clause 9(c) Transfer SCCs</strong> let controller request a
+copy, <strong>business secrets redacted</strong> ("an expression of the
+controller's right of audit"). But SCCs don't say whether the controller
+<strong>must</strong> ask. <strong>Board:</strong> "<strong>the
+controller does not have a duty to systematically ask for the
+sub-processing contracts</strong>." Decide <strong>case by
+case</strong>, and as part of its audit right it should have "<strong>a
+process in place to undertake audit campaigns … sampling
+verifications</strong>" that contracts contain necessary obligations.
+Request a contract <strong>where there are doubts</strong> or the SA
+asks (e.g. after a data breach at the sub-processor; public/other
+information suggests a problem such as a sub-processor's template not
+meeting Art 28(3)).</li>
+<li><strong>Caveat:</strong> a copy may help but "<strong>contractual
+clauses cannot – by themselves – demonstrate that the sufficient
+guarantees are effectively implemented</strong>" → <strong>paper
+compliance ≠ real compliance</strong> (links straight to C4).</li>
+</ul>
+<h3 id="transfers-along-the-chain-q12">Transfers along the chain
+(Q1.2)</h3>
+<ul>
+<li>"<strong>Transfer</strong>" per <strong>Guidelines 05/2021</strong>
+— <strong>remote access from a third country can be a transfer.</strong>
+<strong>Controller decides whether transfers are allowed at
+all:</strong> processors must not transfer outside its instructions (Art
+29), instructions pass down chain (Art 28(4)), controller can
+<strong>prohibit transfers or limit to specific countries</strong>.</li>
+<li><strong>Controller's responsibility persists though the processor is
+the exporter</strong>: <strong>dual duties under Art 44 and under Art
+28(1)</strong> (whose reference to "the requirements of this Regulation"
+includes <strong>Chapter V</strong>). <strong>Art 44</strong> binds
+<strong>both</strong> controllers and processors — both must ensure
+protection is not undermined whatever the transfer ground
+(<strong><em>Schrems II</em>, C-311/18</strong>), both individually
+liable; controller can claim back from processor (<strong>Art
+82(5)</strong>). Duties apply <strong>before the transfer and while data
+is processed abroad</strong>; verification again required
+<strong>regardless of risk</strong>, though a transfer may itself
+increase risk (<strong>Recital 116</strong>). Controller may
+<strong>refuse a sub-processor whose engagement would entail a
+transfer</strong>. Controller is <strong>ultimately responsible for any
+Art 28(1) infringement</strong>; "<strong>practical
+difficulties</strong>" invoked in controlling sub-processor engagement,
+esp. third-country transfers, "<strong>do not exonerate the
+controller</strong>" — weak bargaining power is no excuse (cloud/Big
+Tech imbalance).</li>
+<li><strong>Non-exhaustive documentation</strong> processor/exporter
+prepares and controller assesses, builds on, and can show SA:
+<ol type="1">
+<li><strong>Transfer mapping</strong> ("know your transfers" —
+<strong>Recommendations 01/2020</strong>): which data goes where incl.
+by remote access, for which purposes; controller should ask for more if
+a sub-processor's location is missing or remote access isn't mentioned;
+needed before engagement, for transparency (<strong>Arts 13(1)(f),
+14(1)(f), 15(1)(c), 15(2)</strong>) and the <strong>RoPA (Art
+30(1)(d)–(e))</strong>.</li>
+<li><strong>Ground for transfer:</strong> under <strong>adequacy
+decision (Art 45)</strong> controller checks decision is <strong>in
+force and covers the transfer</strong>; for <strong>onward
+transfers</strong> it need not check onward-transfer rules itself since
+adequacy decision already covers them (<strong>Art 45(2)(a)</strong>),
+though must still ensure sufficient guarantees under Art 28(1). Under
+<strong>Art 46</strong> safeguards (<strong>SCCs or binding corporate
+rules (BCRs)</strong>), a <strong>Transfer Impact Assessment
+(TIA)</strong> is needed in line with <em>Schrems II</em> and
+Recommendations 01/2020: assessment of whether third-country law and
+practice, <strong>esp. public-authority access</strong>, would undermine
+safeguards, with <strong>supplementary measures</strong> where needed.
+For onward transfers, controller need not verify the Art 46 tool's rules
+as such but should be able to show <strong>importers actually
+comply</strong>.</li>
+</ol></li>
+</ul>
+<h3 id="the-wording-of-art-283a-unless-required-by-law">The wording of
+Art 28(3)(a): "unless required by law"</h3>
+<ul>
+<li><strong>Art 28(3)(a):</strong> processor acts "only on documented
+instructions … including with regard to transfers … <strong>unless
+required to do so by Union or Member State law to which the processor is
+subject</strong>", in which case it must <strong>inform the controller
+beforehand unless that law forbids it on important grounds of public
+interest.</strong></li>
+<li><strong>Q2:</strong> Board began from the principle that
+<strong>contracts cannot override the law or bind third parties such as
+public authorities</strong>. Every contract must address situations
+where the processor may be <strong>legally required</strong> to process
+outside instructions; the <strong>duty to inform</strong> the controller
+is a <strong>core element</strong> to include. <strong>Outside the
+EEA</strong> a reference to "EU or Member State law" "may not be very
+meaningful", and the Commission's <strong>International Transfer SCCs
+omit the "unless" wording</strong>, handling it via <strong>Clause
+8.1</strong> (inform immediately if unable to follow instructions) and
+<strong>Clause 14(e)</strong> (notify laws preventing compliance).
+<strong>Board: including the clause is "highly recommended, but not
+strictly required"</strong>, without prejudice to the <strong>mandatory
+duty to inform</strong>. Where EU/Member State law clearly relevant, the
+wording helps demonstrate compliance.</li>
+<li><strong>Q2a (broader "law or binding order of a governmental
+body"):</strong> two situations. <strong>EU/EEA Member State
+law</strong> falls within Art 28(3)(a) anyway, because EU and Member
+State law share the <strong>same constitutional tradition</strong>
+(<strong>Art 16(1) TFEU; Arts 8(1) and 52(1) Charter</strong>); if only
+this is covered, the wording has no impact. <strong>Third-country
+law</strong> doesn't share that tradition and cannot automatically be
+treated the same (<strong>Art 44</strong>). The GDPR's "legal
+obligation" and "public interest" refer to <strong>EU or Member State
+law</strong> (<strong>Art 6(3), Recital 40, Art 49(4)</strong>), and
+<strong>Art 29</strong> permits processing without instructions only
+where "required to do so by Union or Member State law". For transfers,
+contracts may in principle address third-country legal requirements, but
+merely including the broad wording is "<strong>highly unlikely to
+suffice</strong>". <strong>Better models:</strong> <strong>Clause 14
+Transfer SCCs</strong> (pre-signing assessment, warranty of no
+conflicting laws, notice of changes, suspension or termination),
+<strong>Clause 15</strong> (notify exporter, review legality of a
+government request and challenge it where appropriate), and similar BCR
+clauses. <strong>Common standard:</strong> third-country laws that
+<strong>respect the essence of fundamental rights</strong> and
+<strong>do not exceed what is necessary and proportionate</strong> in a
+democratic society to safeguard an <strong>Art 23(1)</strong> objective
+<strong>do not undermine GDPR protection</strong>
+(<strong>Recommendations 02/2020 on the European Essential
+Guarantees</strong>). Contracts must distinguish laws that undermine
+protection from those that do not, with supplementary measures where
+needed. Even within the EEA, a processor may face third-country law
+(e.g. via a <strong>US parent and the CLOUD Act†</strong>) but such
+wording "<strong>does not release the processor from its obligations
+under the GDPR</strong>". <strong>Conclusion:</strong> the broad wording
+"<strong>is a prerogative of the contractual freedom of the parties and
+does not infringe Article 28(3)(a) GDPR per se</strong>", but it doesn't
+exonerate either party from its obligations, esp. <strong>duty to
+inform</strong> and <strong>transfer rules</strong>.</li>
+<li><strong>Q2b:</strong> <strong>No.</strong> An
+"<strong>instruction</strong>" = controller specifying what processing
+the processor should carry out on its behalf <strong>and how</strong>,
+precisely enough to cover specific processing, and it must
+<strong>always be withdrawable.</strong> A provision merely recognising
+legal compulsion isn't a request to process on the controller's behalf.
+<strong>Controller's influence ends where law requires processing it
+cannot steer or halt</strong> (<strong><em>Belgian State (Official
+Journal)</em>, C-231/22</strong>; Art 4(7)) → a reminder to obey the law
+is a <strong>contractual safeguard, not an instruction</strong>; same
+for third-country law. The word "<strong>unless</strong>" itself shows
+the exception is processing <strong>not</strong> on instruction. Broad
+wording "<strong>cannot be construed as a documented instruction by the
+controller</strong>", and "<strong>the controller remains responsible
+where it has not ensured that the (sub-)processor processes personal
+data only on its documented instructions</strong>". Doesn't apply where
+processing is required by EU/Member State law or by third-country law
+ensuring an <strong>essentially equivalent level of
+protection</strong>.</li>
+</ul>
+<h3 id="why-it-matters-criticisms">Why it matters; criticisms</h3>
+<ul>
+<li><strong>Takeaways:</strong> tightens controller accountability over
+long cloud/SaaS chains via <strong>full visibility of the chain,
+risk-scaled verification, no excuse from practical
+difficulties</strong>; makes processors <strong>proactive information
+providers</strong>. <strong>Pragmatic:</strong> <strong>no duty to
+collect every sub-processing contract</strong>, <strong>sampling is
+enough</strong>, controllers <strong>may rely on processor
+documentation</strong> → balances accountability with feasibility.
+Targets <strong>boilerplate in US hyperscalers' DPAs</strong> — "unless
+required by law or binding order of a governmental body" covers US
+government access such as <strong>FISA 702 or the CLOUD Act†</strong>:
+not illegal per se, but <strong>insufficient for transfers and not an
+instruction</strong>.</li>
+<li><strong>Central tension:</strong> law places <strong>ultimate
+responsibility on the controller</strong>, yet many controllers (esp.
+<strong>small businesses and public bodies</strong>) face
+<strong>take-it-or-leave-it contracts and opaque chains</strong>. EDPB
+answers with <strong>legal duties</strong>; C4 answers with
+<strong>technology</strong>. <strong>India:</strong> DPDP s 8(1) makes
+the Data Fiduciary responsible "irrespective of any agreement to the
+contrary", s 8(2) requires a valid contract, but no prescribed content
+and no express sub-processor regulation → <strong>supply-chain gap
+likely wider</strong>.</li>
+<li><strong>Criticisms:</strong> (1) <strong>burdens small
+controllers</strong> who lack bargaining power/expertise to verify
+multi-tier hyperscaler chains (CEF cloud report; <em>Compliance Gap</em>
+article). (2) <strong>Relies heavily on processor
+self-reporting</strong> → "paper compliance" despite its own warning
+about contractual clauses. (3) <strong>Chain-wide identity
+requirement</strong> hard to meet where sub-processing is
+<strong>dynamic</strong> (CDNs, support centres). (4) It's an
+<strong>opinion, not binding law</strong> (though SAs follow Art 64
+opinions for consistency).</li>
+</ul>
+<hr />
+<h2
+id="c4-baquero-restrepo-amaríles-et-al-2025--the-compliance-gap-in-data-supply-chains-contract-specification-languages-and-smart-contracts-as-compliance-technologies-artificial-intelligence-and-law">C4.
+BAQUERO, RESTREPO AMARÍLES et al. (2025) — "The compliance gap in data
+supply chains: contract specification languages and smart contracts as
+compliance technologies" (<em>Artificial Intelligence and Law</em>)</h2>
+<p><em>Interdisciplinary team of lawyers and computer
+scientists.</em></p>
+<h3 id="the-problem-a-compliance-gap-at-the-back-end">The problem: a
+compliance gap at the back end</h3>
+<ul>
+<li>Privacy research/regulation has focused on the <strong>front
+end</strong> (business-to-consumer, <strong>B2C</strong>: privacy
+policies, consent, empowering data subjects). Far less on the
+<strong>back end</strong> — the "<strong>data supply chain</strong>"
+through which a controller passes data to processors, who pass it to
+sub-processors. <strong>Serious blind spot</strong>: what happens to
+people's data depends on whether the <strong>whole chain</strong>
+complies.</li>
+<li><strong>Ponemon (2018):</strong> data protection compliance =
+"<strong>the most difficult regulatory challenge</strong>" corporations
+face (vast data flows + growing use of <strong>algorithmic decision
+systems (ADS)</strong>). Controllers outsource <strong>storage,
+cleansing, annotation, computational analysis, algorithm training,
+visualisation, app development</strong> → division of labour makes it
+very hard to know what happens to data once it leaves the controller's
+hands. Firms invest in compliance technology, yet <strong>no effective
+tool exists for monitoring the data supply chain</strong> → the back end
+is a "<strong>black box</strong>" for controllers, consumers and
+regulators alike. <strong>UK ICO (2019):</strong> monitoring the data
+supply chain = one of the most urgent compliance issues; firms rely
+mainly on <strong>contractual mechanisms</strong> and neglect
+<strong>monitoring and technical/organisational controls</strong>.</li>
+<li><strong>Central claim:</strong> "<strong>individuals' right to data
+protection may lack effectiveness if it is not possible to monitor
+compliance regarding the data flowing in data supply chains</strong>."
+Ties to the critique of <strong>notice and consent</strong> (Unit 2):
+telling people in a privacy policy what will happen achieves little if
+no one can check whether companies further down the chain follow the
+rules; <strong>B2C transparency is not enough.</strong> Compliance
+failures undermine <strong>consumer trust</strong> (Pavlou; Milne &amp;
+Boza); and (Acquisti et al.) when firms skew the "<strong>privacy/value
+balance</strong>" through unbridled profit maximisation,
+<strong>regulators respond</strong> (GDPR; <strong>CCPA</strong>).</li>
+</ul>
+<h3 id="why-existing-research-and-legal-instruments-fall-short">Why
+existing research and legal instruments fall short</h3>
+<ul>
+<li>Privacy research is "<strong>data-subject centric</strong>"
+(readability/vagueness of policies, opt-out mechanisms, summarisation
+tools: <strong>P3P, Do Not Track, CLAUDETTE</strong>) — assumes people
+will trust a company with a privacy policy; <strong>neglects internal
+company documents</strong> (data processing agreements, processing
+instructions) that actually govern the back end.</li>
+<li><strong>AI &amp; Law work has its own limits:</strong> legal
+ontologies and logic programming (<strong>ODRL, PrOnto</strong>) face
+the <strong>knowledge acquisition bottleneck</strong> (turning legal
+texts/facts into formal logic is slow, laborious human work) and the
+<strong>open texture of legal language</strong> (terms often too
+abstract/ambiguous to become fixed rules). Real documents (Word, Excel,
+emails) are <strong>unstructured</strong>; NLP performs poorly on
+them.</li>
+<li><strong>The "compliance gap" defined:</strong> data is processed
+iteratively and dynamically, but the instruments governing it have
+<strong>four defects:</strong>
+<ol type="1">
+<li><strong>Dispersed</strong> — across many documents rather than one
+place (hard to update and monitor).</li>
+<li><strong>Static</strong> — can't track dynamic processing.</li>
+<li><strong>Convoluted</strong> — complex language, puzzling
+cross-references.</li>
+<li><strong>Legalistic</strong> — vocabulary remote from the
+technical/business staff who apply them. → controllers are
+"<strong>disempowered</strong>" and can't effectively monitor their own
+chains. Consequences: <strong>companies</strong> — higher non-compliance
+risk; <strong>data subjects</strong> — lose trust through lost control
+and information asymmetry; <strong>SAs</strong> — can't spot violations
+or systemic risks.</li>
+</ol></li>
+<li><strong>Eleven requirements (REQ1–REQ11)</strong> — each defect
+becomes a requirement: | REQ | Requirement | | |---|---|---| |
+<strong>REQ1</strong> | One <strong>integrated source</strong> of
+contractual information | answers <em>dispersed</em> | |
+<strong>REQ2</strong> | <strong>Dynamic updating with real-time
+monitoring</strong> | answers <em>static</em> | | <strong>REQ3</strong>
+| <strong>Clear and concise language</strong> | answers
+<em>convoluted</em> | | <strong>REQ4</strong> | <strong>Accessible
+vocabulary</strong> | answers <em>legalistic</em> | | REQ5 | Integrate
+<strong>internal company documents</strong> | | | REQ6 |
+<strong>Combined conceptual and technological framework</strong> | | |
+REQ7 | <strong>Extract information from enterprise documents</strong> |
+| | REQ8 | Monitor the <strong>entire chain incl. post-contractual
+obligations</strong> | | | REQ9 | Control <strong>unplanned and
+scattered international flows</strong> | | | REQ10 | Ensure <strong>all
+processors follow the controller's rules</strong> | | | REQ11 | Keep
+flows aligned with the <strong>controller's overall purpose</strong> |
+|</li>
+</ul>
+<h3 id="the-data-supply-chain-and-the-law">The data supply chain and the
+law</h3>
+<ul>
+<li>Term from <strong>Kneese et al. (2014)</strong>; ICO: data may be
+processed "<strong>by hundreds of organizations</strong>". Like
+industrial supply chains, based on division of labour, but with
+<strong>two complications</strong>: data is <strong>immaterial and
+intangible</strong> (harder to monitor/protect against leaks; "can be
+easily copied", esp. serious for sensitive data) and the chain is
+<strong>international by nature</strong> (data flows globally unless
+costly technology stops it).</li>
+<li><strong>Is "supply chain" even the right term?</strong> It implies a
+leading firm coordinating everyone towards an overall objective, whereas
+data often flows in an "<strong>unplanned, scattered manner</strong>".
+<strong>Cambridge Analytica</strong>: Facebook, app developer Kogan and
+Cambridge Analytica shared <strong>no common purpose</strong>; only
+"<strong>careless management</strong>" creating flows each party used
+for its own benefit. <strong>Authors nevertheless conclude</strong>
+business practice and GDPR <strong>create genuine supply
+chains</strong>: controllers hire suppliers to achieve a purpose and the
+GDPR requires controllers to ensure all processors follow the rules and
+act on contractual instructions → "<strong>an overall purpose to be
+achieved in coordination</strong>".</li>
+<li><strong>GDPR provisions showing the stakes:</strong> <strong>Art
+28(1)</strong> only processors with sufficient guarantees; <strong>Art
+28(3)</strong> processing governed by contract/legal act with
+controller's instructions; <strong>Art 28(4)</strong> processor must
+cascade all instructions to sub-processors and is <strong>fully
+liable</strong> to controller for them (presumption in EU law that
+initial processor liable by default); <strong>Art 30</strong> records of
+processing SAs can inspect; <strong>Art 82(2)</strong> controller liable
+for damage, processor liable where it acts against/outside instructions;
+<strong>Art 82(4)</strong> each responsible party liable for entire
+damage → "<strong>heightened liabilities</strong>" for both.
+<strong>Financial stakes:</strong> fines up to <strong>4% of worldwide
+turnover</strong>, record fines vs <strong>Google, British Airways,
+Marriott</strong>; <strong>FTC <span
+class="math inline">5<em>b</em><em>i</em><em>l</em><em>l</em><em>i</em><em>o</em><em>n</em><em>f</em><em>i</em><em>n</em><em>e</em><em>o</em><em>n</em><em>F</em><em>a</em><em>c</em><em>e</em><em>b</em><em>o</em><em>o</em><em>k</em> *  * (<em>C</em><em>a</em><em>m</em><em>b</em><em>r</em><em>i</em><em>d</em><em>g</em><em>e</em><em>A</em><em>n</em><em>a</em><em>l</em><em>y</em><em>t</em><em>i</em><em>c</em><em>a</em>); <em>a</em><em>n</em><em>n</em><em>u</em><em>a</em><em>l</em><em>c</em><em>o</em><em>m</em><em>p</em><em>l</em><em>i</em><em>a</em><em>n</em><em>c</em><em>e</em><em>c</em><em>o</em><em>s</em><em>t</em><em>s</em> * *</span>7.7
+million to $30.9 million</strong>, <strong>up 45% since
+2011</strong>.</li>
+<li><strong>⚠ SLIP FOR EXAMS:</strong> the paper attributes the
+accountability-based "burden of proof" to "<strong>Article 7
+GDPR</strong>". In fact accountability lies in <strong>Art 5(2) and Art
+24</strong>, while <strong>Art 7(1)</strong> only places on the
+controller the burden of demonstrating that the data subject gave
+<strong>consent</strong>. <em>Spotting this error and giving the correct
+provisions shows close reading.</em></li>
+</ul>
+<h3 id="the-atos-case-study-why-contracts-are-not-enough">The Atos case
+study: why contracts are not enough</h3>
+<ul>
+<li><strong>Atos</strong> — one of Europe's largest IT companies;
+operates globally, often within long chains, acting as <strong>processor
+for its clients and client of its own suppliers</strong>, sometimes both
+in the same chain. Authors map the documents Atos uses (broad →
+specific): | Document | Function | |---|---| | <strong>Supplier data
+protection policies &amp; certifications</strong> | Evidence of
+compliance <strong>before hiring</strong> | | <strong>Master Services
+Agreement (MSA)</strong> | Between controller and first processor;
+services, liabilities, commercial terms; <strong>broad data protection
+clause</strong> referring to the DPA and binding all later
+sub-processors | | <strong>DPIA (Art 35)</strong> | Identifies high
+risks <strong>before</strong> processing | | <strong>Data Protection
+Addendum (DPA)</strong> | Contains <strong>Art 28(3)</strong>
+obligations (subcontracting, security, confidentiality, breach
+procedure, audit) | | <strong>Compliance Assessment of Data Processing
+(CADP)</strong> | Documents processing details incl. subcontracting and
+risks; part of the <strong>record of processing</strong>; reviewed by
+DPO; Excel versions for when Atos is controller
+(<strong>CADP-C</strong>) or processor (<strong>CADP-P</strong>), a Word
+version for passing work to sub-processors (<strong>CADP-S</strong>) | |
+<strong>Technical and Organisational Measures (TOM)</strong> | A
+<strong>security questionnaire</strong> | | <strong>SCCs and Binding
+Corporate Rules</strong> | Govern <strong>international
+transfers</strong> | Almost all are highly
+<strong>standardised</strong>; only the constantly updated
+<strong>CADP</strong> is a truly "<strong>living</strong>" document.
+<strong>Lesson:</strong> "the more a particular document has to be
+handled by different firms … and by different levels of one particular
+firm, the higher will be the level of standardization required".</li>
+<li><strong>Five compliance functions:</strong> (1) framework
+agreements/master contracts define <strong>legal and ethical obligations
+and standards</strong>; (2) <strong>DPIA, DPA, CADP assess
+risks</strong>; (3) <strong>DPA and CADP instruct</strong> the
+processing (down the chain, from managers to operations); (4)
+technical/operational documents (TOMs) <strong>define operational
+measures</strong>; (5) <strong>CADP is used to audit and
+monitor</strong> processing.</li>
+<li><strong>By purpose, three types:</strong>
+<strong>prescriptive</strong> (give instructions: MSA, DPA, SCCs, BCRs),
+<strong>evaluative</strong> (collect info to assess compliance: TOMs),
+<strong>evaluative-prescriptive</strong> (do both: <strong>CADP and
+DPIA</strong>).</li>
+<li><strong>Why an Art 28 DPA can't solve it alone:</strong> controllers
+face long chains with many recipients and real difficulty building a
+structured monitoring system "<strong>even if the companies are intent
+on doing that</strong>". Breaches show the danger: <strong>April
+2021</strong> healthcare providers reported patient data exposed through
+<strong>hacked third-party vendors</strong>; <strong>Airbus saw four of
+its vendors attacked</strong> for technical documents; attempts to
+obtain <strong>COVID vaccine cold-chain</strong> information. In
+principle documents should be "living" (evaluative documents tracking
+changes; prescriptive documents updated with new instructions).
+<strong>In reality most Atos documents are standardised and never
+updated</strong>, and even the CADP (a long Excel questionnaire with
+space for client instructions) fails.</li>
+<li><strong>Four practical challenges:</strong> (1)
+<strong>Audits</strong> complex and "burdensome" (multiple documents,
+formats, actors); (2) documents <strong>not transversal</strong> — the
+CADP "gets stuck in one particular department" instead of moving between
+<strong>IT, legal, finance</strong>; different people fill different
+documents so nothing guarantees coherence; (3)
+<strong>interoperability</strong> across firms is poor → hard to keep
+instructions consistent as they pass down the chain; (4) <strong>no
+real-time compliance</strong> — DPO must constantly screen documents for
+updates, causing delays or preventing effective compliance.</li>
+<li><strong>Point for a law student:</strong> an Art 28 contract is a
+<strong>static text</strong> — it can say what processors must do but
+<strong>cannot show whether they're doing it.</strong> Links to paper vs
+effective compliance debate: Guidelines 07/2020 insist contracts must
+not merely restate the GDPR; <strong>Opinion 22/2024: "contractual
+clauses cannot – by themselves – demonstrate that the sufficient
+guarantees are effectively implemented"</strong>. <strong>EDPB answers
+with legal duties of verification; this paper answers with
+technology.</strong></li>
+</ul>
+<h3 id="the-proposed-tools-in-plain-words">The proposed tools in plain
+words</h3>
+<ul>
+<li><strong>Smart contract</strong> (Unsworth): "<strong>self-enforcing
+agreement, written in the form of computer code into an electronic
+platform</strong>" — a small program that runs automatically when set
+conditions are met. Behaves predictably → Hildebrandt:
+"<strong>code-driven regulation</strong>"; promises to cut monitoring
+and transaction costs. Difficulty (Binns): <strong>translating
+natural-language contracts into code.</strong></li>
+<li><strong>Contract specification languages (CSLs)</strong> bridge the
+gap: a structured way of writing a contract that <strong>humans can
+still read</strong> but is <strong>precise enough for a computer to
+process and convert automatically</strong> into a smart contract. Sorts
+wording into standard legal categories: <strong>who owes a duty
+(debtor), to whom (creditor), what must be done, under what conditions,
+what powers each side has.</strong></li>
+<li><strong>Crucial: aim is NOT full automation.</strong> Goal:
+"<strong>automate the identification of potential inconsistencies and
+violations between data protection artifacts and data protection
+rules</strong>, to be further examined by … data protection officers or
+other <strong>humans-in-the-loop</strong>". System
+<strong>flags</strong> possible problems; a <strong>human
+decides</strong> what to do.</li>
+<li><strong>Why Symboleo:</strong> meets <strong>3 criteria</strong>:
+(1) links data protection concepts to higher-level categories (e.g.
+"storage of data", "retention period", "retention of data"); (2)
+supports <strong>automated inferences</strong> that flag potential
+violations (e.g. exceeding a storage period) to a human; (3) comes with
+<strong>tools to verify</strong> generated smart contracts flag
+violations <strong>when, and only when</strong>, their conditions
+occur.</li>
+<li><strong>Symboleo ontology:</strong> a fixed vocabulary of legal
+concepts. A <strong>contract</strong> = set of <strong>obligations and
+powers</strong> between <strong>roles</strong> (controller, processor)
+held by <strong>parties</strong> (the client, Atos) concerning
+<strong>assets</strong> (the data). <strong>Obligation</strong> = a
+debtor's duty to a creditor to bring about a result when a condition
+holds, created when a <strong>triggering event</strong> occurs; may be
+<strong>conditional, unconditional, or surviving</strong> (outlives the
+contract, like deletion or confidentiality duties).
+<strong>Power</strong> = authority to <strong>create, change, suspend,
+resume or terminate</strong> obligations or contracts, taking effect
+only when exercised. <strong>Events</strong> (e.g. "delivered") = fixed
+points in time. Language has <strong>33 axioms, 13 of which govern
+runtime monitoring.</strong></li>
+<li><strong>Three tools:</strong> <strong>Symboleo editor</strong>
+(write specifications); <strong>SymboleoPC</strong> (translates into
+code for the <strong>nuXmv model checker</strong> — explores every
+possible way the contract could unfold); <strong>Symboleo2SC</strong>
+(generates smart contracts for <strong>Hyperledger Fabric</strong>, an
+open-source <strong>private</strong> blockchain where only approved
+participants take part).</li>
+</ul>
+<h3 id="method-and-findings">Method and findings</h3>
+<ul>
+<li>Authors <strong>annotated Atos's natural-language contract
+documents, converted them into Symboleo, verified the result and
+generated monitoring smart contracts.</strong> They call it "<strong>an
+illustrative example rather than an experience report</strong>".
+<strong>Worked example:</strong> simplified <strong>DPA</strong> (client
+= controller, Atos = processor): client gives documented instructions
+and must adapt them on receiving an <strong>infringement
+notice</strong>; Atos must process only on instructions, <strong>warn
+the client of infringing instructions</strong>, keep a <strong>record of
+processing</strong>, supply a copy on request. Mapping: client's duty to
+adapt instructions = obligation <strong>triggered by the infringement
+notice</strong> (mirrors <strong>Art 28(3)</strong> duty to inform of
+infringing instructions); Atos's record-keeping = obligation triggered
+<strong>each time data is processed</strong> (<strong>Art
+30(2)</strong>); duty to supply a copy echoes <strong>Art
+28(3)(h)</strong>; <strong>Atos's right to suspend service if client
+fails to adapt = a power</strong>, triggered by client's violation,
+matching the <strong>suspension clause EDPB recommends</strong>;
+client's right to have service resumed is also a power.</li>
+<li><strong>Finding 1 — verification at design time:</strong>
+human-drafted contracts can contain <strong>conflicting
+obligations</strong> that make performance impossible → amendment,
+rollback, disputes, voidability. SymboleoPC and nuXmv check every
+possible course for <strong>liveness</strong> (every performance ends
+within bounded time) and <strong>safety</strong> (nothing undesirable
+happens). E.g. test that if processing is suspended and client never
+adapts, contract eventually <strong>terminates unsuccessfully</strong>.
+A failed check produces a <strong>counterexample</strong> (step-by-step
+trace). Can reveal a party exposed to <strong>unlimited
+liability</strong>, a contract <strong>ignoring a party's primary
+intentions</strong>, or <strong>impossible performance</strong> (one
+clause requiring client data to be delivered and another requiring it to
+be deleted).</li>
+<li><strong>Finding 2 — monitoring at runtime:</strong> the
+<strong>blockchain ledger stores every change of state and every
+event</strong> → contract history <strong>trackable and
+tamper-proof</strong>. In an illustrative <strong>KYC ("know your
+client")</strong> identity-checking service offered via an API, the
+smart contract records all processing so violations by client or
+provider can be found and reported to a
+<strong>human-in-the-loop</strong>, who can then trigger a
+<strong>power</strong> such as suspension. Shows which entities
+processed users' documents, where, and what computations were performed;
+<strong>a regulator or watchdog could help maintain the
+ledger.</strong></li>
+<li><strong>Finding 3 — evaluation against the 11 requirements:</strong>
+Symboleo <strong>well supports</strong> <strong>REQ2</strong> (real-time
+dynamic monitoring), <strong>REQ3</strong> (clear language) and
+<strong>REQ9</strong> (control of unplanned flows) because it is
+<strong>event-based</strong>. <strong>Partially supports</strong> the
+rest: <strong>REQ1</strong> (integrated source), <strong>REQ4</strong>
+(accessible wording), <strong>REQ5</strong> (integrating internal
+documents — converting DPA/CADP is manual), <strong>REQ7</strong>
+(extraction via templates), <strong>REQ8</strong> (whole-chain &amp;
+post-contractual monitoring via surviving obligations), <strong>REQ10
+and REQ11</strong> (processor alignment with controller's rules and
+purpose).</li>
+</ul>
+<h3 id="limitations-criticisms-and-wider-links">Limitations, criticisms
+and wider links</h3>
+<ul>
+<li><strong>Authors admit:</strong> Symboleo still in development; smart
+contracts lack <strong>access control</strong> (role-based controls
+being added). <strong>Above all, the system cannot verify the
+truthfulness of its inputs — "garbage in, garbage out"</strong>: the
+ledger is only as reliable as what the parties enter. Translating
+contracts into Symboleo remains <strong>manual</strong> (the knowledge
+acquisition bottleneck again); <strong>SymboleoNLP handles only
+templates</strong>; <strong>LLMs speed things up but make many
+errors</strong> and can't handle CADP-style Excel info.
+<strong>Sub-contracts</strong> (vital for long chains) are supported by
+the language but <strong>not yet well by the tools</strong>.
+<strong>False positives/negatives</strong> require continuous debugging
+to build trust. <strong>Humans must still decide</strong> →
+human–machine interaction matters; contracts may need adapting to fit
+the technology. <strong>No CSL study has addressed different
+jurisdictions or changes in the law.</strong> On <strong>open
+texture</strong>, authors say not a major problem because rules are
+first assessed for whether they're specific enough to formalise and
+"data protection rules tend to be specific" —
+<strong>debatable</strong>, since standards like
+"<strong>appropriate</strong>", "<strong>sufficient
+guarantees</strong>", "<strong>without undue delay</strong>" plainly
+require judgement.</li>
+<li><strong>Distinguished from earlier work</strong> on smart contracts
+and GDPR (mostly basic <strong>consent</strong> via fixed-type
+contracts): Symboleo handles any conditions (usage, security,
+retention), complex obligations and powers, <strong>design-time checking
+and runtime monitoring.</strong> Caution: <strong>smart contracts are
+not legal contracts</strong> (which can be implied, e.g. buying clothes
+in a shop); agree with <strong>Kelbert &amp; Pretschner</strong> that
+"<strong>sticky policies</strong>" travelling with the data are "rather
+unrealistic" across firms with different technologies and
+jurisdictions.</li>
+<li><strong>Balanced answer:</strong>
+<ul>
+<li><strong>For:</strong> fits GDPR <strong>accountability</strong>
+(Arts 5(2), 24, 28(1)) and Opinion 22/2024's demand for chain-wide
+visibility and continuous verification; turns <strong>paper compliance
+into operational compliance</strong>; <strong>empowers
+controllers</strong> (EDPB recognises they're weak against powerful
+processors); supports auditing and liability allocation under
+<strong>Art 82(4)–(5)</strong>.</li>
+<li><strong>Against:</strong> the ledger records <strong>claims, not
+reality</strong>; formal rules can't capture <strong>open-textured
+standards</strong> ("appropriate", "proportionate"); <strong>blockchain
+immutability sits uneasily with erasure (Art 17) and storage limitation
+(Art 5(1)(e))</strong>, though the ledger stores <strong>events rather
+than personal data</strong>†; <strong>costs and adoption barriers burden
+SMEs</strong>, interoperability needs network effects, unclear
+<strong>who runs the ledger</strong>; risk of
+<strong>tech-solutionism</strong> (substituting formal compliance for
+substantive protection — critiques of
+"<strong>compliance-ism</strong>"); study is
+<strong>exploratory</strong>, using a <strong>simplified DPA</strong> →
+scalability unproven; and the fact that the one dynamic document (the
+CADP) is <strong>still an Excel file</strong> suggests the gap stems
+from <strong>organisational silos, not technology alone.</strong></li>
+</ul></li>
+<li><strong>India link:</strong> <strong>DPDP Act s 8(1)</strong>
+(fiduciary responsible "irrespective of any agreement to the contrary")
+and <strong>s 8(2)</strong> (processors only under "a valid contract") —
+but <strong>no Art 28-style mandatory contract content and no explicit
+sub-processor regime</strong> → supply-chain compliance gap may be even
+wider.</li>
+<li><strong>Conclusions:</strong> formalising data protection
+instructions in a CSL <strong>harmonises and clarifies</strong>
+instructions scattered across documents and formats. <strong>Partial
+automation</strong> warns a human of inconsistencies <strong>within
+instructions, between instructions and the law, and between instructions
+and actual processing</strong>, cutting monitoring time. The blockchain
+gives a <strong>reliable, tamper-proof record</strong> of how each
+company processed data. System serves a <strong>preventive
+function</strong> (flag violations before they materialise) and a
+<strong>repressive function</strong> (identify the party responsible for
+a breach — for companies and potentially regulators). Running cost
+"<strong>is negligible</strong>". <strong>Value:</strong> shifts
+attention from the data subject to <strong>the companies behind the
+controller</strong>, complementing EDPB's legal answers by showing how
+hard the controller's responsibility is to discharge in practice.
+<strong>Core message:</strong> data subjects' rights are only as
+effective as the controller's ability to <strong>see and control its
+supply chain</strong>, and <strong>static contracts cannot provide that
+visibility.</strong> A balanced answer credits this while stressing the
+tools <strong>support human judgement</strong> rather than replace it
+and <strong>cannot guarantee that what is recorded is
+true.</strong></li>
+</ul>
+<hr />
+<h2
+id="c5-the-key-cjeu-cases--unit-3-connection-to-the-dpdp-act-2023">C5.
+THE KEY CJEU CASES + UNIT 3 CONNECTION TO THE DPDP ACT 2023</h2>
+<h3 id="why-the-court-reads-the-roles-broadly">Why the Court reads the
+roles broadly</h3>
+<ul>
+<li>Roles are <strong>functional</strong>: follow what the entity
+actually does, not what a contract calls it; allocation "<strong>not
+negotiable</strong>". GDPR <strong>didn't change</strong> the concepts
+or criteria inherited from Directive 95/46 → <strong>Directive-era CJEU
+judgments still govern.</strong> Thread: "controller" must be read
+"<strong>in a sufficiently broad way</strong>", favouring
+"<strong>effective and complete protection</strong>" and avoiding
+gaps/circumvention, "while at the same time not diminishing the role of
+the processor".</li>
+</ul>
+<h3 id="the-case-line-summary-table">The case line (summary table)</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Case</th>
+<th>Citation / date</th>
+<th>Facts</th>
+<th>Holding / principle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em><strong>Google Spain</strong></em></td>
+<td><strong>C-131/12, 13 May 2014</strong> (Grand Chamber)</td>
+<td><strong>Mr Costeja González</strong> wanted links to old newspaper
+notices about his historical <strong>debt proceedings</strong> removed
+from Google search results (outdated/irrelevant). Google: merely a
+<strong>passive intermediary</strong> linking to others' content → not a
+controller</td>
+<td><strong>Search engine finding, indexing, temporarily storing and
+making available</strong> information published by third parties
+<strong>is a controller</strong> of that processing (it allows
+information about identifiable people to be retrieved). <strong>Broad
+definition needed for "effective and complete protection"</strong> →
+data subjects can ask for outdated/irrelevant results to be
+<strong>de-indexed</strong> (the "<strong>right to be
+forgotten</strong>"). <strong>Principle: an actor cannot escape
+controllership by calling itself a neutral pipe if it in substance
+decides why and how data is processed</strong></td>
+</tr>
+<tr class="even">
+<td><em><strong>Wirtschaftsakademie</strong></em></td>
+<td><strong>C-210/16, 5 June 2018</strong> (Grand Chamber)</td>
+<td>German education company ran Facebook fan page; <strong>Facebook
+Insights</strong> anonymous stats (non-negotiable terms; cookies with
+unique user code active 2 years used for Facebook's own targeted ads).
+Schleswig-Holstein ULD ordered deactivation; company said processing was
+Facebook's</td>
+<td><strong>Joint controller with Facebook Ireland</strong> by
+<strong>choosing to create a fan page</strong> and <strong>defining
+parameters</strong> (target audience, objectives of managing/promoting
+its activities). Could ask for anonymised demographic, lifestyle and
+geographic data. Using a platform built by someone else doesn't exempt.
+<strong>(1) Joint control doesn't require access to personal
+data</strong> (its choices shaped whose data was processed and why,
+though it only saw anonymous statistics). <strong>(2) Joint
+responsibility "does not necessarily imply equal
+responsibility"</strong>: "at different stages … to different degrees" →
+<strong>"stage and degree" principle</strong> (Mahieu &amp; van
+Hoboken). <strong>Small administrator's lack of bargaining power over
+Facebook didn't defeat joint control</strong> (aim = complete
+protection)</td>
+</tr>
+<tr class="odd">
+<td><em><strong>Jehovah's Witnesses</strong></em> (<em>Jehovan
+todistajat</em>)</td>
+<td><strong>C-25/17, 10 July 2018</strong></td>
+<td>Finnish authority prohibited community from collecting data
+door-to-door; members noted names, addresses, religious beliefs, family
+circumstances; community made maps, recorded preachers/publications,
+kept list of those refusing visits; <strong>no written
+instructions</strong></td>
+<td>(1) <strong>Manual processing covered</strong> where data forms or
+is meant to form part of a <strong>filing system</strong>; no need for
+data sheets, specific lists or search methods. (2) <strong>Community and
+preaching members = joint controllers</strong>: organising,
+coordinating, encouraging; general knowledge; <strong>no written
+guidance and no access needed.</strong> AG <strong>Mengozzi</strong>:
+"excessive formalism would make it easy to circumvent". <strong>Control
+can come from organisation/coordination alone; individuals can be joint
+controllers with an organisation</strong></td>
+</tr>
+<tr class="even">
+<td><em><strong>Fashion ID</strong></em></td>
+<td><strong>C-40/17, 29 July 2019</strong></td>
+<td>Online clothing retailer embedded Facebook <strong>"Like"
+button</strong>; visitors' data automatically transmitted to Facebook
+Ireland whether or not Facebook members or clicked.
+<strong>Verbraucherzentrale NRW</strong> sued; <strong>OLG
+Düsseldorf</strong> referred</td>
+<td><strong>Phase split:</strong> <strong>joint controller with Facebook
+for collection and disclosure by transmission</strong> ("exerted a
+decisive influence"; for own commercial advantage = better publicity on
+Facebook) but <strong>NOT</strong> a controller for Facebook's
+<strong>subsequent</strong> processing. <strong>Duties</strong> follow
+same line: inform at collection (identity, purposes); consent only for
+jointly controlled operations. EDPB generalised: preceding/subsequent
+operations decided alone → <strong>sole controller</strong>.
+<strong>"Phase-oriented" approach</strong> limits breadth of
+<em>Wirtschaftsakademie</em></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Line of development:</strong> <em>Google Spain</em> = broad
+functional test aimed at complete protection →
+<em>Wirtschaftsakademie</em> + <em>Jehovah's Witnesses</em> =
+<strong>participation in determining purposes and means is
+enough</strong> (no access, no written instructions, no equal bargaining
+power) → <em>Fashion ID</em> <strong>limits joint control to the stages
+actually co-determined</strong> → "<strong>joint is not equal</strong>"
+scales responsibility to each party's stage and degree.
+<strong>Cimina</strong> (EDPS Legal Officer) draws the same lessons from
+the trilogy, adding that clear roles foster both data subjects' rights
+and accountability.</li>
+<li><strong>EDPB working test:</strong> joint participation =
+<strong>common decision</strong> or <strong>converging
+decisions</strong> that complement each other, are necessary for the
+processing and have a tangible impact on purposes/means. <strong>Key
+question:</strong> would the processing "<strong>not be possible without
+both parties' participation</strong>" → each party's processing
+"<strong>inseparable, i.e. inextricably linked</strong>".
+<strong>Brake:</strong> "the mere existence of a mutual benefit (for ex.
+commercial)" doesn't create joint control; an entity "<strong>merely
+being paid for services rendered</strong>" is a processor. <strong>Same
+functional logic in reverse for processors:</strong> under <strong>Art
+28(10)</strong> a processor that starts deciding its own purposes and
+means <strong>becomes a controller for that processing and is in
+breach.</strong></li>
+<li><strong>Later judgments (beyond readings):</strong>
+<em><strong>Nacionalinis visuomenės sveikatos centras</strong></em>
+(<strong>C-683/21, 2023</strong>)† — commissioning body can be a
+controller <strong>without processing data itself</strong>
+(COVID-tracing app commissioned from a developer); joint control
+<strong>needs no formal arrangement</strong> (update).
+<em><strong>Belgian State (Official Journal)</strong></em>
+(<strong>C-231/22, 2024</strong>) — where law sets purposes and means,
+it can <strong>designate the controller</strong>.
+<em><strong>Proximus</strong></em> (<strong>C-129/21</strong>),
+<em><strong>Natsionalna agentsia za prihodite</strong></em>
+(<strong>C-340/21</strong>), <em><strong>MediaMarktSaturn</strong></em>
+(<strong>C-687/21</strong>) — reinforce accountability: controllers must
+<strong>take appropriate steps to prevent infringements</strong>,
+measures assessed <strong>concretely</strong>, and the controller
+<strong>bears the burden of proving its security was
+appropriate.</strong></li>
+</ul>
+<h3 id="the-cross-cutting-debates">The cross-cutting debates</h3>
+<ol type="1">
+<li><strong>Functional approach vs contractual labels.</strong>
+<em>For:</em> prevents circumvention (nobody can contract out of
+controllership; "subcontractor" ≠ processor — WP29 SWIFT).
+<em>Against:</em> parties can't always know their role in advance; SAs
+can set contracts aside. <strong>EDPB middle position: follow the
+contract where it reflects reality.</strong></li>
+<li><strong>Expansion of joint controllership via the trilogy.</strong>
+<em>For:</em> complete protection; avoids gaps where a platform and its
+users each disclaim responsibility; incentive for website operators to
+choose privacy-friendly tools. <em>Against:</em>
+<strong>over-inclusion</strong> (every fan-page admin or plug-in user
+becomes a co-controller); duties loaded on small parties who can't
+influence platform's non-negotiable terms; diffused responsibility;
+<strong>burdens on SMEs</strong>; vagueness of "converging decisions"
+and "inextricably linked"; <strong>AG Bobek warned against making
+everyone responsible for everything.</strong> <em>Mitigations:</em>
+"joint ≠ equal", <em>Fashion ID</em>'s phase limit, EDPB rule that mere
+commercial benefit isn't enough.</li>
+<li><strong>Power imbalance with hyperscale processors.</strong> EDPB:
+imbalance is no justification for non-compliant terms; controller that
+freely accepts a provider's terms assumes full responsibility; Opinion
+22/2024: "practical difficulties … do not exonerate".
+<strong>Critics:</strong> ignores market reality — SMEs and public
+bodies <strong>can't negotiate with AWS, Microsoft or Google</strong>
+and chains are opaque. Suggested responses: <strong>SCCs, codes of
+conduct and certification (Art 28(5)), coordinated enforcement,
+collective procurement.</strong> Linked to <strong>paper vs effective
+compliance:</strong> "contractual clauses cannot – by themselves –
+demonstrate that the sufficient guarantees are effectively implemented"
+→ supports <strong>continuous verification through audits</strong>
+rather than signed documents alone.</li>
+<li><strong>Processor liability.</strong> <strong>Art 82(2):</strong>
+processor liable only for breaching <strong>processor-specific
+obligations</strong> or acting <strong>outside or contrary to lawful
+instructions</strong>; <strong>Art 82(4):</strong> parties jointly and
+severally liable for whole damage. Cimina: processor following strict
+instructions isn't liable; controller remains main responsible party
+towards data subjects. <strong>In India the debate is sharper
+(below).</strong></li>
+</ol>
+<h3
+id="the-unit-3-connection-fiduciaries-and-processors-under-the-dpdp-act-2023">THE
+UNIT 3 CONNECTION: Fiduciaries and processors under the DPDP Act
+2023</h3>
+<ul>
+<li><strong>Functional mapping:</strong> <strong>Data Fiduciary — s
+2(i)</strong> = any person who, "<strong>alone or in conjunction with
+other persons</strong>", determines the <strong>purpose and
+means</strong> of processing personal data. <strong>Data Processor — s
+2(k)</strong> = any person who processes personal data <strong>on behalf
+of</strong> a Data Fiduciary. Your Unit 1 notes stress classification is
+<strong>functional not contractual</strong> — what a party actually
+decides about purpose and means controls, regardless of what a
+commercial agreement calls it. Course notes teach
+<em>Wirtschaftsakademie</em> and <em>Google Spain</em> alongside these
+definitions, presenting search engine operators as "controllers /
+fiduciaries" → <strong>the CJEU's functional reasoning is the natural
+guide to reading the Indian terms.</strong></li>
+<li><strong>Course running example:</strong> <strong>SafeShield
+Insurance</strong>, deciding to collect <strong>health data for
+underwriting</strong>, = <strong>fiduciary</strong> (decides why and
+how; bears primary obligations under <strong>s 8</strong>; answers to
+the <strong>Data Protection Board</strong> and <strong>data
+principals</strong>). <strong>Third-Party Administrator (TPA)</strong>
+processing claims for SafeShield = <strong>processor</strong> (follows
+instructions, no independent purpose, <strong>not directly answerable to
+principals</strong>).</li>
+<li><strong>Section 8(1) — "single point of accountability":</strong>
+fiduciary is responsible for compliance for processing "by it or on its
+behalf by a Data Processor", "<strong>irrespective of any agreement to
+the contrary</strong>", and also irrespective of a principal's own
+failure to perform her <strong>s 15</strong> duties. In the notes'
+phrase: "<strong>outsourcing the processing does not outsource the
+liability</strong>." An <strong>indemnity clause</strong> can shift
+money between fiduciary and processor but <strong>cannot shift statutory
+responsibility</strong> → a processor's breach = the fiduciary's breach.
+Other duties repeat the point: <strong>s 8(5)</strong> security duty
+covers processing by processors; <strong>s 8(7)(b)</strong> requires the
+fiduciary to <strong>cause its processor to erase data</strong>.</li>
+<li><strong>Section 8(2) — the contractual link:</strong> a fiduciary
+may engage a processor for any activity related to offering goods or
+services to principals <strong>only "under a valid contract"</strong>.
+<strong>⚠ Slip:</strong> the <strong>Unit 1 slide attributes the
+mandatory processing agreement to s 8(6), but Unit 3 makes clear the
+hook is s 8(2); s 8(6) is the breach-notification duty.</strong>
+<strong>Striking gap:</strong> s 8(2) says <strong>nothing about what
+the contract must contain.</strong> The <strong>only content rule in the
+whole DPDP framework is Rule 6(1)(f) of the DPDP Rules 2025</strong>,
+requiring "appropriate provision in the contract … for taking
+<strong>reasonable security safeguards</strong>". Everything else must
+be borrowed from <strong>GDPR Art 28(3)</strong> or sectoral rules.
+<strong>Substantive fiduciary duties come into force only on 13 May
+2027</strong>, so this is <strong>anticipatory compliance</strong>.</li>
+<li><strong>Comparison via SafeShield:</strong> under the
+<strong>GDPR</strong>, SafeShield = controller, TPA = processor, and
+<strong>Art 28</strong> would require a binding contract with detailed
+mandatory content (processing only on documented instructions, staff
+confidentiality, <strong>Art 32</strong> security, sub-processor
+conditions, assistance with data subject rights and <strong>Arts
+32–36</strong>, deletion/return, information and audits). TPA would also
+carry <strong>direct duties</strong> (records <strong>Art
+30(2)</strong>, security <strong>Art 32</strong>, breach notice to
+controller <strong>Art 33(2)</strong>), could be <strong>fined and held
+liable under Art 82</strong>, and under <strong>Art 28(10)</strong>
+would become a controller if it used claims data for its own purposes.
+<strong>Under the DPDP Act</strong>, the TPA has <strong>no direct
+statutory duties</strong>: everything flows through the fiduciary and
+the contract. <strong>Sub-processors not expressly regulated</strong>
+(the 2022 draft's <strong>s 9(9)</strong> had allowed them "if permitted
+under its contract"); <strong>no equivalent of Art 28(10)</strong>;
+<strong>no compensation provision for principals</strong>, only
+<strong>penalties imposed by the Board</strong>. So if SafeShield's TPA
+held claim files under an <strong>unsigned contract silent on
+security</strong> and attackers copied them (the Unit 3 problem
+question), the plea "<strong>the TPA is responsible</strong>" would
+<strong>fail under s 8(1)</strong>, and the contract itself would breach
+<strong>s 8(2) and Rule 6(1)(f)</strong>.</li>
+<li><strong>Joint control — wider gap:</strong> "in conjunction with
+other persons" in <strong>s 2(i)</strong> implies there can be
+<strong>joint fiduciaries</strong>, but the Act has <strong>nothing like
+Art 26</strong>: no required <strong>arrangement</strong> on who does
+what, no duty to give data subjects its <strong>essence</strong>, no
+rule like <strong>Art 26(3)</strong> letting them exercise rights
+against each fiduciary. <strong>India's model concentrates
+responsibility on the fiduciary</strong> — simple and protective in
+theory — but <strong>without the Art 28 machinery the supply-chain
+compliance gap is likely to be wider, especially in Indian IT and BPO
+outsourcing chains.</strong></li>
+</ul>
+<h3
+id="enforcement-lessons-from-the-gdpr-four-cases-and-the-rbi-as-gap-filler">Enforcement
+lessons from the GDPR (four cases) and the RBI as gap-filler</h3>
+<ul>
+<li><strong>Source:</strong> CMS Enforcement Tracker filtered by
+<strong>Art 28</strong> and the <strong>employment sector</strong>
+returns <strong>225 of 3,270 fines</strong>. | Case | Facts | Fine |
+Lesson | |---|---|---|---| | <em><strong>CNIL v Groupe
+Canal+</strong></em> (2023) | Investigation triggered by <strong>31
+complaints</strong>; several processing agreements <strong>didn't meet
+Art 28(3)</strong> — some <strong>predated the GDPR and were never
+updated</strong>, others <strong>unsigned and therefore not
+valid</strong> | <strong>€600,000</strong> (also covered marketing
+without consent, information and rights failures, unnotified breach) |
+<strong>Outdated agreements reveal a lack of regular checks on
+processors</strong> | | <em><strong>Croatian SA v B2
+Kapital</strong></em> (2023) | <strong>Debt-collection agency</strong>
+concluded <strong>no contract at all</strong> with processor providing a
+"monitoring simple consumer bankruptcy" service → security of
+<strong>personal identification numbers of 83,896 people</strong> at
+risk (Feb 2019–Feb 2021) | <strong>€2,265,000</strong> overall (several
+violations) | "<strong>Concluding a contract with a processor is one of
+the safety measures</strong>" → missing contract is a <strong>security
+failure</strong>, not just a paperwork failure | | <em><strong>Norwegian
+DPA v Ferde AS</strong></em> | <strong>Toll-road operator</strong> sent
+about <strong>12.5 million images a year</strong> to processor
+<strong>UBS</strong>, whose employees in <strong>China</strong> handled
+them manually = <strong>transfer to third country</strong>; agreement
+<strong>undated</strong> and probably <strong>not in place for a
+year</strong>; <strong>no adequate security or risk assessment</strong>
+| <strong>NOK 5 million</strong>† | Missing contract, cross-border
+processing and no risk assessment <strong>compound one another</strong>
+| | <em><strong>CNIL v Dedalus Biologie</strong></em> (2022) |
+<strong>Mirror image — processor's own liability.</strong> Dedalus =
+processor for <strong>medical laboratories</strong> using its software;
+leak of <strong>491,840 patients'</strong> data; <strong>neither its
+standard terms of sale nor its maintenance contracts</strong> contained
+Art 28(3) content. Dedalus argued the Art 28 contract is a <strong>joint
+obligation</strong> so shouldn't bear sole responsibility; pointed to
+its compliance efforts since 2018 | <strong>€1.5 million</strong>† (also
+covered security failures and <strong>processing beyond instructions
+during a migration</strong>) | <strong>CNIL rejected</strong>: Art 28(3)
+binding both parties <strong>doesn't remove the processor's own
+liability</strong>, esp. where <strong>the processor drafted the
+non-compliant terms itself</strong> |</li>
+<li><strong>Indian contrast:</strong> under the DPDP Act the Board could
+proceed <strong>only against the fiduciary</strong> (the laboratories,
+Ferde, B2 Kapital), and a <strong><em>Dedalus</em>-style fine on a
+processor would not be possible</strong> because processors have
+<strong>no direct duties</strong>. <strong>Both sides (for
+exam):</strong>
+<ul>
+<li><em>For direct processor liability:</em> cloud providers, software
+vendors and TPAs often <strong>control the actual security</strong>;
+<em>Dedalus</em> and the <strong>Target breach</strong> show incidents
+<strong>start with vendors</strong>; the Board could act where the
+fiduciary is small and the vendor large.</li>
+<li><em>Against:</em> a <strong>single point of accountability</strong>
+is simpler for principals; the fiduciary chooses its vendors;
+<strong>contracts can allocate risk</strong>; small Indian IT vendors
+are <strong>spared compliance costs.</strong></li>
+<li><strong>Whether the absence of processor liability is a gap or a
+deliberate design choice is a genuine question for an exam
+answer.</strong></li>
+</ul></li>
+<li><strong>RBI as gap-filler:</strong> for regulated entities, sectoral
+rules already fill part of the s 8(2) gap. <strong>RBI Master Direction
+on outsourcing by NBFCs</strong> requires outsourcing agreements to be
+<strong>written</strong>, <strong>vetted by legal counsel</strong> for
+legal effect and enforceability, to address risks and mitigation, to
+<strong>preserve the NBFC's control and right to intervene</strong>, and
+to <strong>state the nature of the legal relationship</strong>. Its
+<strong>twelve key provisions</strong> include: NBFC's <strong>access to
+all the provider's records</strong>; <strong>continuous
+monitoring</strong>; <strong>prior approval for subcontractors</strong>;
+<strong>confidentiality of customer data with the provider liable for
+breaches and leaks</strong>; NBFC's <strong>audit rights</strong>;
+<strong>RBI's own rights to access records and inspect the
+provider</strong>; and <strong>confidentiality and document preservation
+surviving termination.</strong> As Unit 3 observes, this <strong>maps
+closely onto GDPR Art 28(3)</strong> (sub-processor approval, audit,
+confidentiality, return/retention of data) → <strong>a strong answer can
+argue Indian sector regulators have already built the contract machinery
+the DPDP Act itself leaves out.</strong></li>
+</ul>
+<hr />
+<h1 id="unit-3-exam-toolkit">UNIT 3 EXAM TOOLKIT</h1>
+<h2 id="1-which-role-decision-method-use-in-problem-questions">1. "Which
+role?" decision method (use in problem questions)</h2>
+<ol type="1">
+<li><strong>Is there a legal designation / legal task requiring
+processing?</strong> (Art 4(7) second limb; implicit competence) → that
+body = controller.</li>
+<li><strong>Who decides the purpose (the "why") and the essential means
+(which data, whose data, how long, who gets access)?</strong> If yes →
+<strong>controller</strong>. If it merely acts on another's
+<strong>documented instructions</strong>, deciding at most
+<strong>non-essential means</strong> (software, hardware, detailed
+security) → <strong>processor</strong>.</li>
+<li><strong>Is there a separate entity?</strong> (department ≠
+processor; employees = Art 29; group company can be processor.)</li>
+<li><strong>Does it have a purpose of its own</strong> or benefit beyond
+payment for services? → points to <strong>controller</strong>. "Merely
+being paid for services rendered" → <strong>processor</strong>.</li>
+<li><strong>Is the processing impossible without more than one party's
+decisive influence</strong> (common or converging decisions;
+inseparable, inextricably linked)? → <strong>joint controllers</strong>
+for <strong>those stages only</strong>; <strong>before/after stages
+decided alone = sole controller.</strong></li>
+<li><strong>Does the processor go beyond instructions / use data for its
+own purposes?</strong> → <strong>Art 28(10)</strong> → treated as
+controller for that processing (and in breach).</li>
+<li><strong>Contract label?</strong> Starting point only —
+<strong>functional test overrides</strong> ("not negotiable").</li>
+<li><strong>Then apply consequences:</strong> Art 28 contract (8
+clauses) / Art 26 arrangement (essence to data subjects; rights against
+each); liability (Art 82(2), (4), (5)); fines (Art 83(4)(a): €10m/2%);
+Indian analogue: s 8(1), (2), Rule 6(1)(f).</li>
+</ol>
+<h2 id="2-role-summary-table">2. Role summary table</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Provision</th>
+<th>Key idea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Controller</td>
+<td>Art 4(7)</td>
+<td>Determines <strong>purposes and means</strong>; alone or jointly;
+law may designate</td>
+</tr>
+<tr class="even">
+<td>Joint controllers</td>
+<td>Art 26(1)</td>
+<td><strong>Jointly</strong> determine purposes <strong>and</strong>
+means (common or converging decisions); arrangement; <strong>rights
+against each</strong> (26(3)); <strong>essence available</strong>
+(26(2))</td>
+</tr>
+<tr class="odd">
+<td>Processor</td>
+<td>Art 4(8)</td>
+<td>Processes <strong>on behalf of</strong>; <strong>separate
+entity</strong>; documented instructions; <strong>Art 28(10)</strong> if
+it exceeds</td>
+</tr>
+<tr class="even">
+<td>Sub-processor</td>
+<td>Art 28(2), (4)</td>
+<td>Prior <strong>specific or general</strong> written authorisation;
+<strong>same obligations</strong>; <strong>initial processor fully
+liable</strong></td>
+</tr>
+<tr class="odd">
+<td>Third party</td>
+<td>Art 4(10)</td>
+<td>Not subject, controller, processor or persons under direct
+authority</td>
+</tr>
+<tr class="even">
+<td>Recipient</td>
+<td>Art 4(9)</td>
+<td>Any one to whom data is disclosed (except authorities in a
+particular inquiry — Recital 31)</td>
+</tr>
+<tr class="odd">
+<td>EUI controller</td>
+<td>Reg 2018/1725 Art 3(8)</td>
+<td>DG can be controller; Art 65 compensation; Art 28 joint control</td>
+</tr>
+<tr class="even">
+<td>DPDP Fiduciary</td>
+<td>s 2(i)</td>
+<td>Purpose and means "alone or in conjunction with other persons";
+<strong>s 8(1)</strong> single point of accountability</td>
+</tr>
+<tr class="odd">
+<td>DPDP Processor</td>
+<td>s 2(k)</td>
+<td>Processes on behalf; <strong>s 8(2)</strong> valid contract;
+<strong>no direct duties</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-likely-essay-questions--skeletons">3. Likely essay questions —
+skeletons</h2>
+<ol type="1">
+<li><strong>"Critically evaluate the CJEU's expansion of joint
+controllership (<em>Wirtschaftsakademie</em>, <em>Jehovah's
+Witnesses</em>, <em>Fashion ID</em>)."</strong> Facts/holdings table;
+principles (no access, no instructions, no equal responsibility,
+phase-limited); EDPB test (common/converging decisions; inextricably
+linked; mutual benefit not enough); arguments for (complete protection;
+avoids gaps) and against (over-inclusion; SMEs; power imbalance; Bobek);
+mitigations; India has no Art 26.</li>
+<li><strong>"Distinguish controller and processor; why does it matter
+that the test is functional?"</strong> Building blocks; essential vs
+non-essential means; worked examples (payroll/bank; accountant; market
+researcher); contract not decisive; Art 28(10); consequences.</li>
+<li><strong>"Explain the Art 28 contract. How far can a controller rely
+on a processor?"</strong> 2 describing + 8 clauses; sufficient
+guarantees; written; SCCs; sub-processors (specific vs general;
+silence); Art 28(4); liability; Opinion 22/2024 "reliance allowed, blind
+reliance not".</li>
+<li><strong>"Does the controller need to know and verify the whole
+processing chain?" (Opinion 22/2024)</strong> Q1.1 (know the whole
+chain; three reasons; <em>Österreichische Post</em>); verification
+(<em>Proximus</em>, risk-scaled; <em>C-340/21</em>); no systematic duty
+to ask for sub-processing contracts (sampling); transfers (Art 44 +
+28(1); mapping; TIA; adequacy); criticisms.</li>
+<li><strong>"'Unless required by law' in Art 28(3)(a): what must
+contracts say?"</strong> Highly recommended not required; EU/Member
+State vs third-country law; Clauses 14 &amp; 15 Transfer SCCs; European
+Essential Guarantees; not an instruction (<em>C-231/22</em>); CLOUD
+Act/FISA.</li>
+<li><strong>"Why isn't an Art 28 contract enough? Can technology close
+the compliance gap?" (C4)</strong> Front end vs back end; four defects;
+11 REQs; Atos documents; Symboleo (obligations/powers; nuXmv;
+Hyperledger Fabric); findings; limits (garbage in, open texture,
+immutability vs erasure, SMEs); EDPB legal answer vs technological
+answer; ⚠ Art 7 slip.</li>
+<li><strong>"Compare the GDPR and DPDP Act on controllers/processors"
+(SafeShield).</strong> Definitions s 2(i),(k); s 8(1) single
+accountability; s 8(2) valid contract + Rule 6(1)(f); <strong>no direct
+processor duties, no Art 28(10), no sub-processor regime, no Art 26, no
+compensation</strong>; enforcement cases (<em>Dedalus</em>); RBI NBFC
+outsourcing master direction as gap-filler; gap vs design choice.</li>
+<li><strong>"Power imbalance in the cloud: should small controllers bear
+full responsibility?"</strong> EDPB stance; Opinion 22/2024 ("practical
+difficulties do not exonerate"); critique; solutions (SCCs, Art 28(5)
+codes/certification, collective procurement, coordinated enforcement);
+C4 technology.</li>
+<li><strong>"Evaluate EU institutions' regime (Reg 2018/1725) vs GDPR on
+these concepts." (Cimina)</strong> Mapping table; DG as controller
+(GDPR: organisation); DGs not processors; Art 28 joint controllers; Art
+65 liability (Arts 340, 268 TFEU); wording tension on
+purposes/means.</li>
+</ol>
+<h2 id="4-cheat-sheet--numbers-names-quotes">4. Cheat sheet — numbers,
+names, quotes</h2>
+<ul>
+<li><strong>EDPB Guidelines 07/2020:</strong> Art 70(1)(e); draft
+<strong>2 Sept 2020</strong>; v2.0 <strong>7 July 2021</strong>; v2.1
+<strong>20 Sept 2022</strong>; replaces <strong>WP169 (Opinion
+1/2010)</strong>. <strong>5 building blocks</strong> of controller.
+<strong>Essential means = type of data, duration, recipients, data
+subjects.</strong> <strong>8 Art 28(3) clauses (a)–(h).</strong>
+<strong>3 situations with no joint control.</strong> Fines
+<strong>€10m/2%</strong> (Art 83(4)(a)).</li>
+<li><strong>Cimina:</strong> <em>ERA Forum</em> <strong>Oct
+2020</strong>; <strong>EDPS Guidelines 7 Nov 2019</strong>; <strong>Reg
+45/2001</strong> repealed; <strong>7 CJEU clarifications</strong>;
+<strong>Art 340/268 TFEU</strong>; <strong>Art 65</strong>; <strong>Art
+28</strong> joint controllers; <strong>Art 29</strong> processors.</li>
+<li><strong>Opinion 22/2024:</strong> adopted <strong>7 Oct
+2024</strong>; chair <strong>Anu Talus</strong>; request by
+<strong>Danish SA on 5 July 2024</strong> under <strong>Art
+64(2)</strong>; <strong>CEF report 17 Jan 2023</strong> (8 challenges);
+Q1.1, 1.2, 1.3, 2, 2a, 2b; <strong>SCCs Decisions 2021/915
+(Controller–Processor) and 2021/914 (Transfer)</strong>; <strong>Clause
+7.7(c)</strong> and <strong>Clause 9(c)</strong>; <strong>Clauses 8.1,
+14(e), 14, 15</strong>; <strong>Recommendations 01/2020 and
+02/2020</strong>; <strong>Guidelines 05/2021</strong> (transfer
+concept).</li>
+<li><strong>CJEU cases:</strong> <em>Google Spain</em> <strong>C-131/12
+(13 May 2014)</strong>; <em>Wirtschaftsakademie</em> <strong>C-210/16 (5
+June 2018)</strong>; <em>Jehovah's Witnesses</em> <strong>C-25/17 (10
+July 2018)</strong>; <em>Fashion ID</em> <strong>C-40/17 (29 July
+2019)</strong>; <em>Österreichische Post</em> <strong>C-154/21 (12 Jan
+2023)</strong>; <em>Proximus</em> <strong>C-129/21</strong>;
+<em>Natsionalna agentsia za prihodite</em> <strong>C-340/21</strong>;
+<em>MediaMarktSaturn</em> <strong>C-687/21</strong>; <em>Belgian State
+(Official Journal)</em> <strong>C-231/22</strong>; <em>Nacionalinis
+visuomenės sveikatos centras</em> <strong>C-683/21</strong>†;
+<em>Schrems II</em> <strong>C-311/18</strong>.</li>
+<li><strong>C4 (Compliance gap):</strong> <strong>front/back
+end</strong>; <strong>4 defects</strong> (dispersed, static, convoluted,
+legalistic); <strong>11 requirements</strong>; Ponemon 2018; ICO 2019;
+<strong>Atos</strong>; docs: MSA, DPIA, DPA, <strong>CADP
+(C/P/S)</strong>, TOM, SCC/BCR; types <strong>prescriptive / evaluative
+/ evaluative-prescriptive</strong>; <strong>4 challenges</strong>
+(audits, not transversal, interoperability, no real-time compliance);
+<strong>Symboleo</strong>: <strong>33 axioms (13 runtime)</strong>;
+obligations (conditional/unconditional/<strong>surviving</strong>),
+powers; <strong>SymboleoPC → nuXmv; Symboleo2SC → Hyperledger
+Fabric</strong>; liveness/safety; well supports <strong>REQ2, REQ3,
+REQ9</strong>; FTC <strong><span
+class="math inline">5<em>b</em><em>n</em> * *;<em>c</em><em>o</em><em>s</em><em>t</em><em>s</em> * *</span>7.7m–$30.9m</strong>
+(+45% since 2011); <strong>⚠ Art 7 vs Arts 5(2)/24 slip.</strong></li>
+<li><strong>DPDP:</strong> <strong>s 2(i)</strong> fiduciary, <strong>s
+2(k)</strong> processor; <strong>s 8(1)</strong> (irrespective of
+contrary agreement), <strong>s 8(2)</strong> (valid contract), <strong>s
+8(5)</strong> security, <strong>s 8(6)</strong> breach notification,
+<strong>s 8(7)(b)</strong> processor erasure; <strong>Rule
+6(1)(f)</strong> DPDP Rules 2025 (only content rule: security
+safeguards); substantive duties from <strong>13 May 2027</strong>;
+<strong>s 15</strong> principal duties; 2022 draft <strong>s
+9(9)</strong> sub-processors.</li>
+<li><strong>Enforcement cases:</strong> <strong>Canal+ €600,000 (31
+complaints)</strong>; <strong>B2 Kapital €2,265,000 (83,896
+people)</strong>; <strong>Ferde AS NOK 5m (12.5m images/yr; UBS in
+China)</strong>†; <strong>Dedalus €1.5m (491,840 patients)</strong>†;
+<strong>225 of 3,270</strong> fines (CMS tracker).</li>
+<li><strong>RBI NBFC outsourcing Master Direction:</strong> written
+agreements, legal vetting, <strong>12 key provisions</strong> (access to
+records; continuous monitoring; subcontractor approval; confidentiality
++ liability; audit; RBI inspection; survival after termination).</li>
+</ul>
+<h2 id="5-common-traps">5. Common traps</h2>
+<ul>
+<li><strong>Cimina's "not necessary to equally determine both purposes
+and means"</strong> vs EDPB "decide both" → reconcile via
+<strong>essential vs non-essential means</strong>.</li>
+<li><strong>GDPR: department ≠ controller (organisation is). EUDPR Art
+3(8): a DG can be a controller.</strong> DGs not listed as
+processors.</li>
+<li><strong>Joint controllers ≠ equal; no access needed; control limited
+to jointly determined phases.</strong></li>
+<li><strong>Specific authorisation: silence = denial. General
+authorisation: silence = authorisation.</strong></li>
+<li><strong>Opinion 22/2024: no duty to <em>systematically</em> ask for
+sub-processing contracts</strong>; sampling; request where doubts.</li>
+<li><strong>Art 28(3)(a) "unless required by law": highly recommended,
+not strictly required</strong>; third-country wording doesn't infringe
+per se but isn't an instruction.</li>
+<li><strong>Art 28(3): eight clauses (a)–(h).</strong> (Guide in Unit 2
+R7 lists 2 describing items + 9 bullets splitting sub-processor rules
+28(2)/(4); count carefully.)</li>
+<li><strong>C4's "Article 7" attribution is wrong</strong> (should be
+Arts 5(2)/24).</li>
+<li><strong>DPDP: contract hook is s 8(2) (not s 8(6)).</strong> No Art
+28 content, no direct processor duties, no Art 26, no compensation.</li>
+<li><strong>Dedalus:</strong> processor fined despite joint obligation
+argument; not possible under DPDP.</li>
+</ul>
+</body>
+</html>

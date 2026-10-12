@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>UNIT2_part2_readings</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<nav><a href="index.html">← All notes</a></nav>
+<header id="title-block-header">
+<h1 class="title">UNIT2_part2_readings</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#unit-2--part-2-r4-pilot--r5-scoping-review--r6-najdi--r7-dpc-contracts-guide"
+id="toc-unit-2--part-2-r4-pilot--r5-scoping-review--r6-najdi--r7-dpc-contracts-guide">UNIT
+2 — PART 2: R4 (Pilot) · R5 (Scoping review) · R6 (Najdi) · R7 (DPC
+contracts guide)</a>
+<ul>
+<li><a
+href="#r4-pardo--le-métayer-2019--analysis-of-privacy-policies-to-enhance-informed-consent-the-pilot-language"
+id="toc-r4-pardo--le-métayer-2019--analysis-of-privacy-policies-to-enhance-informed-consent-the-pilot-language">R4.
+PARDO &amp; LE MÉTAYER (2019) — "Analysis of Privacy Policies to Enhance
+Informed Consent" (the <strong>Pilot</strong> language)</a></li>
+<li><a
+href="#r5-van-der-schyff-prior--renaud-2024--privacy-policy-analysis-a-scoping-review-and-research-agenda"
+id="toc-r5-van-der-schyff-prior--renaud-2024--privacy-policy-analysis-a-scoping-review-and-research-agenda">R5.
+VAN DER SCHYFF, PRIOR &amp; RENAUD (2024) — "Privacy policy analysis: a
+scoping review and research agenda"</a></li>
+<li><a
+href="#r6-najdi-athauda-bandara--luo-2025--technical-framework-to-ensure-data-subjects-rights-in-gdpr-a-conceptual-design"
+id="toc-r6-najdi-athauda-bandara--luo-2025--technical-framework-to-ensure-data-subjects-rights-in-gdpr-a-conceptual-design">R6.
+NAJDI, ATHAUDA, BANDARA &amp; LUO (2025) — "Technical Framework to
+Ensure Data Subject's Rights in GDPR: A Conceptual Design"</a></li>
+<li><a
+href="#r7-data-protection-commission-ireland-2019--a-practical-guide-to-controller-processor-contracts"
+id="toc-r7-data-protection-commission-ireland-2019--a-practical-guide-to-controller-processor-contracts">R7.
+DATA PROTECTION COMMISSION (Ireland) (2019) — <em>A Practical Guide to
+Controller-Processor Contracts</em></a></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="unit-2--part-2-r4-pilot--r5-scoping-review--r6-najdi--r7-dpc-contracts-guide">UNIT
+2 — PART 2: R4 (Pilot) · R5 (Scoping review) · R6 (Najdi) · R7 (DPC
+contracts guide)</h1>
+<hr />
+<h2
+id="r4-pardo--le-métayer-2019--analysis-of-privacy-policies-to-enhance-informed-consent-the-pilot-language">R4.
+PARDO &amp; LE MÉTAYER (2019) — "Analysis of Privacy Policies to Enhance
+Informed Consent" (the <strong>Pilot</strong> language)</h2>
+<p><strong>Problem — consent "on the fly":</strong> most common
+justification for collecting data = people consented or could have
+objected. Legal systems differ: <strong>CCPA — opt-out counts as
+consent; GDPR requires opt-in.</strong> Authors: in practice consent is
+given <strong>"on the fly"</strong> at the moment a person wants a
+service → mechanical acceptance, not really informed (people don't read
+policies; policies vague/ambiguous). <strong>IoT makes it worse</strong>
+(tracking into physical world).</p>
+<p><strong>Proposal — reverse the order:</strong> instead of reacting to
+a controller's policy at the last moment, <strong>data subjects (DSs)
+define their own privacy policies in advance</strong> (time to reflect,
+help from experts/peers). Policies then applied automatically to decide
+what their devices disclose. Each side (DS and data controller, DC) has
+own policy; the two are <strong>compared</strong> to decide if
+collection is authorised. Reduces <strong>power imbalance</strong>.
+Users update policies when meeting new controllers/purposes → coverage
+grows over time.</p>
+<p><strong>Language requirements:</strong> GDPR Art 4(11) — consent must
+be freely given, specific, informed, unambiguous. To guarantee
+<strong>unambiguity</strong>, language needs a <strong>formal
+semantics</strong> (precise mathematical meaning so it can't be read two
+ways). But precise meaning ≠ understanding consequences → also give
+<strong>information about risks</strong> (<strong>Recital 39</strong>
+GDPR: data subjects "made aware of the risks, rules, safeguards and
+rights"). No existing language met all requirements → authors built
+<strong>Pilot</strong> (not limited to IoT; design draws on IoT users'
+expectations — Emami-Naeini 2017).</p>
+<p><strong>Pilot in plain words:</strong></p>
+<ul>
+<li><strong>DC policies</strong> declared by controller's devices
+<em>before</em> collecting any data (what controller wants to do).
+<strong>DS policies</strong> attached by DS's device to any data it
+sends (restrictions). Controllers can store DS policies received for
+<strong>accountability</strong>.</li>
+<li><strong>Building blocks:</strong> <strong>devices</strong> (phones,
+laptops, access points) and <strong>entities</strong> (parties behind
+devices; each device belongs to one entity); <strong>data items</strong>
+with a <strong>datatype</strong> (age, address, city) and
+<strong>value</strong> (special "undefined" = deleted/never collected;
+<strong>owner</strong> = device where created);
+<strong>purposes</strong> (newsletter, advertisement);
+<strong>conditions</strong> (simple logic over data and context e.g.
+"only data from adults (age ≥ 18)", "only locations in Lyon", combine
+with not/and → policies are <strong>contextual</strong>). Each set has a
+<strong>partial order</strong> (ranking more general/more specific:
+Google &lt; Alphabet as entity; city &lt; address as datatype;
+newsletter &lt; advertisement as purpose).</li>
+<li><strong>Nested layers:</strong> innermost = <strong>data usage
+rule</strong> (allowed purposes + retention deadline, e.g. research
+until 26/04/2019); around it = <strong>data communication rule</strong>
+(adds a condition + the entity allowed to receive). <strong>Sender
+checks condition and recipient entity before sending; receiver must
+respect usage rule.</strong> Complete policy = <strong>datatype + data
+communication rule + set of transfer rules</strong> (further
+communication rules saying to whom data may be passed on). Captures two
+ways data moves: <strong>collection</strong> (controller gets from DS)
+and <strong>transfer</strong> (already-collected data sent to third
+parties). A person may have several policies for one datatype (employer
+at work, museum while visiting).</li>
+<li>Ordinary people can't write formulas → abstract syntax maps to
+<strong>restricted natural language</strong>: "Parket may collect data
+of type number plate and use it for commercial offers purposes until
+21/03/2019…".</li>
+</ul>
+<p><strong>Running example — ANPR (automatic number plate recognition)
+parking:</strong> billing needs no consent (contract performance, Art
+6(1)(b)); commercial offers/advertising need <strong>prior
+consent</strong>. <strong>Parket</strong> (French parking company) wants
+number plates for commercial offers until 21/03/2019 and to transfer to
+sister company <strong>ParketWW</strong> until 26/04/2019; no condition;
+broadcast to cars before entering ANPR area. <strong>Alice</strong>
+(driver) policy: collect number plate only if car in
+<strong>Lyon</strong>, commercial offers until 21/03/2019, <strong>no
+transfers</strong>. Alice's more restrictive → her device (car computer
+linked to phone) <strong>automatically refuses consent</strong>. Alice's
+device can send her policy back; Parket computes a <strong>join</strong>
+and sends Alice a new policy she accepts → <strong>automatic
+negotiation</strong>; join proven
+<strong>privacy-preserving</strong>.</p>
+<p><strong>Execution model</strong> (abstract precise description of how
+a Pilot system behaves step by step; fixes meaning so no ambiguity;
+powers the verification tool). System state: (1) values of data items on
+each device; (2) each device's <strong>policy base</strong> (own
+policies + received ones; used to decide if data may be communicated);
+(3) for controllers, data received as <strong>triples (sender, item,
+policy)</strong>. <strong>Central idea: privacy preserved if the
+controller's policy is more restrictive than the DS's ("subsumed
+by")</strong> — checkable <strong>before any data collected</strong>.
+<strong>4 events:</strong> <strong>request</strong> (controller asks DS
+for data type + supplies policy → added to receiver's policy base);
+<strong>send</strong> (DS sends item; allowed only if both sides have an
+active policy and controller's is more restrictive; policy "active" if
+applies to type and recipient entity, retention time not reached,
+condition holds); <strong>transfer</strong> (controller passes to
+another; needs active transfer rule in policy that data's owner sent;
+recipient's policy more restrictive); <strong>use</strong> (controller
+uses item for purpose; allowed only if purpose allowed and retention not
+elapsed). <strong>Subsumption</strong> = "more restrictive than": usage
+rule — every purpose sits below some purpose the other allows, retention
+no longer; communication rule — condition stronger, recipient lower,
+usage rule more restrictive; whole policy — datatype lower,
+communication rule more restrictive, each transfer rule covered.
+<strong>Join</strong> = merge two policies: keep only shared purposes
+(more specific), <strong>shorter retention</strong>, <strong>both
+conditions</strong>, lower entity/datatype, merge compatible transfer
+rules pairwise → result more restrictive than both.</p>
+<p><strong>Risk analysis with SPIN:</strong> precise semantics says what
+a policy says, not what might go wrong. Risks come from
+<strong>misbehaviour</strong> (using beyond purpose or transferring to
+unauthorised third parties). <strong>Risk assumptions</strong> about
+<strong>risk sources</strong> (entities with strong interest in using
+data for a purpose, or able/willing to pass data on); generic (databases
+by peers/NGOs on past misconduct) or DS-specific (fear a friend will
+pass info on). DS asks: "if I add policy p, is there a risk my data of
+type t is used for purpose pur? Is there a risk entity e gets my data?"
+Tool = <strong>SPIN model checker</strong> (checks every possible run to
+see whether a property can ever be broken); model in
+<strong>Promela</strong>; properties in <strong>Linear Temporal Logic
+(LTL)</strong> ("never"). "Is there a risk ParketWW profiles Alice?" →
+LTL: "ParketWW never uses Alice's data for profiling". Each device =
+process randomly executing events; misbehaviour = added <strong>illegal
+events</strong> (<em>illegal_use</em>, <em>illegal_transfer</em>). If no
+sequence breaks property → risk cannot occur; if one does → SPIN returns
+a <strong>counterexample</strong> explaining how. Not tied to SPIN
+(could use SMT solvers/theorem provers).</p>
+<p><strong>Case study:</strong> 4 entities — Alice, Parket, ParketWW,
+<strong>CarInsure</strong> (insurer = risk source); one datatype number
+plate (GD-042-PR); two purposes (commercial offers, profiling). Two risk
+assumptions: ParketWW may transfer to CarInsure ignoring DS policies;
+CarInsure has strong interest in profiling. Alice weighs two candidate
+policies (transfer to ParketWW allowed / no transfer). Results: Parket
+can receive data in every case, neither Parket nor ParketWW can use for
+anything other than commercial offers; ParketWW receives only if Alice
+allows transfer. <strong>Decisive:</strong> under normal behaviour
+CarInsure can't receive or profile whichever policy; <strong>under
+misbehaviour both become possible (flagged violations) if Alice allows
+transfer, neither if she forbids</strong>; counterexample: CarInsure
+gets data only after ParketWW executes illegal transfer. <strong>Alice's
+3 options:</strong> neither policy (Parket uses data only for billing on
+contract basis); no-transfer policy (offers, no transfer); transfer
+policy (offers + transfer). If she wants offers but no risk of insurer
+profiling → option 2. = <strong>"more genuinely informed
+consent"</strong>: she chooses knowing what could happen to her data if
+someone breaks the rules. <strong>Prototype:</strong> web app: enter
+Pilot policies via form, choose risk assumptions from generated list,
+ask questions, click "Verify!" → SPIN runs; answers change "Not
+Analyzed" → "Yes"/"No". Tailored to ANPR; code on GitHub.</p>
+<p><strong>Versus earlier work:</strong> <strong>P3P</strong> (pioneer;
+purpose/retention/conditions; website-focused, unsuited to IoT, no data
+transfers); <strong>EPAL, A-PPL</strong> (enterprise/accountability
+focus; no precise execution model → ambiguity, divergent
+implementations); <strong>DHP</strong> (closest in spirit;
+actions/purposes per recipient; deletion obligations; no explicit
+transfer rules/retention; service providers focus); De &amp; Le
+Métayer's <strong>harm trees</strong> (manual per application; Pilot
+automatic once risk assumptions defined); <strong>S4P, SIMPL</strong>
+(formal trace semantics, prove global correctness, can't build
+enforcement, pre-GDPR); <strong>contextual integrity</strong> in LTL,
+<strong>PrivacyAPI, PrivacyLFP</strong> (formalise HIPAA, COPPA, GLBA —
+model laws not DS/controller policies); <strong>UCON, OSL</strong>
+(usage control/obligations/DRM — control use after access; no policy
+comparison; don't distinguish DS from controller); <strong>PIAs/privacy
+risk analysis</strong> assess risks of <em>systems</em>, Pilot assesses
+risks of <em>policies</em> (based on parties' motivation, reputation,
+history, not system vulnerabilities beyond a DS's expertise).</p>
+<p><strong>Conclusions/strengths/weaknesses:</strong> can underpin
+<strong>personal data managers</strong> (enforce automatically) and
+<strong>personal data auditors</strong> (check <em>a posteriori</em>).
+IoT challenge: DS must know about collection around them and communicate
+consent/objection to sensors directly or via registers (Cuncha). Future
+work: richer risk model (inference between data types — Privacy
+International; history of data already collected), theorem prover,
+verifying enforcement systems.</p>
+<ul>
+<li><strong>Strengths:</strong> formal semantics removes ambiguity; each
+side states its own policy → <strong>restores bargaining
+symmetry</strong>; join = automatic negotiation; risk-based info
+implements <strong>Recital 39</strong>; counterexamples <strong>explain
+why</strong> a risk exists.</li>
+<li><strong>Weaknesses:</strong> requires users to <strong>author
+policies</strong> (usability/effort; echoes Santos and <strong>privacy
+paradox</strong>); risk assumptions depend on someone curating
+trustworthy databases; <strong>cannot stop misbehaviour, only predict
+it</strong> (lighter, predictive alternative to Najdi whose design
+prevents data leaving); enforcement still relies on controllers
+honouring policies after receipt (<strong>trust problem</strong>); toy
+case study (one datatype, four entities); web app tailored to one
+scenario; <strong>no user evaluation</strong>; inferences not
+handled.</li>
+<li><strong>Where it fits:</strong> "<strong>automate the user's
+side</strong>" answer to notice-and-consent. Restricted natural language
+= middle path between comprehensive and comprehensible. On ambiguity
+(undermines consent, texts, data): formal semantics. Like GDPR consent
+and Najdi it assumes an informed deliberate user (<strong>privacy
+paradox</strong> calls into question). Against scoping review (R5):
+non-ML formal policy analysis with user-facing tool but no user
+evaluation. Legal anchors: <strong>Art 4(11)</strong>, <strong>Art
+6(1)</strong> (billing on contract not consent), <strong>Recital
+39</strong>.</li>
+</ul>
+<hr />
+<h2
+id="r5-van-der-schyff-prior--renaud-2024--privacy-policy-analysis-a-scoping-review-and-research-agenda">R5.
+VAN DER SCHYFF, PRIOR &amp; RENAUD (2024) — "Privacy policy analysis: a
+scoping review and research agenda"</h2>
+<p><strong>Why needed:</strong> privacy policies are legal documents,
+longer/more complex (GDPR etc.); users spend only <strong>seconds or
+minutes</strong> scanning (Obar &amp; Oeldorf-Hirsch) because of time,
+cognitive overload, distrust, convoluted sentences. Consequences:
+unwitting consent to disliked practices; mistrust (seen as designed to
+obscure); privacy-conscious people disengage from services. Fixes
+studied: <strong>simplification</strong> (plain language),
+<strong>layered design</strong> (essentials up front), <strong>visual
+elements</strong> (icons/infographics), <strong>privacy-literacy
+education</strong>. <strong>Earlier reviews narrow:</strong> Del Alamo
+2021 (Android 2016–2020 only); Del Alamo 2022 (automated NLP only);
+Bhattacharjee 2020 (visualisation); Leicht &amp; Heisel 2019 (policy
+languages like P3P, now largely unused); Liu 2022 (ML as PET). Missing =
+broad <strong>platform-agnostic</strong> review.
+<strong>Contributions:</strong> overview of techniques in <strong>97
+studies</strong>; account of primary challenges; detailed research
+agenda. <strong>RQ1:</strong> which analytic techniques used?
+<strong>RQ2:</strong> what challenges deterred analyses?</p>
+<p><strong>Method — scoping review</strong> (Arksey &amp; O'Malley;
+reported using <strong>PRISMA-ScR</strong>, Tricco 2018). Chosen over
+systematic review: suits complex areas with many concepts/techniques;
+maps where research likely useful (interdisciplinary); can include very
+different study designs without quality assessment; preliminary
+assessment for future systematic reviews. Search: <strong>10
+databases</strong> (IEEE Xplore, ACM, ScienceDirect, Springer, Google
+Scholar…) + <strong>56 IS journals</strong> rated A*/A on 2022 ABDC
+list. Peer-reviewed only (no grey literature). Search string: "privacy
+policy" + classification, benchmarking, completeness, evaluation,
+analysis, integrity, assessment, test, visualisation; context-specific
+terms deliberately left out. Inclusion: empirical findings, online
+privacy policies, published <strong>2004–2023</strong> (2004 = emergence
+of Web 2.0). Exclusions: mostly conceptual, reviews/meta-analyses,
+non-technological, non-English, non-peer-reviewed. <strong>1,429 studies
+(deduped) → 168 after titles/abstracts → 97 after full texts.</strong>
+All authors screened titles; first two did full text; third resolved
+disputes. Charted data (context, country, design, theory, new/existing
+dataset, participants, techniques, challenges, effectiveness). Two
+<strong>co-occurrence analyses</strong> (ML and non-ML) using matrices
+(radial diagrams wouldn't work).</p>
+<p><strong>What the 97 studies look like:</strong> <strong>US
+41</strong>; Germany and UK 8 each; China 7; Canada 5; Australasia 3;
+<strong>no studies from Africa</strong>. <strong>45 studied
+websites</strong> (8 used Alexa rankings e.g. top 1,000); <strong>36
+mobile apps</strong>. <strong>72 created own dataset</strong>; of those
+using existing, most used <strong>OPP-115</strong> (115 annotated
+website policies; 14 studies); only 2 used <strong>APP-350</strong>
+(Android). <strong>50 quantitative, 27 mixed, 8 qualitative</strong>, 1
+unclear. <strong>Only 5 used an established theoretical framework; only
+3 privacy-specific; 2 used Contextual Integrity</strong> (to annotate
+social-media policies).</p>
+<p><strong>RQ1 — techniques:</strong> Non-ML: manual dominated
+(<strong>22 studies</strong>; 5 exclusively manual). Most common manual
+= <strong>annotation</strong> (8; expert annotators e.g. lawyers label
+statements, often vs GDPR = "tagging"); <strong>content
+analysis</strong> (6; not guided by theory); category assignments (2;
+beyond GDPR concepts, WhatsApp/RestAssured → policy template). Single
+studies: virtual-assistant dashboard questions (Bolton), heuristic
+evaluation of Facebook policy, readability of 113 organisations'
+policies, layered design vs "privacy finder" (Reeder), IoT ontology,
+risk assessment of 94 IoT device policies. Manual combined with
+<strong>visualisations (8)</strong> and <strong>word counts/readability
+(7)</strong> (Flesch-Kincaid, Gunning-Fog, SMOG). Stats: ANOVA for
+visual designs; Mann-Whitney-U for annotation. <strong>ML dominates: 61
+studies</strong> (SVM, ML+NLP, NLP alone); annotation again most common
+accompanying technique (22), word counts (5), readability (4),
+visualisations (4). Bhatia 2016: <strong>Hybridized Task Recomposition
+(HTR)</strong> crowdsourced annotation; Manandhar: Device Attribute
+Mapping (2,442 smart-home policies). <strong>Crowdsourcing (6; e.g.
+Mechanical Turk) = way to collect data not analyse.</strong> <strong>No
+study used PLS-SEM.</strong> Few non-English; one Chinese study used
+distance calculations for readability.</p>
+<p><strong>RQ2 — challenges (ML studies, 5 themes):</strong> (1)
+<strong>analytic complexity</strong> — <strong>ambiguity</strong> (tools
+like <strong>PolicyLint</strong> need manual verification; seed words
+ambiguous; ontologies subjective); <strong>policy harvesting</strong>
+hard (longitudinal, network traffic vs claims, Android/VR). (2)
+<strong>language/semantic variation</strong> — other languages, semantic
+dependencies, limited lexicons (risk in Japanese); unit of analysis
+(paragraph inaccurate vs sentence too narrow for unfair/unlawful use);
+tools English only; translation loses nuance; keywords without context;
+Liepina suggest supervised ML + neural. (3) <strong>visualisation &amp;
+user evaluation</strong> — often missing (Dombetzki's
+<strong>Amaryllis</strong> plugin no user study); users confused
+(Reeder's interactive grids, unused P3P). (4) <strong>data
+collection</strong> — few non-English; missing policies (esp. apps);
+many datasets pre-GDPR; <strong>Wayback Machine/OPP-115
+reliance</strong> limits inference; narrow sampling, unknown APIs bias;
+crowd workers annotate inaccurately; emotionally charged user reviews.
+(5) <strong>temporal nature of legal/policy terms</strong> — definitions
+change over time, hurting comparative/longitudinal work (distinct from
+ambiguity). <strong>Non-ML (3 themes):</strong> (1) <strong>analytic
+limitations &amp; subjectivity</strong> (content analysis interpretive;
+readability indices = "<strong>silver bullets</strong>" (Brooks,
+<em>Mythical Man-Month</em>) though test different things; unknown
+instruments of indeterminate validity; little user feedback); (2)
+<strong>data scope &amp; collection</strong> (narrow
+industries/demographics/regions mostly US; vague terms; single case
+studies; nutrition labels risk <strong>priming</strong> — Fox); (3)
+<strong>visual &amp; technical</strong> (software choices unclear;
+third-party flows hard to show; unfamiliar icons; nutrition labels
+confuse (Kelley, McDonald); people interpret "personal information" very
+differently; pre-training participants may verge on priming).</p>
+<p><strong>Research agenda — 10 recommendations</strong> (1–3 all
+research; 4–7 ML; 8–10 non-ML):</p>
+<ol type="1">
+<li>Use <strong>established privacy-centric theory</strong> —
+<strong>Contextual Integrity (Nissenbaum)</strong>, <strong>Privacy
+Calculus (Dinev; Laufer &amp; Wolfe)</strong>, <strong>Informational
+Self-Determination</strong> (structured vocabulary, reduces ambiguity,
+bridges disciplines, enables benchmarking; "<strong>much of privacy
+policy analysis research avoids the user</strong>"; blanket GDPR
+compliance checking not enough).</li>
+<li>Incorporate <strong>privacy risk assessment + full DPIA</strong>
+(necessity &amp; proportionality); define scope; choose methods with
+comparative frameworks (IoT, blockchain).</li>
+<li>Improve methodology: <strong>user evaluations</strong>,
+demographic/geographic inclusivity, comparative usability studies,
+diverse datasets (apps and websites), clear collection
+protocols/annotation guidelines, version tracking, crowdsourcing with
+care.</li>
+<li>(ML) advance NLP for ambiguity: <strong>BERT</strong> embeddings,
+beyond OPP-115/APP-350, coreference resolution, syntactic parsing,
+benchmark datasets; <strong>NER</strong> for cross-border transfers
+(countries + mechanisms: SCCs, adequacy, BCRs).</li>
+<li>(ML) better <strong>policy harvesting</strong>: adaptive scraping,
+page monitoring, differential analysis across versions, standardised
+formats/ontologies, legal experts; <strong>blockchain/DLT</strong> for
+immutable record of policy changes.</li>
+<li>(ML) language/semantic: machine translation, <strong>multilingual
+BERT</strong>, classification at right granularity, topic modelling,
+sentiment analysis, language-specific ontologies, bespoke models for
+under-represented languages, linguists + legal experts.</li>
+<li>(ML) <strong>context-aware keyword extraction</strong> (surrounding
+text, grammar, semantics; unsupervised word embeddings/topic modelling;
+detect emerging keywords).</li>
+<li>(Non-ML) <strong>standardise content analysis</strong> (NLP aids, ML
+for automated content analysis, evaluator guidelines,
+<strong>inter-rater reliability</strong>).</li>
+<li>(Non-ML) use <strong>PLS-SEM</strong> (Partial Least Squares
+Structural Equation Modelling): complex/non-linear relationships,
+reflective and formative constructs, measurement error ("noisy data"),
+multiple mediation/moderation paths (beats CB-SEM), non-normal data
+(non-parametric), multi-method data (surveys, interviews,
+observations).</li>
+<li>(Non-ML) multifaceted solutions for visual/technical challenges:
+user-centred icon design/testing, interactive visualisations, legal
+experts, alternative data sources/innovative scraping respecting
+platforms' terms (Google Play).</li>
+</ol>
+<p><strong>Limitations:</strong> diverse methods → hard to compare ("not
+heterogeneous" in paper — authors mean methodologically varied);
+researcher bias in selection/coding (mitigated by two independent
+coders); grey literature excluded; recommendations not validated/tested.
+Future: standardised content analysis, PLS-SEM, broader data across
+industries/demographics/regions via industry/government/NGO partners,
+taxonomies/ontologies, user-centric visual design, better scraping for
+longitudinal studies, privacy theory, risk assessment. Conclusion:
+ground analyses in theory, integrate risk assessment, need user
+evaluation and user-centric design; ML work should use advanced NLP;
+non-ML should use standardised content analysis and PLS-SEM.
+<strong>Criticisms:</strong> recommendations untested; peer-reviewed
+only → misses industry/regulator work; ends 2023 → misses <strong>LLM
+wave (GPT-4 era)</strong>; PLS-SEM recommendation narrow (authors' IS
+background). <strong>Where it fits:</strong> frame for whole field.
+Pałka (uses LLMs) and Pardo &amp; Le Métayer (formal language + model
+checking) = the two families mapped: ML/NLP vs non-ML formal work.
+<strong>Ambiguity</strong> is the common enemy: hurts ML labelling;
+makes experts and GPT-4 fail (Pałka); Pilot's answer = formal semantics.
+Ambiguity in acts (clicks), texts (policies), data (annotations)
+undermines consent at every layer. <strong>Gap in user
+evaluation</strong> runs through others: Pilot has no user study, Najdi
+no implementation, Santos leans on others' user studies. Finding that
+users spend only seconds on policies = evidence against GDPR's
+assumption of an informed deliberating user. Second recommendation ties
+to GDPR's own risk tools (DPIA among <strong>Arts 32–36</strong>,
+alongside security, breach notification, prior consultation).</p>
+<hr />
+<h2
+id="r6-najdi-athauda-bandara--luo-2025--technical-framework-to-ensure-data-subjects-rights-in-gdpr-a-conceptual-design">R6.
+NAJDI, ATHAUDA, BANDARA &amp; LUO (2025) — "Technical Framework to
+Ensure Data Subject's Rights in GDPR: A Conceptual Design"</h2>
+<p><strong>Problem: rights on paper, trust in practice.</strong> Users
+trade personal data for services; because of cloud hosting data sits on
+providers' servers. Data = "<strong>predominant currency</strong>" of
+online services; companies monetise through <strong>secondary use or
+sale</strong>. Stats: 2023 <strong>OAIC</strong> survey
+<strong>74%</strong> of Australians saw data breaches as one of the
+biggest privacy risks; 2022 only <strong>54%</strong> of UK population
+trusted providers; 2024 <strong>half of global data breaches involved
+customers' PII</strong>. Illustration: <strong>Cambridge Analytica — 87
+million Facebook users</strong>' data collected without consent, used
+for political advertising; Facebook fined. <strong>GDPR</strong> (May
+2018) applies to every organisation processing EU citizens' data incl.
+outside EU; "world's strongest privacy and security law"; influenced
+Australia. But <strong>legal framework, not prescribing
+technology</strong> → organisational autonomy but compliance difficult;
+technical solutions fragmented/manual. Users feel consequences:
+<strong>Bowyer et al.</strong> — delayed/inadequate responses, data
+collected without consent appearing in responses, incomprehensible data
+files, no ability to control/modify/delete. <strong>Pöhn et al.</strong>
+— some sites compile data manually (long waits); most comply with access
+right but lack completeness/understandability. <strong>Three
+contributions:</strong> review technical approaches supporting DS
+rights; map each to rights it supports (large gaps once trust in
+controller relaxed); propose own reference framework + discuss limits.
+Underlying question: <strong>can technology guarantee DS rights even if
+the organisation that wants the data can't be trusted?</strong></p>
+<p><strong>The paper's map of GDPR:</strong> 99 articles; 4 roles —
+<strong>DS</strong> (data subject), <strong>DC</strong> (controller:
+purposes and methods), <strong>DP</strong> (processor on controller's
+behalf), <strong>SA</strong> (supervisory authority). 7 principles:
+lawfulness/fairness/transparency; purpose limitation; data minimisation;
+storage limitation; integrity &amp; confidentiality; accountability;
+accuracy. <strong>Rights IR1–IR11:</strong> | | Right | Meaning |
+|---|---|---| | IR1 | Informed | what data, why, by whom, how long;
+existence and logic of ADM | | IR2 | Give &amp; withdraw consent | any
+time | | IR3 | Transparent processing | concise, transparent,
+intelligible, accessible, clear plain language | | IR4 | Request &amp;
+response on action | told without undue delay what was done on requests
+under IR5–IR10 | | IR5 | Access | confirmation + access to own data | |
+IR6 | Portability | structured, commonly used, machine-readable;
+transmit to another controller | | IR7 | Rectification | correct
+inaccurate/incomplete without undue delay | | IR8 | Erasure | when
+consent withdrawn, DS objects, no longer necessary, unlawful | | IR9 |
+Restrict processing | future processing stops; controller may still
+store | | IR10 | Object | incl. <strong>absolute</strong> right to stop
+direct marketing/profiling | | IR11 | Complain to SA | legal not
+technical → <strong>excluded from analysis</strong> |</p>
+<p><strong>Trust gap in existing technology:</strong> searched Google
+Scholar, ACM DL, IEEE Xplore 2020–2024 ("personal data", "control",
+"GDPR", "blockchain", "consent management") → <strong>19
+papers</strong>, scored strictly: right <strong>fully supported</strong>
+only if ensured by design <strong>and</strong> shown via
+implementation/evaluation; <strong>partially</strong> if only in some
+contexts or not implemented/evaluated. <strong>Findings:</strong> (1)
+research focuses overwhelmingly on <strong>consent management and
+processing (IR1–IR3)</strong>; other rights sparse. (2)
+<strong>Blockchain</strong> widely used (shared record: immutable once
+written, transparent to parties, <strong>decentralised trust</strong>) —
+to record consent requests, <strong>provenance</strong>, audit logs. (3)
+<strong>KEY ARGUMENT:</strong> after consent, data is handed to DC and
+transitively its processors → <strong>implicit trust</strong> that DC
+won't misuse (intentionally or not). GDPR deterrent is
+<strong>legal</strong> (complaint to SA/IR11, legal action) — bites only
+if misuse is <strong>detected and proven</strong>; <strong>no technical
+means to monitor or prevent misuse once data handed over.</strong> If
+trust relaxed, none of existing designs fully meets IR3–IR10, and even
+IR1/IR2 can be violated. Conclusion (stark): "<strong>none of the
+existing approaches meets any of the DSs' rights</strong>".
+<strong>Legal deterrence works only after misuse is detected and proven;
+technical design could prevent it in the first place.</strong></p>
+<p><strong>The framework — 4 design decisions</strong> (if the danger is
+handing data over, don't hand it over):</p>
+<ol type="1">
+<li><strong>PII never given to DC or DP</strong>: stays under DS's
+control in a <strong>Personal Data Store (PDS)</strong> (individuals
+collect, store, manage, share data by own rules; e.g. <strong>Solid
+Pods</strong>, <strong>Self-Sovereign Identity (SSI)</strong>).</li>
+<li>A <strong>Consent Management System (CMS)</strong> essential for
+IR1/IR2; formal/machine-readable consent (ontologies mapped to actions
+and rights) so what each consent permits can be checked
+automatically.</li>
+<li><strong>Blockchain + smart contracts</strong> (programs on
+blockchain) log consent actions and processing transparently, auditably,
+immutably.</li>
+<li><strong>Process data in a secure environment</strong>: DC sends its
+approved <strong>algorithm</strong> to the secure environment; consent
+validated, PII pulled in and processed there; only
+<strong>output</strong> goes to DC (<strong>algorithm travels to the
+data, not data to the company</strong>). Processing smart contract
+stores <strong>hash</strong> (digital fingerprint) of algorithm, hash of
+results, timestamp, list of consents → anyone later can confirm that the
+algorithm run and its results are those recorded.</li>
+</ol>
+<p><strong>How it works:</strong> two actors (DS, DC), two components:
+<strong>Secure Consent Management System (CMS)</strong> and
+<strong>Secure Computing Environment (SCE)</strong>.</p>
+<ul>
+<li><strong>Consent:</strong> DC asks via DS's CMS; DS grants/rejects.
+If granted, CMS creates a <strong>consent ID</strong> stored with data
+items covered, types of access allowed, DC's ID. Consent also recorded
+(timestamp) in <strong>Consent Smart Contract (CSC)</strong> on
+blockchain; <strong>rejected requests recorded too</strong>
+(transparency). For sensitive data DS can ask to see/check the algorithm
+(no leakage, nothing beyond consent) and store its hash with consent.
+Consent ID returned to DC.</li>
+<li><strong>Processing:</strong> DC calls SCE with algorithm, list of
+consent IDs and DS IDs, own DC ID. SCE nodes hosted by public cloud
+providers, authenticated via <strong>PKI</strong>. After authenticating
+DC, SCE starts a <strong>Secure Computing Pod (SCP)</strong> hosting a
+<strong>trusted execution environment (TEE / enclave)</strong> —
+hardware-isolated area where computation runs sealed off. SCP contacts
+each DS's CMS with DC ID, token, consent ID, algorithm hash; CMS
+verifies and performs <strong>remote attestation</strong> (checks from a
+distance that enclave is genuine) before releasing any PII. Algorithm
+runs, results return to DC, <strong>Processing Smart Contract
+(PSC)</strong> records hash of algorithm, DC ID, list of DS ID/consent
+ID pairs, timestamp. Net effect: <strong>PII known only to the SCP
+during processing; DS keeps control throughout.</strong></li>
+</ul>
+<p><strong>How each right is met (claim: fully meets 9 of 10 technical
+rights IR1–IR9):</strong></p>
+<ul>
+<li>IR1 informed: DC gives GDPR info via CMS; CSC records show who
+processes, why, how long.</li>
+<li>IR2 consent: CMS lets DS give/amend/withdraw; PII released only
+after consent validated; DS can verify/hash algorithm; works for new and
+existing systems.</li>
+<li>IR3 transparent: all processing logged in PSC → DS sees directly
+even if DC untrusted.</li>
+<li>IR4 request/response: by design; DS gets info from PDS, CMS, CSC,
+PSC without asking DC. IR5 access: PII in PDS, consents in CSC,
+processing records in PSC. IR6 portability: PII already in PDS; Solid
+Pods provide standard formats. IR7 rectification: DS edits PDS; future
+processing uses corrected data.</li>
+<li>IR8 erasure (modified sense): withdrawing consent has same effect
+for future processing; PII never collected without consent. IR9
+restriction: DS revokes consent; SCE checks consent before any
+processing; GDPR's "controller may still store" irrelevant because DC
+never stores PII.</li>
+<li><strong>IR10 object (marketing/profiling) — the one right it cannot
+technically ensure:</strong> e.g. DS consents to data used to train an
+ML model; <strong>trained model = output → goes to DC</strong>; if DS
+later objects, nothing stops DC continuing to use the model. Link to
+Custers &amp; Vrabec: models aren't personal data, one person's erasure
+barely changes a model, data can be re-inferred.</li>
+</ul>
+<p><strong>Limitations/answers/criticism:</strong></p>
+<ul>
+<li>Candid limitation 1: depends on algorithm respecting consent —
+malicious DC could write algorithm that <strong>hides PII inside
+results</strong>. Answers: DS can complain to SA; PSC lets auditors
+compare stored hash with real algorithm/results so SA can enforce; DS
+can review algorithm before consenting and store its hash. Overhead on
+DS (must validate algorithms) → future research on <strong>automatic
+verification</strong> that algorithm doesn't leak/go beyond consent.
+Limitation 2: IR10 / ML model problem; possible fix: keep ML models
+inside a TEE in the secure environment rather than at DC. <strong>Only
+conceptual design; authors now implementing and testing.</strong></li>
+<li><strong>Strength:</strong> shifts debate from "trust + legal
+deterrence" to "<strong>don't hand the data over</strong>" =
+<strong>privacy by architecture</strong>, spirit of <strong>Art 25
+GDPR</strong>; integrates known technologies; gives DS direct visibility
+instead of relying on subject access requests.</li>
+<li><strong>Weaknesses:</strong> <strong>not implemented or
+evaluated</strong> yet describes itself as giving "<strong>fully
+supported</strong>" rights while requiring other papers to show
+implementation to earn full credit (<strong>asymmetry — sharp exam
+point</strong>); heavy <strong>burden on users to vet
+algorithms</strong> (unrealistic; privacy paradox; Santos, Pałka, cost
+of self-management); outputs/aggregates can still leak or enable
+profiling; <strong>blockchain immutability vs erasure</strong>
+(hashes/IDs on chain may themselves be personal data and chain can't be
+changed); <strong>trust shifted</strong> not removed — to cloud
+providers hosting TEEs and their hardware; enclave attacks possible;
+performance and cost; weak <strong>adoption incentives</strong>
+(business models depend on holding data); <strong>processors under Art
+28 would disappear or change role</strong>. <strong>Where it
+fits:</strong> technological answer to failures of consent. In
+notice-and-consent debate: "<strong>not on its own: change the
+architecture</strong>" — even perfect consent fails if controller
+misuses data afterwards. Notice-and-consent survives only if cost of
+self-management falls and controllers are technically/legally
+constrained after consent (<strong>Najdi + Art 28</strong>).
+<strong>Contrasts:</strong> Pilot (predicts misuse risks) vs Najdi
+(prevents data leaving); Irish DPC guide (contractual/legal controls
+over processors) vs Najdi (not enough without technical enforcement).
+Shares <strong>rational-user assumption</strong> (people will vet
+algorithms). <strong>Best answer: complementary — Art 25 is the bridge:
+law sets requirements and sanctions, design makes them usable,
+technology makes them enforceable.</strong> Najdi's own framework proves
+it: when a stored hash doesn't match, <strong>the SA must still
+act</strong> → "technology narrows our reliance on law, but doesn't
+remove it".</li>
+</ul>
+<hr />
+<h2
+id="r7-data-protection-commission-ireland-2019--a-practical-guide-to-controller-processor-contracts">R7.
+DATA PROTECTION COMMISSION (Ireland) (2019) — <em>A Practical Guide to
+Controller-Processor Contracts</em></h2>
+<p><strong>What it is:</strong> regulator guidance (not academic), last
+updated <strong>June 2019</strong>; refers to GDPR and Irish
+<strong>Data Protection Act 2018</strong>. <strong>Central
+message:</strong> whenever a controller engages a processor, the two
+<strong>must sign a legally binding contract</strong> containing at
+least the terms of <strong>Art 28(3) GDPR</strong>. With
+<em>Planet49</em>, one of two readings stating what the law requires
+(others propose design/technical fixes). Shows how law keeps data
+protected once it leaves the collecting organisation.</p>
+<p><strong>Roles:</strong> <strong>controller</strong> = decides
+purposes and means (why and how); <strong>processor</strong> = processes
+on controller's behalf and <strong>only on documented
+instructions</strong>. GDPR (25 May 2018) = heavier obligations on both.
+<strong>Background duties:</strong> <strong>Art 28(1) duty of
+selection</strong> — controllers may use only processors giving
+"<strong>sufficient guarantees</strong>" to implement appropriate
+<strong>technical and organisational measures (TOMs)</strong> so
+processing complies and protects data subjects. Processors also have
+<strong>direct GDPR obligations</strong> (records, security) in addition
+to contract → <strong>two layers of liability</strong>: GDPR
+fines/penalties <strong>and</strong> claim for breach of contract.
+Applies to all controllers in <strong>public and private
+sectors</strong>. Before GDPR a written contract was already needed;
+GDPR prescribes <strong>many more provisions</strong>.</p>
+<p><strong>Contract content — part 1: describe the processing:</strong>
+subject matter and <strong>duration</strong>; <strong>nature and
+purpose</strong>; <strong>type of personal data</strong>;
+<strong>categories of data subjects</strong>; <strong>obligations and
+rights of the controller</strong>. <strong>Part 2: nine clauses binding
+the processor</strong> (guide lists without letters; letters are
+standard GDPR refs):</p>
+<ol type="1">
+<li>Process only on <strong>controller's documented
+instructions</strong>, incl. international transfers, unless law
+requires otherwise (<strong>28(3)(a)</strong>).</li>
+<li>Everyone processing is under <strong>confidentiality</strong> duty
+(<strong>28(3)(b)</strong>).</li>
+<li>Take all <strong>Art 32 security</strong> measures (TOMs)
+(<strong>28(3)(c)</strong>).</li>
+<li>Engage a <strong>sub-processor</strong> only with controller's
+<strong>prior specific or general written authorisation</strong>; if
+general, give controller chance to <strong>object in advance</strong> to
+each new sub-processor (<strong>28(2), (3)(d)</strong>).</li>
+<li>Impose same obligations on sub-processors, <strong>remaining
+directly liable</strong> to controller for their performance
+(<strong>28(4)</strong>).</li>
+<li><strong>Assist controller</strong> (appropriate TOMs) in responding
+to <strong>data subject rights requests</strong>
+(<strong>28(3)(e)</strong>).</li>
+<li>Assist with <strong>Art 32 security, Arts 33–34 breach notification,
+DPIAs and prior consultation Arts 35–36</strong>
+(<strong>28(3)(f)</strong>).</li>
+<li>At end, <strong>delete or return</strong> personal data as
+controller instructs (<strong>28(3)(g)</strong>).</li>
+<li>Make available all info to <strong>demonstrate compliance with Art
+28</strong> and allow/contribute to <strong>audits</strong> by
+controller or mandated third party (<strong>28(3)(h)</strong>).
+<strong>Optional extras:</strong> liability/indemnities, detailed
+technical security provisions, additional cooperation provisions case by
+case. <strong>Compliance task:</strong> ensure a legally binding
+contract exists for every controller-processor relationship and keep it
+up to date with at least Art 28(3) terms.</li>
+</ol>
+<p><strong>Links:</strong> <strong>accountability chain</strong> — Art
+28 uses <strong>contract</strong> to extend controller's obligations
+down the chain (controller → processor → sub-processor); = law's answer
+to the <strong>trust problem</strong> Najdi approaches technically.
+Najdi argue contractual/legal controls aren't enough without technical
+enforcement; keep data with DS so only results are sent; but under
+Najdi, <strong>Art 28 processors would disappear or change
+role</strong>. Notice-and-consent can survive only if cost of
+self-management falls and controllers constrained technically/legally
+after consent (Najdi + Art 28). <strong>Pałka:</strong> comprehensive
+policy format must name each recipient and <strong>role (processor vs
+controller)</strong> — exactly the distinction Art 28 turns on (mock
+policy: <strong>CoolAccountants, FraudDetectors, Cloud711, Microsoft =
+processors; Facebook, Google = controllers</strong>).
+<strong>Santos:</strong> CMPs may act as processors or controllers for
+websites, so errors in recording consent raise who is responsible.
+<strong>Pilot:</strong> transfer rules and usage rules =
+machine-readable "documented instructions" and limits on onward
+transfers. <strong>Limits of contractual approach:</strong>
+contracts/audits work <strong>ex post</strong> (misuse must be detected
+then proven); <strong>small controllers have little leverage over big
+processors</strong> (cloud providers); "<strong>documented
+instructions</strong>" can be vague in practice. Hence law, design,
+technology complementary: Art 28 = binding requirements with sanctions,
+but (Najdi) law alone can't stop misuse once data left DS.</p>
+<hr />
+<p><em>(R8 onward → Part 3.)</em></p>
+</body>
+</html>
