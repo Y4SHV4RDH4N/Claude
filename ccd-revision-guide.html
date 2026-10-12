@@ -96,11 +96,12 @@ details[open] summary{margin-bottom:.4rem}
   <div class="row" style="margin-top:.2rem"><span class="note">Exam tomorrow 2 pm. One chunk at a time.</span><span class="pct" id="pct">0 / 0 chunks</span></div>
   <div class="bar"><i id="barfill"></i></div>
   <nav class="tabs" id="tabs" aria-label="Sections">
-    <a href="#plan">Tonight</a><a href="#u1">Unit 1</a><a href="#u2">Unit 2</a><a href="#u3">Unit 3</a><a href="#cards">Flashcards</a><a href="#qs">Practice</a><a href="#ans">Answer bank</a><a href="#quiz">Anatomy quiz</a><a href="#cram">Cram sheet</a>
+    <a href="#plan">Tonight</a><a href="#hour">1-hour read</a><a href="#u1">Unit 1</a><a href="#u2">Unit 2</a><a href="#u3">Unit 3</a><a href="#cards">Flashcards</a><a href="#qs">Practice</a><a href="#ans">Answer bank</a><a href="#quiz">Anatomy quiz</a><a href="#cram">Cram sheet</a>
   </nav>
 </header>
 
 <section class="view" id="v-plan"></section>
+<section class="view" id="v-hour"></section>
 <section class="view" id="v-u1"></section>
 <section class="view" id="v-u2"></section>
 <section class="view" id="v-u3"></section>
@@ -655,7 +656,27 @@ function renderCram(){
 }
 
 /* ---------- ROUTER ---------- */
-const VIEWS=["plan","u1","u2","u3","cards","qs","ans","quiz","cram"];
+const VIEWS=["plan","hour","u1","u2","u3","cards","qs","ans","quiz","cram"];
+/* ---------- 1-HOUR READ ---------- */
+let hrLeft=3600, hrTimer=null;
+function fmt(s){const m=Math.floor(s/60),r=s%60;return String(m).padStart(2,"0")+":"+String(r).padStart(2,"0")}
+function renderHour(){
+  const U={u1:["Unit 1: reading and understanding",20],u2:["Unit 2: core clauses",12],u3:["Unit 3: risk, breach and exit",17]};
+  const lists=c=>"<div class='card'><h3>"+c.t+"</h3><ul>"+c.b.map(x=>"<li>"+x+"</li>").join("")+"</ul></div>";
+  $("#v-hour").innerHTML="<h2>1-hour read</h2><p class='note'>For just before you walk in. Read straight down. Every topic has the five points you must be able to write, plus the spine of a 10-mark answer. Examples and cases are inside the points.</p>"+
+  "<div class='card'><div class='chead'><div><span class='tag'>Timer</span><h3 id='hrclock' style='font-family:var(--mono)'>"+fmt(hrLeft)+"</h3></div><div class='btnrow'><button class='btn pri' data-hr='go'>Start / pause</button><button class='btn' data-hr='reset'>Reset</button></div></div><p class='note'>Plan: 5 min lists · 20 min Unit 1 · 12 min Unit 2 · 17 min Unit 3 · 6 min final check.</p></div>"+
+  "<h2>Minutes 0–5: lists and answer shape</h2>"+lists(CRAM[0])+lists(CRAM[4])+
+  ["u1","u2","u3"].map(u=>"<h2>"+U[u][0]+" ("+U[u][1]+" min)</h2>"+ANS.filter(a=>a.u===u).map(a=>
+    "<div class='card'><h3>"+a.t+"</h3><ul>"+a.five.map(x=>"<li>"+x+"</li>").join("")+"</ul><div class='hook'><b>10-mark spine</b>"+a.ten.map(x=>x[0]).join(" → ")+"</div></div>").join("")).join("")+
+  "<h2>Final 6 minutes</h2>"+lists(CRAM[2])+lists(CRAM[3])+lists(CRAM[5]);
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-hr]");if(!t)return;
+  if(t.dataset.hr==="go"){
+    if(hrTimer){clearInterval(hrTimer);hrTimer=null}
+    else hrTimer=setInterval(()=>{hrLeft=Math.max(0,hrLeft-1);const c=$("#hrclock");if(c)c.textContent=fmt(hrLeft);if(!hrLeft){clearInterval(hrTimer);hrTimer=null}},1000);
+  } else {if(hrTimer){clearInterval(hrTimer);hrTimer=null}hrLeft=3600;const c=$("#hrclock");if(c)c.textContent=fmt(hrLeft)}
+});
 /* ---------- ANATOMY QUIZ ---------- */
 const BLK={A:"A Introductory",B:"B Operative",C:"C Boilerplate",D:"D Signature / schedules"};
 const SORT=[["Recitals","A","Context for the deal, so introductory."],["Interpretation","A","Reading rules sit with definitions, before the deal."],["Effective date","A","Listed in the introductory block of the chart."],["Payments","B","Core exchange of the deal."],["Indemnity","B","Risk allocation is operative."],["Territory","B","Scope of rights, so operative."],["Non-compete","B","A restrictive covenant, so operative."],["Survival of clauses","B","Part of the exit, which the chart puts in the operative block."],["Force majeure","B","On the chart it is the last operative clause (many precedents put it in boilerplate)."],["Further assurance","C","Standard administrative rule."],["Waiver","C","Boilerplate."],["Entire agreement","C","Boilerplate, usually the last clause."],["Governing law and jurisdiction","C","Boilerplate on the chart."],["Name of signatory","D","Execution block."],["Annexures","D","Detail attached at the end."]];
@@ -758,5 +779,5 @@ renderPlan();
 renderUnit("u1","Unit 1: Reading and understanding contracts","Eight chunks. Tick each when you can explain it without looking.");
 renderUnit("u2","Unit 2: Core clauses and operative provisions","Ten chunks. Definitions (2.3) is the most testable.");
 renderUnit("u3","Unit 3: Risk, breach and exit","Ten chunks. Pair each with its Indian-law hook.");
-buildDeck();renderCards();renderQs();renderAns();newSort();renderQuiz();renderCram();updateProgress();route();
+buildDeck();renderCards();renderQs();renderAns();newSort();renderQuiz();renderCram();renderHour();updateProgress();route();
 </script>
