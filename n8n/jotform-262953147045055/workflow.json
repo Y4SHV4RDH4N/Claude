@@ -1,0 +1,251 @@
+{
+  "name": "Jotform 262953147045055 → Sheets + Email",
+  "nodes": [
+    {
+      "parameters": {
+        "form": "262953147045055",
+        "resolveData": true,
+        "onlyAnswers": true
+      },
+      "id": "f29bc87b-26e3-4a1d-940c-384f3422e924",
+      "name": "Jotform Trigger",
+      "type": "n8n-nodes-base.jotFormTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "7f6bf9b3-035c-4933-814f-aac32d7868e2",
+      "credentials": {
+        "jotFormApi": {
+          "id": "",
+          "name": "Jotform account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Flattens a Jotform submission into one flat row: { \"Question label\": \"answer\" }.\n// Works for any form layout: nested answers (name, address, date, etc.) become\n// readable strings and lists are joined with commas.\nfunction flatten(v) {\n  if (v === null || v === undefined) return '';\n  if (Array.isArray(v)) return v.map(flatten).filter(s => s !== '').join(', ');\n  if (typeof v === 'object') {\n    // Date/time widgets: { month, day, year } -> YYYY-MM-DD\n    if ('year' in v && 'month' in v && 'day' in v) {\n      return `${v.year}-${String(v.month).padStart(2, '0')}-${String(v.day).padStart(2, '0')}`;\n    }\n    return Object.values(v).map(flatten).filter(s => s !== '').join(' ');\n  }\n  return String(v).trim();\n}\n\nreturn $input.all().map(item => {\n  const row = {\n    'Submitted At': new Date().toISOString(),\n    'Form ID': '262953147045055',\n  };\n  for (const [label, value] of Object.entries(item.json)) {\n    row[label] = flatten(value);\n  }\n  return { json: row };\n});\n"
+      },
+      "id": "098e0e49-9f45-4b35-8b0f-cef40b2dc3bf",
+      "name": "Normalize Submission",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {
+          "handlingExtraData": "insertInNewColumn"
+        }
+      },
+      "id": "b7d6e0da-2f11-489b-95dc-2526802f6fb5",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        160
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Builds the notification e-mail and finds the submitter's e-mail address\n// (the first answer whose label mentions \"email\" and contains an @).\nconst esc = s => String(s)\n  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\nreturn $input.all().map(item => {\n  const row = item.json;\n  let submitterEmail = '';\n  let submitterName = '';\n  const rows = [];\n\n  for (const [label, value] of Object.entries(row)) {\n    if (!submitterEmail && /e-?mail/i.test(label) && /\\S+@\\S+\\.\\S+/.test(value)) {\n      submitterEmail = value.match(/\\S+@\\S+\\.\\S+/)[0];\n    }\n    if (!submitterName && /name/i.test(label) && value) submitterName = value;\n    rows.push(\n      `<tr><td style=\"padding:6px 10px;border:1px solid #ddd;background:#f6f6f6;font-weight:600\">${esc(label)}</td>` +\n      `<td style=\"padding:6px 10px;border:1px solid #ddd\">${esc(value || '—')}</td></tr>`\n    );\n  }\n\n  return {\n    json: {\n      submitterEmail,\n      submitterName,\n      subject: `New form submission${submitterName ? ' from ' + submitterName : ''}`,\n      html: `<p>A new response was submitted to Jotform form ${esc(row['Form ID'])}.</p>` +\n            `<table style=\"border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px\">${rows.join('')}</table>`,\n    },\n  };\n});\n"
+      },
+      "id": "2ff5335c-1341-48a9-ace5-b2ea3f317ce5",
+      "name": "Build Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "you@example.com",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "dc86fbb6-f9fd-436e-abd7-cafb8b3d7612",
+      "name": "Notify Team",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        760,
+        340
+      ],
+      "webhookId": "85338beb-8d73-4658-b068-6c17f219c967",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "e791494f-1928-4213-b3bc-48307f97c2f7",
+              "leftValue": "={{ $json.submitterEmail }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b02c3539-6d81-4e2e-9cf2-17caf642fc79",
+      "name": "Has Submitter Email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        760,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.submitterEmail }}",
+        "subject": "We received your submission",
+        "message": "=<p>Hi{{ $json.submitterName ? ' ' + $json.submitterName : '' }},</p><p>Thanks — we've received your form submission. Here's a copy of what you sent:</p>{{ $json.html }}<p>We'll be in touch soon.</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "0749a8f8-f65a-4966-b721-a17ffb1cc948",
+      "name": "Send Confirmation",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        520
+      ],
+      "webhookId": "9077153f-6fdf-44fe-a6ef-330227d5f0ac",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Setup\n1. **Jotform Trigger** – add a Jotform API credential (Jotform → Settings → API). Form ID `262953147045055` is preset.\n2. **Save to Google Sheets** – connect Google, paste your spreadsheet URL. Headers are created from the form's question labels automatically.\n3. **Notify Team** – connect Gmail and replace `you@example.com`.\n4. **Send Confirmation** – goes to the first e-mail answer on the form (skipped if none).\n5. Activate the workflow — n8n registers the webhook on the form for you.",
+        "height": 300,
+        "width": 460
+      },
+      "id": "efff0610-eb87-48ad-9f36-4d72d0093e63",
+      "name": "Setup Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -20
+      ]
+    }
+  ],
+  "connections": {
+    "Jotform Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Submission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Submission": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Email": {
+      "main": [
+        [
+          {
+            "node": "Notify Team",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Has Submitter Email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Submitter Email?": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "active": false
+}
