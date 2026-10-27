@@ -1,0 +1,18 @@
+#,Problem found,Action taken,Reason
+1,orders.csv & reviews.csv first column read as '\ufefforder_id',Read files with encoding='utf-8-sig',Hidden BOM character in file; otherwise joins on order_id fail
+2,"'None' in complaint_category turned into NaN by pandas (2,640 rows)",Read with keep_default_na=False,"'None' means 'no complaint', which is real information"
+3,"Order O00501 appears twice, identical",Removed 1 copy,"Double entry; would overstate revenue by ₹6,706"
+4,"Review R00334 appears twice, identical",Removed 1 copy,One review per order
+5,"Product P040 appears twice, identical",Removed 1 copy BEFORE merging,Would double count all P040 orders in the join
+6,P011 'Hair Care Item 011' has category 'Electronic',Changed category to 'Beauty',Name + subcategory say Hair Care; mark-up 1.923 = Beauty pricing
+7,P074 'Small Appliances Item 074' has subcategory 'skin care',Changed subcategory to 'Small Appliances',Name says Small Appliances; mark-up 1.471 = Home & Kitchen pricing
+8,Sales channel 'web site' (1 order),Changed to 'Website',Spelling variant of the same channel
+9,O00778 missing discount_pct,Derived 1 - revenue/(qty x price) = 0.30,"Calculated from real data, matches a standard discount level; not a guess"
+10,O00300 missing customer_id,"Kept order, customer = 'Unknown'",Sale is real; excluded only from customer analysis
+11,R01201 missing rating,"Kept row, left rating blank",Complaint and escalation info is still useful; we don't invent ratings
+12,"campaign_id blank on 1,472 orders",Labelled 'No campaign',"Blank = order not linked to a campaign, not an error"
+13,313 orders with negative profit,Kept,Maths checked and correct; losses come from deep discounts (business finding)
+14,order_date / campaign dates stored as text,Converted to datetime,Needed for monthly and campaign-window analysis
+15,89% of campaign-tagged orders fall outside the campaign dates,Kept but NOT used for campaign returns,Tag cannot mean 'this campaign caused the order' (see Hidden Mystery)
+16,Store orders with 'Late delivery' complaints (179),"Kept, flagged",Need delivery.csv to confirm whether store orders are home-delivered
+17,customers.csv and delivery.csv not in our folder,Used region_at_order + review complaints as proxies,"Every customer orders from only one region, so region_at_order is a safe stand-in"

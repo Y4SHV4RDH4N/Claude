@@ -1,0 +1,122 @@
+﻿product_id,product_name,category,subcategory,unit_cost_inr,list_price_inr,supplier
+P001,Audio Item 001,Electronics,Audio,323.17,394.11,Aruna
+P002,Footwear Item 002,Fashion,Footwear,324.66,559.76,Futura
+P003,Fitness Item 003,Sports,Fitness,3265.04,5266.19,Futura
+P004,Sports Accessories Item 004,Sports,Sports Accessories,525.25,847.18,Futura
+P005,Skin Care Item 005,Beauty,Skin Care,347.35,667.98,Futura
+P006,Footwear Item 006,Fashion,Footwear,1791.32,3088.48,Crescent
+P007,Personal Care Item 007,Beauty,Personal Care,1361.32,2617.92,Aruna
+P008,Cookware Item 008,Home & Kitchen,Cookware,1611.01,2369.13,Futura
+P009,Cookware Item 009,Home & Kitchen,Cookware,1424.3,2094.56,Ecomade
+P010,Sports Accessories Item 010,Sports,Sports Accessories,1224.85,1975.56,DigiKart
+P011,Hair Care Item 011,Electronic,Hair Care,3133.03,6025.06,Crescent
+P012,Cookware Item 012,Home & Kitchen,Cookware,549.81,808.54,Aruna
+P013,Stationery Item 013,Office Supplies,Stationery,2249.43,3460.66,BharatWorks
+P014,Storage Item 014,Home & Kitchen,Storage,2459.66,3617.15,Ecomade
+P015,Hair Care Item 015,Beauty,Hair Care,327.27,629.37,Crescent
+P016,Printing Item 016,Office Supplies,Printing,2630.36,4046.71,BharatWorks
+P017,Personal Care Item 017,Beauty,Personal Care,2521.8,4849.62,BharatWorks
+P018,Outdoor Item 018,Sports,Outdoor,726.22,1171.32,Futura
+P019,Cookware Item 019,Home & Kitchen,Cookware,2071.67,3046.57,DigiKart
+P020,Storage Item 020,Home & Kitchen,Storage,1864.12,2741.35,Ecomade
+P021,Mobile Accessories Item 021,Electronics,Mobile Accessories,506.05,617.13,Futura
+P022,Stationery Item 022,Office Supplies,Stationery,3296.22,5071.11,Crescent
+P023,Mobile Accessories Item 023,Electronics,Mobile Accessories,1791.88,2185.22,Ecomade
+P024,Printing Item 024,Office Supplies,Printing,1434.31,2206.63,Aruna
+P025,Smart Devices Item 025,Electronics,Smart Devices,2953.55,3601.89,Ecomade
+P026,Sports Accessories Item 026,Sports,Sports Accessories,1705.57,2750.92,Ecomade
+P027,Smart Devices Item 027,Electronics,Smart Devices,2993.69,3650.84,Aruna
+P028,Smart Devices Item 028,Electronics,Smart Devices,1375.79,1677.79,Crescent
+P029,Personal Care Item 029,Beauty,Personal Care,1706.81,3282.33,Futura
+P030,Fitness Item 030,Sports,Fitness,1933.19,3118.05,BharatWorks
+P031,Fitness Item 031,Sports,Fitness,3345.29,5395.63,Crescent
+P032,Fitness Item 032,Sports,Fitness,1380.52,2226.65,DigiKart
+P033,Mobile Accessories Item 033,Electronics,Mobile Accessories,629.52,767.71,DigiKart
+P034,Smart Devices Item 034,Electronics,Smart Devices,2599.09,3169.62,Crescent
+P035,Audio Item 035,Electronics,Audio,1007.86,1229.1,Futura
+P036,Personal Care Item 036,Beauty,Personal Care,2873.57,5526.1,DigiKart
+P037,Footwear Item 037,Fashion,Footwear,2052.94,3539.55,Aruna
+P038,Printing Item 038,Office Supplies,Printing,205.03,315.43,DigiKart
+P039,Small Appliances Item 039,Home & Kitchen,Small Appliances,1117.72,1643.71,Aruna
+P040,Desk Accessories Item 040,Office Supplies,Desk Accessories,3270.76,5031.94,DigiKart
+P041,Outdoor Item 041,Sports,Outdoor,2181.55,3518.63,Aruna
+P042,Men Item 042,Fashion,Men,857.93,1479.19,Ecomade
+P043,Men Item 043,Fashion,Men,983.07,1694.95,Futura
+P044,Storage Item 044,Home & Kitchen,Storage,1800.52,2647.82,Futura
+P045,Audio Item 045,Electronics,Audio,3044.11,3712.33,DigiKart
+P046,Smart Devices Item 046,Electronics,Smart Devices,3365.58,4104.37,BharatWorks
+P047,Smart Devices Item 047,Electronics,Smart Devices,617.73,753.33,BharatWorks
+P048,Small Appliances Item 048,Home & Kitchen,Small Appliances,3322.76,4886.41,BharatWorks
+P049,Men Item 049,Fashion,Men,543.36,936.83,DigiKart
+P050,Sports Accessories Item 050,Sports,Sports Accessories,753.33,1215.05,Ecomade
+P051,Personal Care Item 051,Beauty,Personal Care,3279.63,6306.98,Aruna
+P052,Men Item 052,Fashion,Men,271.37,467.88,BharatWorks
+P053,Mobile Accessories Item 053,Electronics,Mobile Accessories,1608.69,1961.82,DigiKart
+P054,Personal Care Item 054,Beauty,Personal Care,2943.52,5660.62,Aruna
+P055,Desk Accessories Item 055,Office Supplies,Desk Accessories,941.19,1447.98,Ecomade
+P056,Skin Care Item 056,Beauty,Skin Care,2325.67,4472.44,DigiKart
+P057,Smart Devices Item 057,Electronics,Smart Devices,1792.26,2185.68,Futura
+P058,Fitness Item 058,Sports,Fitness,2332.67,3762.37,DigiKart
+P059,Sports Accessories Item 059,Sports,Sports Accessories,3046.38,4913.52,BharatWorks
+P060,Printing Item 060,Office Supplies,Printing,1040.15,1600.23,Crescent
+P061,Small Appliances Item 061,Home & Kitchen,Small Appliances,1740.46,2559.5,Crescent
+P062,Audio Item 062,Electronics,Audio,1526.81,1861.96,BharatWorks
+P063,Hair Care Item 063,Beauty,Hair Care,2962.66,5697.42,DigiKart
+P064,Printing Item 064,Office Supplies,Printing,3150.32,4846.65,Crescent
+P065,Printing Item 065,Office Supplies,Printing,3084.0,4744.62,BharatWorks
+P066,Cookware Item 066,Home & Kitchen,Cookware,2067.43,3040.34,DigiKart
+P067,Storage Item 067,Home & Kitchen,Storage,766.2,1126.76,DigiKart
+P068,Smart Devices Item 068,Electronics,Smart Devices,2617.35,3191.89,Ecomade
+P069,Skin Care Item 069,Beauty,Skin Care,3487.19,6706.13,Ecomade
+P070,Skin Care Item 070,Beauty,Skin Care,2080.83,4001.6,DigiKart
+P071,Storage Item 071,Home & Kitchen,Storage,2913.87,4285.1,Crescent
+P072,Smart Devices Item 072,Electronics,Smart Devices,2387.32,2911.37,Aruna
+P073,Printing Item 073,Office Supplies,Printing,1816.61,2794.78,Crescent
+P074,Small Appliances Item 074,Home & Kitchen,skin care,2584.16,3800.24,BharatWorks
+P075,Smart Devices Item 075,Electronics,Smart Devices,787.45,960.3,Crescent
+P076,Sports Accessories Item 076,Sports,Sports Accessories,1932.42,3116.81,Crescent
+P077,Personal Care Item 077,Beauty,Personal Care,2115.89,4069.02,Crescent
+P078,Outdoor Item 078,Sports,Outdoor,3271.3,5276.29,Aruna
+P079,Sports Accessories Item 079,Sports,Sports Accessories,3405.02,5491.97,Crescent
+P080,Hair Care Item 080,Beauty,Hair Care,3317.16,6379.15,BharatWorks
+P081,Small Appliances Item 081,Home & Kitchen,Small Appliances,1765.72,2596.65,Crescent
+P082,Men Item 082,Fashion,Men,1499.0,2584.48,Ecomade
+P083,Hair Care Item 083,Beauty,Hair Care,2807.12,5398.31,Ecomade
+P084,Men Item 084,Fashion,Men,3236.88,5580.83,Aruna
+P085,Personal Care Item 085,Beauty,Personal Care,1373.87,2642.06,Aruna
+P086,Fitness Item 086,Sports,Fitness,463.05,746.85,Futura
+P087,Audio Item 087,Electronics,Audio,2534.05,3090.3,Crescent
+P088,Footwear Item 088,Fashion,Footwear,319.59,551.02,Futura
+P089,Women Item 089,Fashion,Women,438.03,755.22,BharatWorks
+P090,Skin Care Item 090,Beauty,Skin Care,1985.55,3818.37,BharatWorks
+P091,Small Appliances Item 091,Home & Kitchen,Small Appliances,759.2,1116.47,Futura
+P092,Women Item 092,Fashion,Women,1043.9,1799.83,DigiKart
+P093,Men Item 093,Fashion,Men,2904.14,5007.14,DigiKart
+P094,Smart Devices Item 094,Electronics,Smart Devices,582.68,710.59,Aruna
+P095,Printing Item 095,Office Supplies,Printing,507.07,780.11,Ecomade
+P096,Skin Care Item 096,Beauty,Skin Care,1339.93,2576.79,DigiKart
+P097,Printing Item 097,Office Supplies,Printing,1168.6,1797.85,Ecomade
+P098,Fitness Item 098,Sports,Fitness,1544.45,2491.05,BharatWorks
+P099,Hair Care Item 099,Beauty,Hair Care,1137.0,2186.54,BharatWorks
+P100,Printing Item 100,Office Supplies,Printing,3154.31,4852.78,Aruna
+P101,Hair Care Item 101,Beauty,Hair Care,1609.94,3096.04,DigiKart
+P102,Smart Devices Item 102,Electronics,Smart Devices,771.58,940.95,Crescent
+P103,Women Item 103,Fashion,Women,3079.88,5310.14,BharatWorks
+P104,Mobile Accessories Item 104,Electronics,Mobile Accessories,553.51,675.01,Crescent
+P105,Outdoor Item 105,Sports,Outdoor,172.13,277.63,Futura
+P106,Cookware Item 106,Home & Kitchen,Cookware,2241.09,3295.72,Crescent
+P107,Hair Care Item 107,Beauty,Hair Care,3061.69,5887.87,Ecomade
+P108,Cookware Item 108,Home & Kitchen,Cookware,2130.55,3133.16,Ecomade
+P109,Cookware Item 109,Home & Kitchen,Cookware,2024.46,2977.15,Crescent
+P110,Personal Care Item 110,Beauty,Personal Care,3451.79,6638.06,DigiKart
+P111,Men Item 111,Fashion,Men,2122.19,3658.95,Aruna
+P112,Mobile Accessories Item 112,Electronics,Mobile Accessories,1761.13,2147.72,Crescent
+P113,Small Appliances Item 113,Home & Kitchen,Small Appliances,865.98,1273.5,Crescent
+P114,Skin Care Item 114,Beauty,Skin Care,2609.97,5019.17,BharatWorks
+P115,Personal Care Item 115,Beauty,Personal Care,3194.28,6142.85,BharatWorks
+P116,Sports Accessories Item 116,Sports,Sports Accessories,3335.45,5379.76,Crescent
+P117,Smart Devices Item 117,Electronics,Smart Devices,862.22,1051.49,Crescent
+P118,Footwear Item 118,Fashion,Footwear,801.2,1381.38,Aruna
+P119,Fitness Item 119,Sports,Fitness,826.41,1332.92,BharatWorks
+P120,Hair Care Item 120,Beauty,Hair Care,183.91,353.67,Futura
+P040,Desk Accessories Item 040,Office Supplies,Desk Accessories,3270.76,5031.94,DigiKart

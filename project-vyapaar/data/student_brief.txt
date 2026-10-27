@@ -1,0 +1,20 @@
+PROJECT VYAPAAR: BUSINESS DATA TREASURE HUNT
+
+Scenario:
+Vyapaar Retail is an Indian omnichannel retailer. Revenue appears healthy, but management is concerned about profitability, customer experience, logistics and marketing efficiency. Analyse the six datasets and present evidence-based recommendations.
+
+Rules:
+1. Document every cleaning decision.
+2. Do not delete unusual values without investigation.
+3. Join tables using the ID fields.
+4. Separate facts from assumptions.
+5. Final submission: cleaned data/model, dashboard or notebook, and 3-minute boardroom pitch.
+
+Core missions:
+- Identify and correct data-quality problems.
+- Find the strongest and weakest product/category performance.
+- Investigate discounting and profitability.
+- Identify high-value and repeat customers.
+- Diagnose delivery and rating problems.
+- Evaluate marketing efficiency.
+- Find one significant insight not explicitly requested.
