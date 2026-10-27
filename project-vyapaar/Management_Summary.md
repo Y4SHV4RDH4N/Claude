@@ -2,7 +2,7 @@
 
 **Team:** ____________________  
 **Data used:** orders (4,000 after cleaning), products (120), reviews (4,000), marketing (18 campaigns), all for Jan-Dec 2025  
-**Full workings:** `Vyapaar_Analysis.ipynb` | **Charts:** `charts/` | **Cleaned data and cleaning log:** `data/cleaned/`
+**Full workings:** `colab/Vyapaar_Full_Analysis.ipynb` (simple version, runs on Colab) and `Vyapaar_Analysis.ipynb` (detailed version) | **Charts:** `charts/` | **Cleaned data and cleaning log:** `data/cleaned/`
 
 ---
 
