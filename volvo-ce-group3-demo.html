@@ -1,0 +1,1428 @@
+<title>From 10 to 12 Excavators a Day</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one long plant tour. A sticky chapter bar mirrors the four points of the brief;
+   the machine-shop simulator is the centrepiece, styled like the digital board on the shop wall. */
+:root{
+  --bg:#EBEFF1; --surface:#FBFCFC; --surface-2:#F2F5F6; --ink:#131A20; --ink-2:#44505A; --muted:#6B7883;
+  --hair:#D6DDE1; --axis:#B3BDC4;
+  --machine:#F4B400; --machine-shade:#D69C00; --on-machine:#131A20; --machine-ink:#7A5800; --machine-wash:#FCF1CF;
+  --data:#2a78d6; --va:#5D6B77; --on-va:#FFFFFF; --ghost:#CCD4D9;
+  --c-co:#2a78d6; --c-bd:#eb6834; --c-wt:#1baf7a; --c-su:#6250d6; --c-rw:#e87ba4; --c-5s:#008300;
+  --good:#0ca30c; --good-ink:#006300; --good-wash:#E2F2E2; --bad:#d03b3b; --bad-ink:#AE2828; --bad-wash:#FBE6E5;
+  --map-land:#C3CCD2; --map-plant:#7C8C99;
+  --track:#2B3339; --track-2:#4A555E; --glass:#A8C5D7; --pin:#131A20; --rod:#9AA6AF;
+  --board:#0C1013; --board-2:#12181D; --board-line:#26313A; --board-fg:#EAF0F3; --board-dim:#82909B;
+  --led-amber:#FFB52E; --led-green:#3EE08F; --led-red:#FF6158;
+  --f-display:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1317; --surface:#172027; --surface-2:#1C262E; --ink:#E6ECEF; --ink-2:#B2BDC5; --muted:#86939D;
+    --hair:#28333B; --axis:#3A4650;
+    --machine:#F4B400; --machine-shade:#C48E00; --on-machine:#131A20; --machine-ink:#F6C744; --machine-wash:#2C2711;
+    --data:#3987e5; --va:#8A97A2; --on-va:#0E1317; --ghost:#33404A;
+    --c-co:#3987e5; --c-bd:#d95926; --c-wt:#199e70; --c-su:#9085e9; --c-rw:#d55181; --c-5s:#008300;
+    --good:#0ca30c; --good-ink:#45D06F; --good-wash:#15291A; --bad:#d03b3b; --bad-ink:#F27E76; --bad-wash:#351B1B;
+    --map-land:#2B363F; --map-plant:#596A77;
+    --track:#4A565F; --track-2:#6A7680; --glass:#5D8197; --pin:#0E1317; --rod:#6F7C86;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1317; --surface:#172027; --surface-2:#1C262E; --ink:#E6ECEF; --ink-2:#B2BDC5; --muted:#86939D;
+  --hair:#28333B; --axis:#3A4650;
+  --machine:#F4B400; --machine-shade:#C48E00; --on-machine:#131A20; --machine-ink:#F6C744; --machine-wash:#2C2711;
+  --data:#3987e5; --va:#8A97A2; --on-va:#0E1317; --ghost:#33404A;
+  --c-co:#3987e5; --c-bd:#d95926; --c-wt:#199e70; --c-su:#9085e9; --c-rw:#d55181; --c-5s:#008300;
+  --good:#0ca30c; --good-ink:#45D06F; --good-wash:#15291A; --bad:#d03b3b; --bad-ink:#F27E76; --bad-wash:#351B1B;
+  --map-land:#2B363F; --map-plant:#596A77;
+  --track:#4A565F; --track-2:#6A7680; --glass:#5D8197; --pin:#0E1317; --rod:#6F7C86;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2{font-family:var(--f-display);font-weight:700;line-height:1;letter-spacing:.005em;text-wrap:balance;margin:0}
+h3{font-size:1.15rem;line-height:1.3;margin:0;font-weight:650;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--data);outline-offset:2px;border-radius:4px}
+.eyebrow,.ch-num,.label{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;background:var(--bg);border-bottom:1px solid var(--hair)}
+.topbar-in{display:flex;align-items:center;gap:16px;min-height:56px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:650;white-space:nowrap;font-size:.95rem}
+.brand-mark{width:14px;height:14px;border-radius:3px;background:var(--machine);box-shadow:inset 0 0 0 2px var(--on-machine)}
+.topbar nav{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;min-width:0}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav a{text-decoration:none;font-size:.88rem;padding:6px 10px;border-radius:6px;white-space:nowrap;color:var(--ink-2)}
+.topbar nav a b{font-family:var(--f-mono);font-weight:500;color:var(--muted);margin-right:4px}
+.topbar nav a:hover{background:var(--surface-2);color:var(--ink)}
+.topbar nav a.is-active{background:var(--ink);color:var(--bg)}
+.topbar nav a.is-active b{color:var(--bg);opacity:.7}
+@media (max-width:640px){.brand span:last-child{display:none}}
+
+/* buttons */
+.btn{font:inherit;font-weight:600;font-size:.92rem;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;border:1px solid var(--hair);background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer}
+.btn:hover{border-color:var(--ink-2)}
+.btn-primary{background:var(--machine);border-color:var(--machine);color:var(--on-machine)}
+.btn-primary:hover{border-color:var(--on-machine)}
+
+/* hero */
+.hero{padding-block:48px 40px}
+.hero-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.9rem,6.4vw,5rem);text-transform:uppercase;margin-top:14px}
+.hero h1 .hl{background:linear-gradient(transparent 62%,var(--machine) 62%,var(--machine) 92%,transparent 92%);padding:0 .06em}
+.lede{font-size:1.12rem;color:var(--ink-2);max-width:56ch;margin-top:18px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.brief-index{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:10px;overflow:hidden}
+.brief-index li{background:var(--surface)}
+.brief-index a{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px;text-decoration:none;font-size:.9rem;line-height:1.35;height:100%}
+.brief-index a:hover{background:var(--surface-2)}
+.brief-index .pt{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);padding-top:2px}
+.brief-index li.g3 a{background:var(--machine-wash)}
+.hero-fig{margin:0}
+.hero-fig svg{width:100%;height:auto;display:block}
+.hero-fig figcaption{font-size:.86rem;color:var(--muted);margin-top:6px}
+.exc .part{cursor:help;transition:filter .15s}
+.exc .part:hover,.exc .part:focus{filter:brightness(1.08) drop-shadow(0 0 0 var(--ink))}
+.exc .part:focus{outline:none}
+.exc .part:focus-visible .hit{stroke:var(--data);stroke-width:3}
+.exc .lab{font-family:var(--f-mono);font-size:12px;fill:var(--ink-2)}
+.exc .lab b,.exc .lab .op{font-weight:600;fill:var(--ink)}
+.exc .lead{stroke:var(--axis);stroke-width:1}
+.exc .bn{fill:var(--bad-ink)}
+@media (max-width:860px){.hero-in{grid-template-columns:1fr}.hero{padding-top:32px}}
+@media (max-width:520px){.brief-index{grid-template-columns:1fr}}
+
+/* chapters */
+.chapter{padding-block:56px;border-top:1px solid var(--hair)}
+.ch-head{display:grid;gap:10px;max-width:760px;margin-bottom:28px}
+.ch-head h2{font-size:clamp(2.1rem,4.4vw,3.2rem);text-transform:uppercase}
+.ch-sub{color:var(--ink-2);font-size:1.05rem;max-width:62ch}
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:20px;min-width:0}
+.card h3+.small{margin-top:4px}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:14px}
+
+/* stat tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.tile{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:16px 18px;display:grid;gap:4px;align-content:start}
+.tile .t-lab{font-size:.84rem;color:var(--muted)}
+.tile .t-val{font-size:clamp(1.6rem,3vw,2.1rem);font-weight:650;line-height:1.1}
+.tile .t-sub{font-size:.84rem;color:var(--ink-2)}
+.down{color:var(--bad-ink)} .up{color:var(--good-ink)}
+@media (max-width:820px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* world grid */
+.world-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+.map-box{position:relative;margin-top:6px}
+.map-box canvas{display:block;width:100%}
+.pin{position:absolute;transform:translate(-50%,-50%);background:none;border:0;padding:6px;cursor:pointer;display:flex;align-items:center;gap:4px;color:var(--ink);font:500 .74rem var(--f-mono)}
+.pin .pd{width:10px;height:10px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px var(--surface);flex:none}
+.pin.home .pd{width:14px;height:14px;background:var(--machine);box-shadow:0 0 0 2px var(--on-machine),0 0 0 4px var(--surface)}
+.pin .pl{background:var(--surface);padding:1px 5px;border-radius:4px;white-space:nowrap}
+.pin.l{flex-direction:row-reverse}
+.pin.up .pl{position:relative;top:-11px}
+.pin.dn .pl{position:relative;top:11px}
+.pin[aria-pressed="true"] .pl{background:var(--ink);color:var(--surface)}
+.pin.cluster .pd{width:22px;height:22px;display:grid;place-items:center;font-size:.7rem;color:var(--surface);font-weight:600}
+.site-info{margin-top:14px;border-top:1px solid var(--hair);padding-top:12px;min-height:84px}
+.site-info h4{margin:0 0 2px;font-size:1rem}
+.site-info ul{margin:6px 0 0;padding-left:18px;font-size:.9rem}
+.map-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.map-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.side-stack{display:grid;gap:16px;align-content:start;min-width:0}
+.hbars{display:grid;gap:10px}
+.hb-row{display:grid;grid-template-columns:96px minmax(0,1fr) 72px;gap:10px;align-items:center;font-size:.88rem}
+.hb-track{position:relative;height:14px}
+.hb-bar{position:absolute;left:0;top:1px;height:12px;border-radius:0 4px 4px 0;background:var(--data)}
+.hb-mark{position:absolute;top:-3px;width:2px;height:20px;background:var(--ink);border-radius:1px}
+.hb-val{text-align:right;font-variant-numeric:tabular-nums}
+.hb-val small{display:block;font-size:.74rem;line-height:1.1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-top:12px}
+.legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.legend .tick{display:inline-block;width:2px;height:14px;background:var(--ink);margin-right:8px;vertical-align:-2px}
+.brand-list{list-style:none;padding:0;margin:0;display:grid;gap:10px;font-size:.9rem}
+.brand-list li{display:grid;grid-template-columns:76px 1fr;gap:10px}
+.brand-list .k{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);padding-top:2px}
+@media (max-width:900px){.world-grid{grid-template-columns:1fr}}
+
+/* timeline */
+.timeline{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:0}
+.timeline li{position:relative;padding:22px 12px 0 0;border-top:2px solid var(--axis)}
+.timeline li::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px var(--bg)}
+.timeline li.in::before{background:var(--machine);box-shadow:0 0 0 2px var(--on-machine),0 0 0 4px var(--bg)}
+.timeline .yr{font-family:var(--f-display);font-weight:700;font-size:1.7rem;line-height:1}
+.timeline p{font-size:.84rem;color:var(--ink-2);margin-top:4px;line-height:1.35}
+@media (max-width:560px){.timeline{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:18px}}
+
+/* range charts */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--hair);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.rc{display:grid}
+.rc-row{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr) minmax(0,250px);gap:18px;align-items:center;padding:12px 0;border-top:1px solid var(--hair);transition:opacity .2s}
+.rc-row.dim{opacity:.3}
+.rc-head{border-top:0;padding-bottom:4px}
+.rc-name b{display:block;font-weight:650;font-size:.95rem}
+.rc-name span{font-size:.8rem;color:var(--muted)}
+.rc-apps{font-size:.84rem;color:var(--ink-2);line-height:1.35}
+.rc-track{position:relative;height:30px}
+.rc-band{position:absolute;top:0;bottom:0;border-left:1px solid var(--hair)}
+.rc-band.alt{background:var(--surface-2)}
+.rc-bar{position:absolute;top:9px;height:12px;border-radius:6px;background:var(--data)}
+.rc-bar.open{border-radius:6px 0 0 6px;-webkit-mask-image:linear-gradient(90deg,#000 55%,transparent);mask-image:linear-gradient(90deg,#000 55%,transparent)}
+.rc-dot{position:absolute;top:8px;width:14px;height:14px;border-radius:50%;background:var(--data);transform:translateX(-50%);box-shadow:0 0 0 2px var(--surface)}
+.rc-val{position:absolute;top:6px;font-size:.78rem;font-variant-numeric:tabular-nums;color:var(--ink-2);white-space:nowrap}
+.rc-note{position:absolute;top:6px;left:0;font-size:.8rem;color:var(--muted);font-style:italic}
+.rc-axis{position:relative;height:18px;font-size:.74rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rc-axis span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.rc-bandlab{position:relative;height:18px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rc-bandlab span{position:absolute;padding-left:6px;white-space:nowrap}
+.bolt{display:inline-block;width:12px;height:14px;vertical-align:-2px;margin-left:4px}
+.bolt path{fill:var(--machine);stroke:var(--on-machine);stroke-width:1}
+.tag-peenya{display:inline-block;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;background:var(--machine);color:var(--on-machine);border-radius:4px;padding:1px 6px;margin-top:4px}
+.classes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:20px}
+.classes div{border-top:2px solid var(--ink);padding-top:8px;font-size:.86rem;color:var(--ink-2)}
+.classes b{display:block;color:var(--ink);font-size:.92rem}
+@media (max-width:860px){
+  .rc-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .rc-head .rc-name,.rc-head .rc-apps{display:none}
+  .classes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){.rc-bandlab{display:none}}
+
+/* India */
+.india-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.facts li{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--hair);font-size:.92rem}
+.facts li:first-child{border-top:0;padding-top:0}
+.facts .k{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.seg-bar{display:flex;gap:2px;height:28px;margin:8px 0 6px}
+.seg-bar div{border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:.8rem;font-weight:600;white-space:nowrap;overflow:visible}
+.mk-big{font-size:1.9rem;font-weight:650;line-height:1.1}
+.share-row{display:grid;grid-template-columns:70px minmax(0,1fr) 54px;align-items:center;gap:10px;font-size:.86rem;margin-top:8px}
+.share-row .tr{height:12px;position:relative}
+.share-row .br{position:absolute;left:0;top:0;height:12px;border-radius:0 4px 4px 0}
+.callout{background:var(--machine-wash);border:1px solid var(--machine);border-radius:12px;padding:16px 18px;display:grid;gap:6px}
+.callout b{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--machine-ink)}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;counter-reset:f}
+.flow button{font:inherit;width:100%;height:100%;text-align:left;border:1px solid var(--hair);background:var(--surface-2);border-radius:10px;padding:12px;cursor:pointer;display:grid;gap:4px;align-content:start;position:relative;color:var(--ink)}
+.flow button .n{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.flow button b{font-size:.95rem}
+.flow button span.s{font-size:.8rem;color:var(--ink-2);line-height:1.3}
+.flow button[aria-pressed="true"]{background:var(--surface);border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.flow li.focus button{background:var(--machine-wash);border-color:var(--machine)}
+.flow li.focus button[aria-pressed="true"]{border-color:var(--ink)}
+.flow li:not(:last-child) button::after{content:"";position:absolute;right:-8px;top:50%;width:8px;height:2px;background:var(--axis)}
+.flow-detail{margin-top:12px;padding:14px 16px;border-radius:10px;background:var(--surface-2);font-size:.95rem;min-height:72px}
+@media (max-width:900px){.flow{grid-template-columns:repeat(3,minmax(0,1fr))}.flow li button::after{display:none}.india-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.facts li{grid-template-columns:1fr;gap:2px}}
+.milestones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.milestones div{border-left:3px solid var(--machine);padding:4px 0 4px 12px;font-size:.9rem;color:var(--ink-2)}
+.milestones b{display:block;color:var(--ink);font-size:.86rem;font-family:var(--f-mono);font-weight:500;margin-bottom:2px}
+@media (max-width:720px){.milestones{grid-template-columns:1fr}}
+
+/* Group 3 brief */
+.brief-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;margin-bottom:24px}
+.eq{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin-top:10px}
+.eq .box{border:1px solid var(--hair);border-radius:8px;padding:6px 10px;text-align:center;min-width:64px;background:var(--surface-2)}
+.eq .box b{display:block;font-size:1.35rem;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.1}
+.eq .box span{font-size:.74rem;color:var(--muted)}
+.eq .box.res{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.eq .box.res span{color:var(--bg);opacity:.75}
+.eq .op{align-self:center;font-size:1.2rem;color:var(--muted)}
+.formula{font-family:var(--f-mono);font-size:.9rem;margin-top:14px;padding:10px 12px;background:var(--surface-2);border-radius:8px;line-height:1.6}
+.rules{list-style:none;padding:0;margin:0;display:grid;gap:10px;font-size:.92rem}
+.rules li{display:grid;grid-template-columns:20px 1fr;gap:8px}
+.ck{width:18px;height:18px;border-radius:50%;background:var(--good-wash);display:grid;place-items:center;margin-top:2px}
+.ck svg{width:11px;height:11px}
+.ck path{stroke:var(--good-ink);stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:860px){.brief-row{grid-template-columns:1fr}}
+
+/* simulator */
+.sim{background:var(--surface);border:1px solid var(--hair);border-radius:16px;padding:20px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.sim-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;align-items:end}
+.sim-top h3{font-family:var(--f-display);font-size:2rem;text-transform:uppercase;font-weight:700;line-height:1}
+.keys{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.keys kbd{font:inherit;border:1px solid var(--hair);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface-2);color:var(--ink-2)}
+.controls{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;padding:12px 14px;background:var(--surface-2);border-radius:12px}
+.seg{display:inline-flex;border:1px solid var(--hair);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:.86rem;padding:8px 12px;border:0;background:none;color:var(--ink-2);cursor:pointer}
+.seg button[aria-checked="true"]{background:var(--ink);color:var(--bg);font-weight:600}
+.ctl{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--ink-2)}
+.ctl input[type=range]{width:120px;accent-color:var(--ink)}
+.ctl output{font-family:var(--f-mono);font-size:.85rem;min-width:3.5ch;color:var(--ink)}
+.ctl input[type=checkbox]{width:18px;height:18px;accent-color:var(--ink)}
+.ctl-btns{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+.speed{font-family:var(--f-mono);font-size:.8rem}
+.levers{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.lever{font:inherit;text-align:left;border:1px solid var(--hair);border-radius:10px;background:var(--surface-2);padding:10px 12px;cursor:pointer;display:grid;gap:5px;align-content:start;color:var(--ink);position:relative}
+.lever .lv-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.lever .sw{width:12px;height:12px;border-radius:3px;background:var(--lc);flex:none}
+.lever .st{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--muted);border:1px solid var(--hair);border-radius:4px;padding:0 5px}
+.lever b{font-size:.9rem;line-height:1.25}
+.lever .fx{font-size:.78rem;color:var(--ink-2);line-height:1.3}
+.lever .pl{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lever[aria-pressed="true"]{background:var(--surface);border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.lever[aria-pressed="true"] .st{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.lever.flash{animation:flash .7s ease-out}
+@keyframes flash{from{box-shadow:inset 0 0 0 1px var(--ink),0 0 0 6px var(--machine)}to{box-shadow:inset 0 0 0 1px var(--ink),0 0 0 0 transparent}}
+@media (max-width:1060px){.levers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.levers{grid-template-columns:repeat(2,minmax(0,1fr))}.ctl-btns{margin-left:0}}
+
+.board{background:var(--board);color:var(--board-fg);border-radius:12px;padding:14px;font-family:var(--f-mono);border:1px solid var(--board-line)}
+.board-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;font-size:.72rem;letter-spacing:.14em;color:var(--board-dim);padding:0 2px 10px}
+.b-status{font-size:.78rem;letter-spacing:.12em;padding:3px 10px;border-radius:4px;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+.b-status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.b-status.bad{color:var(--led-red);background:rgba(255,97,88,.12)}
+.b-status.good{color:var(--led-green);background:rgba(62,224,143,.12)}
+.board-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--board-line);border:1px solid var(--board-line);border-radius:6px;overflow:hidden}
+.b-cell{background:var(--board-2);padding:10px 12px;min-width:0}
+.b-lab{font-size:.66rem;letter-spacing:.12em;color:var(--board-dim);text-transform:uppercase}
+.b-val{font-size:clamp(1.5rem,3vw,2.3rem);color:var(--led-amber);font-weight:500;line-height:1.15;font-variant-numeric:tabular-nums;text-shadow:0 0 14px rgba(255,181,46,.25);white-space:nowrap}
+.b-val small{font-size:.5em;color:var(--board-dim);text-shadow:none;margin-left:4px}
+.b-val.bad{color:var(--led-red);text-shadow:0 0 14px rgba(255,97,88,.3)}
+.b-val.good{color:var(--led-green);text-shadow:0 0 14px rgba(62,224,143,.25)}
+.b-sub{font-size:.7rem;color:var(--board-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-val.tick{animation:tick .5s ease-out}
+@keyframes tick{from{color:#fff}}
+@media (max-width:760px){.board-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.insight{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:10px;font-size:.98rem}
+.insight.bad{background:var(--bad-wash)} .insight.good{background:var(--good-wash)}
+.insight .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.8rem;color:#fff;margin-top:1px}
+.insight.bad .ic{background:var(--bad)} .insight.good .ic{background:var(--good)}
+
+.panel-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-bottom:8px}
+.panel-title h4{margin:0;font-size:1rem}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.line-svg{display:block;width:100%;min-width:720px;height:auto}
+.line-svg text{font-family:var(--f-body)}
+.ls-grid{stroke:var(--hair);stroke-width:1}
+.ls-axis{stroke:var(--axis);stroke-width:1}
+.ls-tick{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.ls-box{fill:var(--surface-2);stroke:var(--hair);stroke-width:1}
+.ls-box.bn{stroke:var(--bad);stroke-width:2}
+.ls-id{font-family:var(--f-mono)!important;font-size:14px;font-weight:600;fill:var(--ink)}
+.ls-part{font-size:12px;fill:var(--ink-2)}
+.ls-part.state{fill:var(--bad-ink);font-weight:600}
+.ls-light{fill:var(--axis)}
+.ls-light.busy{fill:var(--good)}
+.ls-prog-t{fill:var(--hair)}
+.ls-prog{fill:var(--ink-2)}
+.ls-conv{stroke:var(--axis);stroke-width:2}
+.ls-io{font-family:var(--f-mono)!important;font-size:11px;fill:var(--muted);letter-spacing:.06em}
+.ls-tok{fill:var(--machine);stroke:var(--on-machine);stroke-width:1.5}
+.ls-ghost{fill:var(--ghost)}
+.ls-va{fill:var(--va)}
+.ls-over{fill:var(--bad)}
+.ls-val{font-size:13px;font-weight:600;fill:var(--ink);font-variant-numeric:tabular-nums}
+.ls-val,.ls-halo,.ls-takt-lab{paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.ls-val.bad{fill:var(--bad-ink)}
+.ls-takt{stroke:var(--ink);stroke-width:2}
+.ls-takt-lab{font-size:12px;font-weight:600;fill:var(--ink)}
+.ls-bn-bg{fill:var(--bad)}
+.ls-bn-tx{font-family:var(--f-mono)!important;font-size:10.5px;font-weight:600;fill:#fff;letter-spacing:.08em}
+.ls-hit{fill:transparent;cursor:help}
+
+.gantt-wrap{position:relative;padding-top:20px}
+.gantt{display:flex;gap:2px;height:44px;position:relative}
+.gseg{height:100%;border-radius:3px;min-width:0;display:flex;align-items:center;justify-content:center;font:600 .7rem var(--f-mono);color:#fff;overflow:hidden;cursor:help}
+.gseg.va{background:var(--va);color:var(--on-va)}
+.g-axis{position:relative;height:18px;margin-top:4px;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.g-axis span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.g-axis span:first-child{transform:none}
+.g-axis span:last-child{transform:translateX(-100%)}
+.playhead{position:absolute;top:14px;bottom:20px;width:2px;background:var(--ink);pointer-events:none;transition:none}
+.playhead span{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font:600 .68rem var(--f-mono);background:var(--ink);color:var(--surface);padding:0 4px;border-radius:3px;white-space:nowrap}
+.g-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px;margin-top:12px;font-size:.84rem}
+.g-legend div{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center}
+.g-legend .sw{width:12px;height:12px;border-radius:3px}
+.g-legend .mins{font-variant-numeric:tabular-nums;font-weight:600}
+.g-legend .lv{color:var(--muted);font-size:.76rem;display:block;line-height:1.2}
+@media (max-width:760px){.g-legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.g-legend{grid-template-columns:1fr}}
+
+.sim-charts{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+.sim-charts > div{border:1px solid var(--hair);border-radius:12px;padding:16px;min-width:0}
+.bridge-svg{display:block;width:100%;height:auto}
+.bridge-svg text{font-family:var(--f-body)}
+.br-grid{stroke:var(--hair);stroke-width:1}
+.br-tick{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.br-total{fill:var(--va)}
+.br-lab{font-size:12px;fill:var(--ink-2)}
+.br-val{font-size:13px;font-weight:600;fill:var(--ink);font-variant-numeric:tabular-nums}
+.br-off{font-size:12px;fill:var(--muted);font-style:italic}
+.br-plan{stroke:var(--ink);stroke-width:2}
+.br-plan-lab{font-size:12px;font-weight:600;fill:var(--ink)}
+.br-conn{stroke:var(--axis);stroke-width:1}
+.oee{display:grid;gap:12px}
+.oee-factors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.oee-factors div{background:var(--surface-2);border-radius:8px;padding:10px}
+.oee-factors .lab{font-size:.78rem;color:var(--muted)}
+.oee-factors b{display:block;font-size:1.4rem;font-weight:650;line-height:1.2}
+.oee-factors small{font-size:.72rem;color:var(--muted);line-height:1.2;display:block}
+.oee-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.oee-big b{font-size:3rem;font-weight:650;line-height:1}
+.meter{position:relative;height:12px;border-radius:6px;background:var(--surface-2);margin-top:6px}
+.meter .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--data);transition:width .4s ease}
+.meter .wc{position:absolute;top:-5px;width:2px;height:22px;background:var(--ink)}
+.meter-lab{position:relative;height:18px;font-size:.74rem;color:var(--muted);margin-top:4px}
+.meter-lab span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+@media (max-width:900px){.sim-charts{grid-template-columns:1fr}}
+
+/* levers detail */
+.lever-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lc{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.lc-top{display:flex;align-items:center;gap:10px}
+.lc-top .sw{width:14px;height:14px;border-radius:4px;flex:none}
+.lc-top h3{font-size:1.05rem}
+.lc .pl{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lc p{font-size:.9rem;color:var(--ink-2)}
+.lc ul{margin:0;padding-left:18px;font-size:.88rem;display:grid;gap:4px}
+.lc .impact{font-size:.86rem;font-weight:600;border-top:1px solid var(--hair);padding-top:10px}
+.smed-mini{display:grid;gap:6px;font-size:.8rem}
+.smed-mini .r{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:8px;align-items:center}
+.smed-mini .t{height:10px;position:relative}
+.smed-mini .b{position:absolute;left:0;top:0;height:10px;border-radius:0 4px 4px 0;background:var(--c-co)}
+.smed-mini .b.before{background:var(--ghost)}
+@media (max-width:980px){.lever-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.lever-cards{grid-template-columns:1fr}}
+
+/* quality, roadmap, cost */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.guard{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.guard li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:.92rem}
+.guard b{display:block}
+.trigger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:4px}
+.trigger div{border:1px solid var(--bad);background:var(--bad-wash);border-radius:10px;padding:12px}
+.trigger b{display:block;font-size:1.5rem;font-weight:650;color:var(--bad-ink)}
+.trigger span{font-size:.84rem;color:var(--ink-2)}
+.phases{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.phases li{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start}
+.phases .wk{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.phases b{font-size:1.02rem}
+.phases ul{margin:0;padding-left:16px;font-size:.85rem;color:var(--ink-2);display:grid;gap:2px}
+.phases .out{font-size:.86rem;border-top:1px solid var(--hair);padding-top:8px;margin-top:2px}
+.phases .out strong{font-size:1.2rem}
+@media (max-width:900px){.phases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.phases{grid-template-columns:1fr}}
+.step-svg{display:block;width:100%;height:auto}
+.step-svg text{font-family:var(--f-body)}
+.opt-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.opt-table th{text-align:left;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:0 10px 8px 0}
+.opt-table td{padding:10px 10px 10px 0;border-top:1px solid var(--hair);vertical-align:top}
+.opt-table tr.win td{background:var(--good-wash)}
+.opt-table tr.win td:first-child{border-radius:8px 0 0 8px;padding-left:10px}
+.opt-table tr.win td:last-child{border-radius:0 8px 8px 0}
+.cost-bar{height:12px;position:relative;min-width:120px}
+.cost-bar i{position:absolute;top:0;height:12px;border-radius:0 4px 4px 0;background:var(--data)}
+.cost-bar i.range{border-radius:4px;opacity:.55}
+.yes{color:var(--good-ink);font-weight:600}.no{color:var(--bad-ink);font-weight:600}
+.inv{display:grid;gap:8px;font-size:.88rem}
+.inv .r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,120px) 44px;gap:10px;align-items:center}
+.inv .t{height:10px;position:relative}
+.inv .b{position:absolute;left:0;top:0;height:10px;border-radius:0 4px 4px 0;background:var(--data)}
+.inv .v{text-align:right;font-variant-numeric:tabular-nums}
+.inv .tot{border-top:1px solid var(--hair);padding-top:8px;font-weight:650}
+table.risks{width:100%;border-collapse:collapse;font-size:.9rem}
+table.risks th{text-align:left;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:0 12px 8px 0}
+table.risks td{border-top:1px solid var(--hair);padding:10px 12px 10px 0;vertical-align:top}
+table.risks td:first-child{font-weight:600;width:38%}
+
+/* conclusion */
+.closing{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.quote{font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.02;text-transform:uppercase;text-wrap:balance}
+.quote em{font-style:normal;background:linear-gradient(transparent 60%,var(--machine) 60%,var(--machine) 90%,transparent 90%)}
+table.kpi{width:100%;border-collapse:collapse;font-size:.92rem}
+table.kpi th{text-align:left;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:0 8px 8px 0}
+table.kpi td{border-top:1px solid var(--hair);padding:9px 8px 9px 0;font-variant-numeric:tabular-nums}
+table.kpi td:last-child{font-weight:650}
+@media (max-width:860px){.closing{grid-template-columns:1fr}}
+footer{padding-block:40px 56px;border-top:1px solid var(--hair);font-size:.86rem;color:var(--ink-2)}
+footer .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px}
+footer ol{margin:8px 0 0;padding-left:20px;display:grid;gap:3px}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr}}
+
+#tip{position:fixed;z-index:50;max-width:280px;background:var(--ink);color:var(--bg);font-size:.82rem;line-height:1.35;padding:8px 10px;border-radius:8px;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span>Group 3 · Volvo CE India</span></a>
+    <nav aria-label="Chapters">
+      <a href="#worldwide"><b>1</b>Worldwide</a>
+      <a href="#segments"><b>2</b>Segments</a>
+      <a href="#india"><b>3</b>India</a>
+      <a href="#machine-shop"><b>4</b>Machine shop</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap hero-in">
+    <div>
+      <p class="eyebrow">BBA · Business Operations Excellence · Working Group 3</p>
+      <h1>From 10 to <span class="hl">12</span> excavators a day</h1>
+      <p class="lede">On 8 September 2026 our class visited Volvo CE India's plant in Peenya, Bengaluru. This page is our final project as a working model: first the company and its machines, then a machine shop you can run yourself, where six Operations Excellence levers take output from 10 to 12 excavators a shift without touching quality.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#simulator">Run the machine shop</a>
+        <a class="btn" href="#worldwide">Start the tour</a>
+      </div>
+      <ol class="brief-index" aria-label="The four points of the project brief">
+        <li><a href="#worldwide"><span class="pt">PT 1</span><span>Volvo CE's worldwide operations and products</span></a></li>
+        <li><a href="#segments"><span class="pt">PT 2</span><span>Product segments by application and tonnage</span></a></li>
+        <li><a href="#india"><span class="pt">PT 3</span><span>Volvo CE India's operations and offering</span></a></li>
+        <li class="g3"><a href="#machine-shop"><span class="pt">PT 4</span><span>Group 3: Operations Excellence in the machine shop</span></a></li>
+      </ol>
+    </div>
+    <figure class="hero-fig">
+      <svg class="exc" viewBox="0 0 560 360" role="img" aria-labelledby="excTitle">
+        <title id="excTitle">A crawler excavator with the structures machined in each machine-shop operation labelled</title>
+        <line x1="20" y1="318" x2="540" y2="318" class="lead"/>
+        <g class="part" tabindex="0" data-tip="Lower frame and track frames · OP40 on horizontal boring mill 3: swing-ring face, centre joint and track-frame interfaces. 38 min today.">
+          <rect class="hit" x="70" y="262" width="260" height="52" rx="26" style="fill:var(--track)"/>
+          <rect x="86" y="272" width="228" height="32" rx="16" style="fill:var(--track-2)"/>
+          <circle cx="96" cy="288" r="14" style="fill:var(--track)"/><circle cx="304" cy="288" r="14" style="fill:var(--track)"/>
+          <circle cx="140" cy="290" r="8" style="fill:var(--track)"/><circle cx="178" cy="290" r="8" style="fill:var(--track)"/><circle cx="216" cy="290" r="8" style="fill:var(--track)"/><circle cx="254" cy="290" r="8" style="fill:var(--track)"/>
+          <rect x="160" y="244" width="92" height="20" rx="4" style="fill:var(--track)"/>
+        </g>
+        <g class="part" tabindex="0" data-tip="Upper (revolving) frame · OP30 on a 5-face machining centre: swing-bearing face and bolt circle, boom-foot bores, mounting pads. 42 min today: the bottleneck.">
+          <path class="hit" d="M64 248 L64 202 Q64 186 80 185 L300 178 L318 248 Z" style="fill:var(--machine)"/>
+          <path d="M64 248 L64 202 Q64 186 80 185 L106 184 L106 248 Z" style="fill:var(--machine-shade)"/>
+          <rect x="122" y="196" width="70" height="7" rx="2" style="fill:var(--machine-shade)"/>
+          <rect x="122" y="208" width="70" height="7" rx="2" style="fill:var(--machine-shade)"/>
+          <path d="M228 182 L228 116 Q228 108 236 108 L284 108 Q290 108 293 114 L312 162 L314 182 Z" style="fill:var(--machine)"/>
+          <path d="M238 118 L280 118 L298 160 L298 172 L238 172 Z" style="fill:var(--glass)"/>
+        </g>
+        <line x1="252" y1="238" x2="352" y2="150" style="stroke:var(--rod)" stroke-width="9" stroke-linecap="round"/>
+        <line x1="252" y1="238" x2="300" y2="196" style="stroke:var(--track-2)" stroke-width="11" stroke-linecap="round"/>
+        <g class="part" tabindex="0" data-tip="Boom · OP10 on horizontal boring mill 1: boom-foot, cylinder and arm-pivot pin bores, boss facing, drilling. 39 min today.">
+          <path class="hit" d="M292 224 Q298 196 318 186 L404 80 Q414 64 432 70 L438 86 L338 214 Q326 230 306 234 Z" style="fill:var(--machine)"/>
+          <circle cx="306" cy="216" r="6" style="fill:var(--pin)"/>
+        </g>
+        <line x1="372" y1="120" x2="438" y2="56" style="stroke:var(--rod)" stroke-width="7" stroke-linecap="round"/>
+        <g class="part" tabindex="0" data-tip="Arm (dipper) · OP20 on horizontal boring mill 2: arm-pivot, bucket-pin and cylinder bores. 36 min today.">
+          <path class="hit" d="M416 74 Q424 52 444 58 L498 226 Q500 240 486 244 L474 240 Z" style="fill:var(--machine)"/>
+          <circle cx="428" cy="78" r="6" style="fill:var(--pin)"/>
+        </g>
+        <g class="part" tabindex="0" data-tip="Links, pins and small parts · OP50 on a vertical machining centre. 27 min today, so it has spare time to take over drilling from OP10 and OP40.">
+          <path class="hit" d="M472 234 Q514 238 516 278 L508 300 L472 296 Q454 270 472 234 Z" style="fill:var(--track)"/>
+          <path d="M472 296 L464 307 L478 301 L481 311 L492 301 L496 311 L508 300 Z" style="fill:var(--track)"/>
+          <circle cx="487" cy="240" r="5" style="fill:var(--machine)"/>
+        </g>
+        <g aria-hidden="true">
+          <line class="lead" x1="300" y1="60" x2="350" y2="132"/>
+          <text class="lab" x="296" y="48" text-anchor="end"><tspan class="op">OP10</tspan> Boom</text>
+          <line class="lead" x1="470" y1="148" x2="482" y2="148"/>
+          <text class="lab" x="486" y="144"><tspan class="op">OP20</tspan></text>
+          <text class="lab" x="486" y="159">Arm</text>
+          <line class="lead" x1="120" y1="150" x2="140" y2="184"/>
+          <text class="lab" x="60" y="128"><tspan class="op">OP30</tspan> Upper frame</text>
+          <text class="lab bn" x="60" y="144">the bottleneck</text>
+          <text class="lab" x="70" y="344"><tspan class="op">OP40</tspan> Lower frame &amp; tracks</text>
+          <text class="lab" x="522" y="344" text-anchor="end"><tspan class="op">OP50</tspan> Links &amp; pins</text>
+        </g>
+      </svg>
+      <figcaption>Each excavator is one set of welded structures. The machine shop bores, mills and drills every one before painting. Hover or tap a part to see its operation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ POINT 1 ============ -->
+<section class="chapter" id="worldwide">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 1 · Worldwide operations and products</p>
+      <h2>Volvo CE worldwide</h2>
+      <p class="ch-sub">Volvo Construction Equipment is the construction-machinery arm of Sweden's Volvo Group. It started as a small mechanical workshop in 1832 and today sells premium machines in about 180 markets.</p>
+    </header>
+
+    <div class="tiles">
+      <div class="tile"><span class="t-lab">Net sales, 2025</span><span class="t-val">SEK 81.6 bn</span><span class="t-sub"><span class="down">▼ 8%</span> vs SEK 88.3 bn in 2024</span></div>
+      <div class="tile"><span class="t-lab">Adjusted operating margin, 2025</span><span class="t-val">13.3%</span><span class="t-sub">14.4% in 2024: still double-digit in a soft year</span></div>
+      <div class="tile"><span class="t-lab">Employees</span><span class="t-val">~13,000</span><span class="t-sub">85 nationalities (January 2026)</span></div>
+      <div class="tile"><span class="t-lab">Markets served</span><span class="t-val">~180</span><span class="t-sub">through the dealer network</span></div>
+    </div>
+
+    <div class="world-grid">
+      <div class="card">
+        <div class="card-head"><h3>Where Volvo CE builds machines</h3><span class="small muted">Tap a pin</span></div>
+        <div class="map-box" id="mapBox">
+          <canvas id="mapCanvas" aria-hidden="true"></canvas>
+        </div>
+        <div class="map-legend"><span><i style="background:var(--map-plant)"></i>Countries with plants</span><span><i style="background:var(--machine)"></i>India</span><span><i style="background:var(--map-land)"></i>Other markets</span></div>
+        <div class="site-info" id="siteInfo" aria-live="polite"></div>
+      </div>
+      <div class="side-stack">
+        <div class="card">
+          <h3>Net sales by region</h3>
+          <p class="small muted">SEK billion, 2025 bars against 2024 markers</p>
+          <div class="hbars" id="regionBars" style="margin-top:14px"></div>
+          <div class="legend"><span><i class="sw" style="background:var(--data)"></i>2025</span><span><i class="tick"></i>2024</span></div>
+        </div>
+        <div class="card">
+          <h3>Brands and recent moves</h3>
+          <ul class="brand-list" style="margin-top:12px">
+            <li><span class="k">Volvo</span><span>Premium brand for the full range of machines and services</span></li>
+            <li><span class="k">Rokbak</span><span>Articulated haulers (RA30, RA40) from Motherwell, Scotland</span></li>
+            <li><span class="k">2025</span><span>Sold its 70% stake in China's SDLG (about SEK 8 bn) to focus on premium Volvo machines</span></li>
+            <li><span class="k">2026</span><span>Bought Swecon, its largest European dealer, for SEK 7 bn</span></li>
+            <li><span class="k">Growth</span><span>USD 261 m for crawler-excavator capacity, a growing electric range, and uptime services such as Equipment-as-a-Service</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <ol class="timeline" aria-label="Heritage timeline">
+      <li><span class="yr">1832</span><p>Johan Theofron Munktell opens a workshop in Eskilstuna, Sweden</p></li>
+      <li><span class="yr">1932</span><p>Munktells merges with Bolinders to form Bolinder-Munktell</p></li>
+      <li><span class="yr">1950</span><p>Volvo buys Bolinder-Munktell</p></li>
+      <li><span class="yr">1995</span><p>The business is renamed Volvo Construction Equipment</p></li>
+      <li class="in"><span class="yr">1997</span><p>Volvo CE enters India</p></li>
+      <li class="in"><span class="yr">2011</span><p>New excavator assembly line opens at Peenya</p></li>
+      <li><span class="yr">2025</span><p>Exits SDLG; picks Eskilstuna for a new excavator plant</p></li>
+      <li class="in"><span class="yr">2026</span><p>Buys Swecon; launches the EC650 in India</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ POINT 2 ============ -->
+<section class="chapter" id="segments">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 2 · Product segments by application and tonnage</p>
+      <h2>What Volvo CE makes, by job and by size</h2>
+      <p class="ch-sub">Volvo CE groups its range two ways: by application (the job a machine does) and by size class, measured as operating weight in tonnes, or rated payload for haulers. Pick a job to see which machines serve it.</p>
+    </header>
+    <div class="card">
+      <div class="chips" id="appChips" role="group" aria-label="Filter by application"></div>
+      <div class="rc" id="segChart"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--data)"></i>Approximate operating-weight range (haulers: rated payload)</span><span><svg class="bolt" viewBox="0 0 12 14" aria-hidden="true"><path d="M7 0 L1 8 H5.5 L4.5 14 L11 5.5 H6.5 Z"/></svg> Electric models offered</span></div>
+    </div>
+    <div class="classes">
+      <div><b>Compact · under 10 t</b>Urban and utility work where access, low noise and low emissions matter. Most electric models sit here.</div>
+      <div><b>Medium · 10–30 t</b>General construction and infrastructure. The 20–22 t crawler excavator is the workhorse, in India too.</div>
+      <div><b>Heavy · 30–50 t</b>Quarrying, mass earthmoving and big infrastructure, paired with large loaders and haulers.</div>
+      <div><b>Mining · over 50 t</b>EC650, EC750 and EC950 loading haulers in coal, iron-ore and limestone mines.</div>
+      <div><b>Road building</b>Its own chain: soil compaction, then paving, then asphalt compaction.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POINT 3 ============ -->
+<section class="chapter" id="india">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 3 · Volvo CE India: operations and offering</p>
+      <h2>Volvo CE India: the Peenya hub</h2>
+      <p class="ch-sub">The plant we visited is Volvo CE India's headquarters and factory. It builds the 20–22 tonne excavators that make up most of the Indian market, along with soil compactors and asphalt pavers.</p>
+    </header>
+
+    <div class="india-grid">
+      <div class="card">
+        <ul class="facts">
+          <li><span class="k">Where</span><span>India HQ and plant, Peenya Industrial Area, Bengaluru</span></li>
+          <li><span class="k">History</span><span>Site dates to 1978; Volvo CE in India since 1997. A SEK 144 m (≈ ₹90 crore) upgrade in 2011 added a new excavator line, planned to triple capacity. The first EC210B Prime and EC290B rolled off it that September.</span></li>
+          <li><span class="k">Builds</span><span>Crawler excavators, soil compactors and asphalt pavers. The 21 t EC210 is about 70% localised, and Peenya exports to similar emerging markets.</span></li>
+          <li><span class="k">Network</span><span>19 dealers, 800+ dealer staff and 180+ touchpoints</span></li>
+          <li><span class="k">Engineering</span><span>Bengaluru Technology Centre: R&amp;D and localisation for India and global markets</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>The market Peenya serves</h3>
+        <p class="small muted" style="margin-top:4px">India's excavator market, units a year</p>
+        <div class="mk-big" style="margin-top:6px">30,000–35,000</div>
+        <div class="seg-bar" role="img" aria-label="About 70% are in the 20 tonne class, about 30% are other sizes">
+          <div style="width:70%;background:var(--data);color:#fff">20 t class ≈ 70%</div>
+          <div style="width:30%;background:var(--ghost);color:var(--ink-2)">Other ≈ 30%</div>
+        </div>
+        <p class="small muted" style="margin-top:14px">Volvo CE India's share of the 20 t segment</p>
+        <div class="share-row"><span>2024</span><span class="tr"><span class="br" style="width:40%;background:var(--data)"></span></span><b class="num">4%</b></div>
+        <div class="share-row"><span>Goal</span><span class="tr"><span class="br" style="width:80%;background:var(--machine)"></span></span><b class="num">8%+</b></div>
+        <p class="small" style="margin-top:12px;color:var(--ink-2)">The managing director has cited about 6.5% of India's wider construction-equipment market.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-head"><h3>From steel to machine at Peenya</h3><span class="small muted">The route we walked on the visit. Tap a step.</span></div>
+      <ol class="flow" id="flow"></ol>
+      <div class="flow-detail" id="flowDetail" aria-live="polite"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Volvo CE India's offering by application and tonnage</h3><span class="small muted">Operating weight, tonnes</span></div>
+      <div class="rc" id="indiaChart"></div>
+      <div class="legend"><span><i class="sw" style="background:var(--data)"></i>Tonnage range</span><span><span class="tag-peenya" style="margin:0 6px 0 0">Built at Peenya</span>Plant's stated specialisation</span></div>
+    </div>
+
+    <div class="milestones">
+      <div><b>Dec 2025 · EXCON, Bengaluru</b>EC215 “Made in Bharat” 20–22 t excavator, SD110 compactor and L120 Electric unveiled</div>
+      <div><b>Sep 2026 · bauma CONEXPO INDIA</b>EC650, a 65 t mining excavator with a 435 hp D13 engine, launched</div>
+      <div><b>2027 · Next</b>Localised medium wheel loaders to fill the gap left by the SDLG exit</div>
+    </div>
+    <div class="callout" style="margin-top:16px">
+      <b>Why +20% matters</b>
+      <span>If Volvo CE India doubles its 20 t share and grows exports, Peenya needs more excavators every shift. Getting them from the existing machine shop, without new machines or extra shifts, is exactly our Group 3 problem.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POINT 4 ============ -->
+<section class="chapter" id="machine-shop">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 4 · Group 3 problem statement</p>
+      <h2>Can the machine shop make two more a shift?</h2>
+      <p class="ch-sub">The production manager has to lift output by 20%, from 10 to 12 excavators in one 8-hour shift, without hurting quality. We read the brief as 10 today and 12 as the target, because 20% of 10 is exactly two machines.</p>
+    </header>
+
+    <div class="brief-row">
+      <div class="card">
+        <h3>Takt time: the pace the shop must keep</h3>
+        <div class="eq" aria-label="480 minute shift minus 30 lunch minus 20 tea breaks minus 10 start-up and 5S equals 420 available minutes">
+          <div class="box"><b>480</b><span>shift</span></div><span class="op">−</span>
+          <div class="box"><b>30</b><span>lunch</span></div><span class="op">−</span>
+          <div class="box"><b>20</b><span>2 tea breaks</span></div><span class="op">−</span>
+          <div class="box"><b>10</b><span>start-up &amp; 5S</span></div><span class="op">=</span>
+          <div class="box res"><b>420</b><span>available min</span></div>
+        </div>
+        <div class="formula">Takt = available time ÷ demand<br>Today: 420 ÷ 10 = <b>42 min</b> per excavator<br>Target: 420 ÷ 12 = <b>35 min</b> per excavator</div>
+        <p class="small" style="margin-top:10px;color:var(--ink-2)">Takt falls by 17%, so the slowest operation needs about 20% more capacity.</p>
+      </div>
+      <div class="card">
+        <h3>Ground rules we set ourselves</h3>
+        <ul class="rules" style="margin-top:12px">
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span>Same 8-hour shift and the same headcount</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span>No compromise on quality (first-pass yield, Cpk) or safety</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span>Fix the process before buying capacity</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span>Scope: the machine shop feeding the EC210 / EC215 / EC220 line</span></li>
+        </ul>
+        <p class="small muted" style="margin-top:14px">Machine-shop cycle times, losses and costs are our assumptions, as the brief allows. Company facts come from published sources.</p>
+      </div>
+    </div>
+
+    <div class="sim" id="simulator">
+      <div class="sim-top">
+        <div>
+          <p class="eyebrow">Live demo</p>
+          <h3>Run the machine shop</h3>
+        </div>
+        <p class="keys">Keys: <kbd>1</kbd>–<kbd>6</kbd> levers · <kbd>Space</kbd> run shift · <kbd>P</kbd> play the plan · <kbd>R</kbd> reset</p>
+      </div>
+
+      <div class="controls" role="group" aria-label="Simulator settings">
+        <div class="seg" role="radiogroup" aria-label="Daily plan" id="planSeg">
+          <button type="button" role="radio" aria-checked="false" data-plan="10" id="plan10">Plan 10 · today</button>
+          <button type="button" role="radio" aria-checked="true" data-plan="12" id="plan12">Plan 12 · target</button>
+        </div>
+        <label class="ctl" for="real">Gains that hold <input type="range" id="real" min="70" max="100" step="5" value="100"><output id="realOut" for="real">100%</output></label>
+        <label class="ctl" for="relief"><input type="checkbox" id="relief"> Relief operator through tea breaks</label>
+        <div class="ctl-btns">
+          <button class="btn btn-primary" type="button" id="runBtn">▶ Run shift</button>
+          <button class="btn speed" type="button" id="speedBtn" aria-label="Simulation speed">1×</button>
+          <button class="btn" type="button" id="playBtn">Play the plan</button>
+          <button class="btn" type="button" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="levers" id="levers" role="group" aria-label="Operations Excellence levers"></div>
+
+      <div class="board" aria-label="Digital shop-floor board">
+        <div class="board-head"><span>PEENYA · MACHINE SHOP · SHIFT A</span><span class="b-status bad" id="bStatus">BEHIND TAKT</span></div>
+        <div class="board-grid">
+          <div class="b-cell"><div class="b-lab">Takt time</div><div class="b-val" id="bTakt">35.0<small>min</small></div><div class="b-sub" id="bTaktSub">420 min ÷ 12 planned</div></div>
+          <div class="b-cell"><div class="b-lab">Cycle time · slowest op</div><div class="b-val bad" id="bCycle">42.0<small>min</small></div><div class="b-sub" id="bCycleSub">OP30 upper frame</div></div>
+          <div class="b-cell"><div class="b-lab">Capacity / shift</div><div class="b-val bad" id="bCap">10.0</div><div class="b-sub" id="bCapSub">plan 12 · short 2.0</div></div>
+          <div class="b-cell"><div class="b-lab">Shift output</div><div class="b-val" id="bOut">0<small id="bOutOf">/ 12</small></div><div class="b-sub" id="bClock">clock 000 / 420 min</div></div>
+          <div class="b-cell"><div class="b-lab">OEE · OP30</div><div class="b-val" id="bOee">66.7<small>%</small></div><div class="b-sub">world class ≈ 85%</div></div>
+          <div class="b-cell"><div class="b-lab">First-pass yield · OP30</div><div class="b-val" id="bFpy">95.2<small>%</small></div><div class="b-sub">stop-and-fix below 98%</div></div>
+          <div class="b-cell"><div class="b-lab">Changeover</div><div class="b-val" id="bCo">15<small>min</small></div><div class="b-sub">× 3 model changes a shift</div></div>
+          <div class="b-cell"><div class="b-lab">OP30 capacity</div><div class="b-val" id="bOp30">10.0</div><div class="b-sub" id="bSustain">5S &amp; kaizen: off</div></div>
+        </div>
+      </div>
+
+      <div class="insight bad" id="insight" aria-live="polite"><span class="ic">!</span><span id="insightText"></span></div>
+
+      <div>
+        <div class="panel-title"><h4>The line: cycle time per operation against takt</h4><span class="small muted">Minutes per excavator set, including each station's losses</span></div>
+        <div class="scroll-x"><svg class="line-svg" id="lineSvg" viewBox="0 0 1000 330" role="img" aria-labelledby="lineTitle"><title id="lineTitle">Machine shop line with six operations and their cycle times compared with takt time</title></svg></div>
+        <div class="legend"><span><i class="sw" style="background:var(--ghost)"></i>Today (assumed)</span><span><i class="sw" style="background:var(--va)"></i>With the levers you switched on</span><span><i class="sw" style="background:var(--bad)"></i>Time over takt</span><span><i class="sw" style="background:var(--machine);box-shadow:inset 0 0 0 1.5px var(--on-machine)"></i>One excavator's set of structures</span></div>
+      </div>
+
+      <div>
+        <div class="panel-title"><h4>OP30, the upper-frame machining centre: where the shift's minutes go</h4><span class="small muted" id="ganttNote">420 available minutes, in time order</span></div>
+        <div class="gantt-wrap" id="ganttWrap">
+          <div class="gantt" id="gantt"></div>
+          <div class="playhead" id="playhead" hidden><span id="playheadLab">0</span></div>
+          <div class="g-axis" id="gAxis"></div>
+        </div>
+        <div class="g-legend" id="gLegend"></div>
+      </div>
+
+      <div class="sim-charts">
+        <div>
+          <div class="panel-title"><h4>OP30 capacity bridge</h4><span class="small muted">Excavators per shift</span></div>
+          <svg class="bridge-svg" id="bridgeSvg" viewBox="0 0 560 270" role="img" aria-labelledby="bridgeTitle"><title id="bridgeTitle">Capacity bridge from today's 10 excavators to the current result</title></svg>
+          <p class="small muted">Axis starts at 8 so the steps are visible.</p>
+        </div>
+        <div class="oee">
+          <div class="panel-title"><h4>OEE at OP30</h4><span class="small muted">Availability × Performance × Quality</span></div>
+          <div class="oee-factors">
+            <div><span class="lab">Availability</span><b id="oA">83.3%</b><small>after changeovers and breakdowns</small></div>
+            <div><span class="lab">Performance</span><b id="oP">84.0%</b><small>28-min ideal cycle vs actual</small></div>
+            <div><span class="lab">Quality</span><b id="oQ">95.2%</b><small>good frames ÷ frames machined</small></div>
+          </div>
+          <div class="oee-big"><b id="oOee">66.7%</b><span class="muted small">OEE</span></div>
+          <div>
+            <div class="meter"><div class="fill" id="oMeter" style="width:66.7%"></div><div class="wc" style="left:85%"></div></div>
+            <div class="meter-lab"><span style="left:0;transform:none">0%</span><span style="left:85%">World class ≈ 85%</span></div>
+          </div>
+          <p class="small" style="color:var(--ink-2)" id="oeeNote">120 minutes are lost every shift: four excavators' worth of OP30 time. Winning back about 60 of them is enough for two more machines.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="levers-detail">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 4 · The six levers</p>
+      <h2>Six levers, one production system</h2>
+      <p class="ch-sub">We anchored every lever in the Volvo Production System: teamwork at the base, process stability, built-in quality and just-in-time as pillars, and continuous improvement on top. Theory of Constraints tells us where to start: at OP30, because a minute saved at the bottleneck is a minute of plant output.</p>
+    </header>
+    <div class="lever-cards" id="leverCards"></div>
+  </div>
+</section>
+
+<section class="chapter" id="quality">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 4 · Quality</p>
+      <h2>Faster without cutting corners</h2>
+      <p class="ch-sub">The brief says the extra output must not affect quality. Our plan protects it by design.</p>
+    </header>
+    <div class="two">
+      <div class="card">
+        <ul class="guard">
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span><b>Waste, not speed</b>75 of the 85 freed minutes come from removing losses. The only speed gain (30 → 29 min) comes from validated programs and tooling, not operators rushing.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span><b>No inspection step removed</b>CMM checks stay, and in-machine probing adds a 100% check of critical bores before unloading.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span><b>Controlled change</b>Every program or tooling change is trialled on five frames, measured and approved before release.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9 L10 3"/></svg></span><span><b>Less firefighting</b>Stable machines and steady flow mean fewer rushed recoveries, the most common hidden cause of defects.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Stop-and-fix triggers (jidoka)</h3>
+        <p class="small muted" style="margin:4px 0 12px">If either line is crossed, the change stops and a root-cause analysis starts.</p>
+        <div class="trigger">
+          <div><b>FPY &lt; 98%</b><span>first-pass yield at OP30 (target 98.4%)</span></div>
+          <div><b>Cpk &lt; 1.33</b><span>on any critical pin bore</span></div>
+        </div>
+        <p class="small" style="margin-top:14px;color:var(--ink-2)">First-pass yield rises from 95.2% to 98.4%, so fewer faulty frames reach the paint shop and the assembly line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="roadmap">
+  <div class="wrap">
+    <header class="ch-head">
+      <p class="ch-num">Point 4 · Implementation</p>
+      <h2>Twelve weeks to twelve a shift</h2>
+      <p class="ch-sub">A Plan–Do–Check–Act roadmap. Operators are involved from day one through kaizen workshops, and the gains are not used to cut headcount. The plant manager sponsors it; the production manager owns the KPI board.</p>
+    </header>
+    <ol class="phases">
+      <li><span class="wk">Weeks 1–2 · Plan</span><b>Diagnose</b><ul><li>Gemba walks and time studies</li><li>OEE baseline at OP30</li><li>Cross-functional kaizen team</li></ul><div class="out">Output <strong>10.0</strong> / shift</div></li>
+      <li><span class="wk">Weeks 3–6 · Do</span><b>Quick wins</b><ul><li>5S and visual boards</li><li>SMED workshop at OP30</li><li>FIFO lane, kits, jib crane</li></ul><div class="out">Output <strong>≈11.0</strong> / shift</div></li>
+      <li><span class="wk">Weeks 7–10 · Do</span><b>Structural fixes</b><ul><li>TPM steps 1–3</li><li>Probing, quick clamps, CNC paths</li><li>Poka-yoke; move drilling to OP50</li></ul><div class="out">Output <strong>≈11.6</strong> / shift</div></li>
+      <li><span class="wk">Weeks 11–12 · Check &amp; Act</span><b>Lock it in</b><ul><li>Verify FPY and Cpk</li><li>Freeze standard work</li><li>Roll out to OP10, OP20, OP40</li></ul><div class="out">Output <strong>12.0</strong> / shift</div></li>
+    </ol>
+    <div class="card" style="margin-top:16px">
+      <div class="panel-title"><h4>Expected output by week</h4><span class="small muted">Excavators per shift</span></div>
+      <svg class="step-svg" id="stepSvg" viewBox="0 0 900 220" role="img" aria-labelledby="stepTitle"><title id="stepTitle">Output rises from 10 in week 2 to 11 in week 6, 11.6 in week 10 and 12 in week 12</title></svg>
+    </div>
+
+    <div class="two" style="margin-top:16px" id="cost">
+      <div class="card">
+        <h3>Why Operations Excellence beats buying capacity</h3>
+        <div class="scroll-x" style="margin-top:12px">
+          <table class="opt-table">
+            <thead><tr><th>Option</th><th>Cost (₹ crore)</th><th>Time</th><th>Fixes other ops?</th></tr></thead>
+            <tbody>
+              <tr class="win"><td><b>Operations Excellence</b></td><td><div class="cost-bar"><i style="left:0;width:14.4%"></i></div><span class="num">≈ 0.72</span></td><td>~12 weeks</td><td class="yes">Yes</td></tr>
+              <tr><td>Second 5-axis machining centre</td><td><div class="cost-bar"><i class="range" style="left:80%;width:20%"></i></div><span class="num">4–5</span></td><td>9–12 months + foundation work</td><td class="no">No</td></tr>
+              <tr><td>Overtime or a 2nd shift</td><td><span class="muted">Recurring labour cost every month</span></td><td>Immediate</td><td class="no">No, and fatigue raises quality risk</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small" style="margin-top:12px;color:var(--ink-2)">Two more excavators a shift over about 250 working days is up to <b>500 more machines a year</b> of capacity, for about a sixth of the cost of a new machine.</p>
+      </div>
+      <div class="card">
+        <h3>Where the ₹72 lakh goes</h3>
+        <p class="small muted" style="margin:4px 0 12px">Indicative, assumed for illustration</p>
+        <div class="inv" id="inv"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px" id="risks">
+      <h3>Risks and how we handle them</h3>
+      <div class="scroll-x" style="margin-top:10px">
+        <table class="risks">
+          <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Gains are not sustained</td><td>Standard work, layered process audits, daily tier meetings, KPI board</td></tr>
+            <tr><td>Faster cycles hurt quality</td><td>Validated parameters, capability studies, jidoka stop-and-fix triggers</td></tr>
+            <tr><td>Operator resistance</td><td>Involvement in kaizen, training and skill matrix, recognition, no headcount cuts</td></tr>
+            <tr><td>Fabrication cannot supply 12 sets</td><td>Extend the value-stream map upstream; Kanban; balance welding to the 35-min takt</td></tr>
+            <tr><td>Paint shop or assembly becomes the new bottleneck</td><td>Check every downstream takt and synchronise the lines (TOC step 5: repeat)</td></tr>
+            <tr><td>OP30 still breaks down</td><td>Two-frame buffer, spares kit, preventive maintenance; staggered breaks as a fallback</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="takeaway">
+  <div class="wrap closing">
+    <div>
+      <p class="eyebrow" style="margin-bottom:14px">What we learned at Peenya</p>
+      <p class="quote">Capacity is often already in the plant, <em>hidden in waste.</em></p>
+      <p class="lede" style="font-size:1rem">OP30 loses 120 of its 420 minutes every shift. Six levers win back 75 of them and one minute of cycle time. That is enough for 12 excavators a shift, with no new machine, no extra shift and better quality. Even if only 70% of the gains hold, the plan still reaches 12.</p>
+    </div>
+    <div class="card">
+      <h3>KPI board: today and after 12 weeks</h3>
+      <div class="scroll-x" style="margin-top:12px">
+        <table class="kpi">
+          <thead><tr><th>KPI</th><th>Today</th><th>After 12 weeks</th></tr></thead>
+          <tbody>
+            <tr><td>Output, excavators per shift</td><td>10</td><td>12 (capacity 12.9)</td></tr>
+            <tr><td>Takt time</td><td>42 min</td><td>35 min</td></tr>
+            <tr><td>OEE at OP30</td><td>66.7%</td><td>86% (80% at plan)</td></tr>
+            <tr><td>Effective cycle time at OP30</td><td>42 min</td><td>32.5 min</td></tr>
+            <tr><td>Changeover per model change</td><td>15 min</td><td>5 min</td></tr>
+            <tr><td>Breakdown loss per shift</td><td>25 min</td><td>12 min</td></tr>
+            <tr><td>First-pass yield at OP30</td><td>95.2%</td><td>98.4%</td></tr>
+            <tr><td>Cpk on critical pin bores</td><td>Not tracked</td><td>≥ 1.33</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <p><b>About the numbers.</b> Company facts come from Volvo CE and Volvo Group publications and Indian trade press. The machine-shop routing, cycle times, losses and costs are assumptions made for the analysis, as the project brief allows, and the simulator is built on them.</p>
+      <p style="margin-top:10px">Working Group 3 · BBA Business Operations Excellence · Industrial visit 8 September 2026 · Presented 3–4 November 2026</p>
+    </div>
+    <div>
+      <b>Selected sources</b>
+      <ol>
+        <li>Volvo CE (2026). Q4 and full-year 2025 results; company information, volvoce.com</li>
+        <li>Volvo CE. Our locations: Bangalore; Bangalore factory opens new excavator line (2011)</li>
+        <li>Volvo Group (2025). SDLG divestment; Eskilstuna crawler-excavator plant. Volvo CE (2026). Swecon acquisition</li>
+        <li>Autocar Professional (2024–26); ANI / Manufacturing Today India (2026); The Machine Maker; NBM&amp;CW</li>
+        <li>Goldratt &amp; Cox (1984) The Goal · Nakajima (1988) Introduction to TPM · Ohno (1988) Toyota Production System</li>
+        <li>Shingo (1985) The SMED System · Womack &amp; Jones (1996) Lean Thinking · Netland (2013) company-specific production systems</li>
+      </ol>
+    </div>
+  </div>
+</footer>
+
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
+function h(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+const f1=v=>(Math.round(v*10)/10).toFixed(1);
+const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ---------- tooltip ---------- */
+const tip=$("#tip");
+function showTip(t,x,y){tip.textContent=t;tip.hidden=false;const r=tip.getBoundingClientRect();let L=x+14,T=y+14;if(L+r.width>innerWidth-8)L=x-r.width-14;if(L<8)L=8;if(T+r.height>innerHeight-8)T=y-r.height-14;tip.style.left=L+"px";tip.style.top=T+"px"}
+document.addEventListener("pointerover",e=>{const t=e.target.closest("[data-tip]");if(t)showTip(t.dataset.tip,e.clientX,e.clientY)});
+document.addEventListener("pointermove",e=>{const t=e.target.closest("[data-tip]");if(t&&!tip.hidden)showTip(t.dataset.tip,e.clientX,e.clientY)});
+document.addEventListener("pointerout",e=>{const t=e.target.closest("[data-tip]");if(t&&!t.contains(e.relatedTarget))tip.hidden=true});
+document.addEventListener("focusin",e=>{const t=e.target.closest&&e.target.closest("[data-tip]");if(t){const r=t.getBoundingClientRect();showTip(t.dataset.tip,r.left+r.width/2,r.bottom)}});
+document.addEventListener("focusout",()=>{tip.hidden=true});
+addEventListener("scroll",()=>{tip.hidden=true},{passive:true});
+
+/* ---------- chapter nav ---------- */
+const navLinks=$$(".topbar nav a");
+const secIds=["worldwide","segments","india","machine-shop","roadmap"];
+const owner={"levers-detail":"machine-shop","quality":"machine-shop","takeaway":"roadmap"};
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){const id=owner[en.target.id]||en.target.id;navLinks.forEach(a=>a.classList.toggle("is-active",a.getAttribute("href")==="#"+id))}})},{rootMargin:"-45% 0px -50% 0px"});
+  $$("main section[id]").forEach(s=>io.observe(s));
+}
+
+/* ---------- world map ---------- */
+const MAP={cols:180,rows:66,step:2,lat0:76,lon0:-180,data:"AAAAAAAAAAAFQERVUAAAFVVVVVUAAAAAAAAAAAAFAAAAFVVVUAAAAVFAAAAAAAAAAAAAAFRAQEUVRQAABVVVVVQAAAAAAAAAAABQAAAFVVVVVVRQAAAAAAAAQAACgAAAAEFVUAUFVVAAAFVVVUQAAAAAAAUAAAAQAVFVVVVVVVVUVVVQQAABAACqqqpFVVQVBBFRQFUAAFVVVUAAAAAAAVVVAAAAVFFVVVVVVVVVVVVVVVFVVACqqqpVVVVVVVVVQBVQAVVVQAAAAAAAGqVVVEVVVVFVVVVVVVVVVVVVVVVVBQKqqqpVVVVVVVVRAVVAAFVQAAFUAAAAaoFURVVVVVVVVVVVVVVVVVVVVVVVAACqqqpVVVVVVVVAAAUQABVAAAAAAAAFqBVVVVVVVVVVVVVVVVVVVVVVVVVVAAKqoqpVVVVVVVQAAVQAAAVAAAAAAAAVqBVVVVVVVVVVVVVVVVVVVVVVBFUAAAAqgAApVVVVVVQAAVQQAAAAAAAAAAAVqAVVVVVVVVVVVVVVVVVVVUAEBAAAAAACAAACVVVVVVVAAFVUAAAAAAAAAoAEoBVVVVVVVVVVVVVVVVVVVAAAVQAAAACAAAAAFVVVVVVVQVVVQAAAAAAACoAEAFVVVVVVVVVVVVVVVVVVUAAAVAAAAAAAAAAAFVVVVVVVQVVVUAAAAAAAFKBaqqVVVVVVVVVVVVVVVVqVVVAAQAAAAAAAAAAABVVVVVVVVVVVUAAAAAAAAKFqmqVVVVVVVVVVVVVVVVqlVRAAAAAAAAAAAAAAASlVValVVVUQFAAAAAAAACqqlVVVVVVVVVVVVVVVVaqpVRAAAAAAAAAAAAAAAKqqqqqpVVZQAQAAAAAAACqVVVVVVVVVVVVVqVVVVVqqlBAAAAAAAAAAAAAAAKqqqqqqlWoUAAAAAAAAACqVFVVBFVBVVVVaqpVVVqqqUAAAAAAAAAAAAAAAAKqqqqqqlqgAAAAAAAAAFWoBQVUABVBVVVVaqqVVaqqqQFAAAAAAAAAAAAAAAKqqqqqqqqAAAAAAAAAABVAEFFUVVVQVVVWqqqqqqqqUAEAAAAAAAAAAAAAAAKqqqqqqqgAAAAAAAAAAFVAABFFVVVQVVVaqqqqqqoAQAEAAAAAAAAAAAAAAACqqqqqqqgAAAAAAAAAAAUAVEABVVVQVVVWqqqqqqqgoBQAAAAAAAAAAAAAAAAqqqqqqqgAAAAAAAAAAAVVUAAQEVVVVVVVqqqqqqqAgVQAAAAAAAAAAAAAAAAKqqqqqoAAAAAAAAAAABVVVAAAAVVVVVVf6qqqqqqABQAAAAAAAAAAAAAAAAABVaqqqgAAAAAAAAAAAFVVVVFUVVVVVVVf6qqqqqqgAAAAAAAAAAAAAAAAAAAAFVaAAIAAAAAAAAAAAFVVVVVVVVVFVVV/1qrqqqqgAAAAAAAAAAAAAAAAAAAARVYAAIAAAAAAAAAABVVVVVVVUVVQVVX//XfaqqqAAAAAAAAAAAAAAAAAAAAAEVUAAAAAAAAAAAAABVVVVVVVUFVUQAX//9daqqqAAAAAAAAAAAAAAAAAAAAAAFUAAUAAAAAAAAAAFVVVVVVVVFVVVAD//9dWmqgQAAAAAAAAAAAAAAAAAAAAAFUAUAQAAAAAAAAAVVVVVVVVVRVVUAD//8FVVAAAAAAAAAAAAAAAAAAAAAAAABVBQAAQAAAAAAAAFVVVVVVVVQVVUAA//ABVUgAAAAAAAAAAAAAAAAAAAAAAAAFVQAAAAAAAAAAAFVVVVVVVVQVVAAAP8ABVVAAQAAAAAAAAAAAAAAAAAAAAAAABVAAAAAAAAAAAVVVVVVVVVUVQAAAPwAAFVAAQAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAFVVVVVVVVVEAAAAPwAAFVQAQAAAAAAAAAAAAAAAAAAAAAAAABAFUAAAAAAAAFVVVVVVVVVQUAAADwAAEFAABAAAAAAAAAAAAAAAAAAAAAAAAARFVVAAAAAAABVVVVVVVVVVQAAADEAAEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVVVQAAAAAAAVVVVVVVVVVQAAAAEAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAVVVVgAAAAAAFEAVVVVVVVAAAAAAAARQAUAAAAAAAAAAAAAAAAAAAAAAAAAAAVVaVoAAAAAAAAABVVVVVUAAAAAAAAEQBUAAAAAAAAAAAAAAAAAAAAAAAAAABVaqqoAAAAAAAAABVVVVVQAAAAAAAAFAFUQAAAAAAAAAAAAAAAAAAAAAAAAABVaqqqgAAAAAAAAFVVVVVAAAAAAAAABQFUABQAAAAAAAAAAAAAAAAAAAAAAABVaqqqqgAAAAAAABVVVVUAAAAAAAAAAUFRQERUAAAAAAAAAAAAAAAAAAAAAAFVqqqqqqAAAAAAAAVVVVUAAAAAAAAAAEAAEAAVQAAAAAAAAAAAAAAAAAAAAABWqqqqqqgAAAAAAAVVVVUAAAAAAAAAABUAAAAVUAQAAAAAAAAAAAAAAAAAAAAWqqqqqqAAAAAAAAVVVVUAAAAAAAAAAAAEBAAFEABAAAAAAAAAAAAAAAAAAAAVZqqqqoAAAAAAAAFVVVUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFVWqqqoAAAAAAAAVVVVUAQAAAAAAAAAAAABUBAAAAAAAAAAAAAAAAAAAAAAAFVVqqqoAAAAAAAAVVVVUAQAAAAAAAAAAABVUBQAABAAAAAAAAAAAAAAAAAAAAVVaqqgAAAAAAAAVVVVQFQAAAAAAAAAAAFVVBQAAAAAAAAAAAAAAAAAAAAAAAFVaqqgAAAAAAAAVVVVAFQAAAAAAAAAAAFVVVQAAAAAAAAAAAAAAAAAAAAAAAFVaqqgAAAAAAAAFVVVAFAAAAAAAAAAAFVVVVVAAEAAAAAAAAAAAAAAAAAAAAFVWqoAAAAAAAAAFVVVAFAAAAAAAAAAAVVVVVVAAAAAAAAAAAAAAAAAAAAAAAFVVqAAAAAAAAAAFVVUAEAAAAAAAAAAAVVVVVVQAAAAAAAAAAAAAAAAAAAAAAFVVqAAAAAAAAAABVVQAAAAAAAAAAAAAVVVVVVUAAAAAAAAAAAAAAAAAAAAAAVVWoAAAAAAAAAABVVQAAAAAAAAAAAAAVVVVVVUAAAAAAAAAAAAAAAAAAAAAAVVWoAAAAAAAAAAAVVAAAAAAAAAAAAAAFVVVVVUAAAAAAAAAAAAAAAAAAAAAAVVVgAAAAAAAAAAAVUAAAAAAAAAAAAAAFUAFVVQAAAAAAAAAAAAAAAAAAAAAAVVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAVVAAABAAAAAAAAAAAAAAAAAABVVUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFVAAAAQAAAAAAAAAAAAAAAAABVUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAABVEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAABQAAAAAAAAAAAAAAAAAAVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAFAAAAAAAAAAAAAAAAAABVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAABVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFUAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"};
+const mapBytes=Uint8Array.from(atob(MAP.data),c=>c.charCodeAt(0));
+const mv=i=>(mapBytes[i>>2]>>(6-2*(i&3)))&3;
+const LON_MIN=-130,LON_MAX=150;
+const SITES=[
+ {id:"peenya",name:"Bengaluru (Peenya)",country:"India",lon:77.52,lat:13.03,lab:"Peenya",dir:"r",home:true,role:"Crawler excavators, soil compactors and asphalt pavers. The plant we visited."},
+ {id:"ship",name:"Shippensburg, Pennsylvania",country:"USA",lon:-77.52,lat:40.05,lab:"Shippensburg",dir:"r",role:"Excavators and loaders; EC230 and EC210 assembly ramping up in 2026–27"},
+ {id:"ped",name:"Pederneiras",country:"Brazil",lon:-48.78,lat:-22.35,lab:"Pederneiras",dir:"r",role:"Haulers, wheel loaders, compactors and crawler excavators"},
+ {id:"chang",name:"Changwon",country:"South Korea",lon:128.68,lat:35.23,lab:"Changwon",dir:"l",pos:"up",role:"Global crawler-excavator hub and battery-pack plant"},
+ {id:"shang",name:"Shanghai",country:"China",lon:121.47,lat:31.23,lab:"Shanghai",dir:"l",pos:"dn",role:"Crawler excavators; the China production hub after the SDLG exit"},
+ {id:"eu",name:"Europe: six sites",country:"Sweden, Germany, France, UK",lon:12,lat:55,lab:"Europe",dir:"l",cluster:6,list:[
+   ["Eskilstuna, Sweden","Head office and components; new crawler-excavator plant (up to 3,500 machines a year, 14–50 t) under construction"],
+   ["Arvika, Sweden","Wheel loaders"],["Braås, Sweden","Articulated haulers, including electric haulers"],
+   ["Konz / Hameln, Germany","Compact and wheeled excavators; road machinery (ABG pavers)"],
+   ["Belley, France","Compact excavators"],["Motherwell, Scotland","Rokbak articulated haulers"]]}
+];
+const mapBox=$("#mapBox"),siteInfo=$("#siteInfo");
+let selSite="peenya";
+SITES.forEach(s=>{
+  const b=h("button","pin"+(s.home?" home":"")+(s.cluster?" cluster":"")+(s.dir==="l"?" l":"")+(s.pos?" "+s.pos:""));
+  b.type="button";b.dataset.site=s.id;b.setAttribute("aria-pressed",s.id===selSite);
+  b.setAttribute("aria-label",s.name+", "+s.country);
+  b.style.left=((s.lon-LON_MIN)/(LON_MAX-LON_MIN)*100)+"%";
+  b.style.top=((MAP.lat0-s.lat)/(MAP.rows*MAP.step)*100)+"%";
+  b.innerHTML='<span class="pd">'+(s.cluster?s.cluster:"")+'</span><span class="pl">'+s.lab+'</span>';
+  b.addEventListener("click",()=>{selSite=s.id;renderSite()});
+  mapBox.appendChild(b);
+});
+function renderSite(){
+  const s=SITES.find(x=>x.id===selSite);
+  $$(".pin",mapBox).forEach(p=>p.setAttribute("aria-pressed",p.dataset.site===selSite));
+  if(s.list){siteInfo.innerHTML="<h4>"+s.name+"</h4><ul>"+s.list.map(r=>"<li><b>"+r[0]+"</b>: "+r[1]+"</li>").join("")+"</ul>";}
+  else siteInfo.innerHTML="<h4>"+s.name+" · "+s.country+"</h4><p class='small' style='color:var(--ink-2)'>"+s.role+"</p><p class='small muted' style='margin-top:6px'>Plants in Sweden, Germany, France, Poland, the UK, the USA, Brazil, South Korea, China and India.</p>";
+}
+renderSite();
+function drawMap(){
+  const cv=$("#mapCanvas");const w=mapBox.clientWidth;if(!w)return;
+  const c0=Math.round((LON_MIN-MAP.lon0)/MAP.step),c1=Math.round((LON_MAX-MAP.lon0)/MAP.step),nc=c1-c0;
+  const cell=w/nc,hgt=cell*MAP.rows,dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(hgt*dpr);cv.style.height=hgt+"px";
+  const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,hgt);
+  const cols=["",css("--map-land"),css("--map-plant"),css("--machine")];const r=Math.max(1,cell*.36);
+  for(let y=0;y<MAP.rows;y++)for(let x=c0;x<c1;x++){const v=mv(y*MAP.cols+x);if(!v)continue;ctx.fillStyle=cols[v];ctx.beginPath();ctx.arc((x-c0+.5)*cell,(y+.5)*cell,v===3?r*1.15:r,0,6.2832);ctx.fill()}
+}
+
+/* ---------- region bars ---------- */
+const REG=[["Europe",27.8,26.9],["Asia",23.4,26.6],["North America",19.3,23.5],["Rest of world",11.2,11.3]];
+const rb=$("#regionBars");
+REG.forEach(([n,a,b])=>{const ch=Math.round((a/b-1)*100);const row=h("div","hb-row");
+  row.innerHTML='<span>'+n+'</span><span class="hb-track" data-tip="'+n+': SEK '+a+' bn in 2025, SEK '+b+' bn in 2024"><span class="hb-bar" style="width:'+(a/30*100)+'%"></span><span class="hb-mark" style="left:calc('+(b/30*100)+'% - 1px)"></span></span><span class="hb-val">'+a.toFixed(1)+'<small class="'+(ch>=0?"up":"down")+'">'+(ch>=0?"▲ +":"▼ ")+ch+'%</small></span>';
+  rb.appendChild(row)});
+
+/* ---------- product segments ---------- */
+const BOLT='<svg class="bolt" viewBox="0 0 12 14" aria-label="electric models"><path d="M7 0 L1 8 H5.5 L4.5 14 L11 5.5 H6.5 Z"/></svg>';
+const APPS=[["all","All jobs"],["urban","Urban & utilities"],["construction","Construction & infrastructure"],["quarry","Quarrying & aggregates"],["mining","Mining"],["road","Road building"],["ports","Waste, ports & forestry"],["landscape","Landscaping & agriculture"]];
+const LINES=[
+ {n:"Compact excavators",m:"ECR18 → ECR88",a:1.5,b:9,el:1,apps:["urban","landscape"],t:"Utilities, landscaping, urban sites, rental"},
+ {n:"Wheeled excavators",m:"EW60 → EW240",a:6,b:24,apps:["urban","construction","ports"],t:"Urban roadworks, utilities, material handling"},
+ {n:"Crawler excavators",m:"EC140 → EC950",a:14,b:95,el:1,apps:["construction","quarry","mining"],t:"General construction, infrastructure, quarrying, mining"},
+ {n:"Compact wheel loaders",m:"L20 → L50",a:4.5,b:10,el:1,apps:["landscape","urban"],t:"Landscaping, agriculture, rental, municipal work"},
+ {n:"Wheel loaders",m:"L60 → L350",a:11,b:56,el:1,apps:["quarry","ports","construction"],t:"Aggregates, quarry face loading, waste and recycling, ports, forestry"},
+ {n:"Articulated haulers",m:"A25 → A60 · Rokbak RA30/RA40",a:24,b:55,pay:1,apps:["construction","quarry","mining"],t:"Earthmoving, quarrying, mining, rough terrain"},
+ {n:"Road machinery",m:"Soil & asphalt compactors · ABG pavers",a:1.5,b:22,apps:["road"],t:"Road building, highways, airports (pavers sized by paving width)"}
+];
+function bandsHTML(max,bands){return bands.map((b,i)=>'<span class="rc-band'+(i%2?" alt":"")+'" style="left:'+(b[0]/max*100)+'%;width:'+((b[1]-b[0])/max*100)+'%"></span>').join("")}
+function axisRow(max,ticks,unit,bands){
+  const head=h("div","rc-row rc-head");
+  head.innerHTML='<span class="rc-name"></span><div><div class="rc-bandlab">'+bands.filter(b=>b[2]).map(b=>'<span style="left:'+(b[0]/max*100)+'%">'+b[2]+'</span>').join("")+'</div><div class="rc-axis">'+ticks.map((t,i)=>'<span style="left:'+(t/max*100)+'%;'+(i===0?"transform:none":"")+(i===ticks.length-1?"transform:translateX(-100%)":"")+'">'+t+(i===ticks.length-1?" "+unit:"")+'</span>').join("")+'</div></div><span class="rc-apps"></span>';
+  return head}
+const SEG_BANDS=[[0,10,"Compact"],[10,30,"Medium"],[30,50,"Heavy"],[50,100,"Mining"]];
+const segChart=$("#segChart");
+segChart.appendChild(axisRow(100,[0,10,30,50,75,100],"t",SEG_BANDS));
+LINES.forEach(L=>{
+  const row=h("div","rc-row");row.dataset.apps=L.apps.join(" ");
+  const tipTxt=L.n+" ("+L.m+"): about "+L.a+"–"+L.b+" t"+(L.pay?" payload":"")+". "+L.t+".";
+  row.innerHTML='<div class="rc-name"><b>'+L.n+(L.el?BOLT:"")+'</b><span>'+L.m+'</span></div>'+
+   '<div class="rc-track" data-tip="'+tipTxt+'">'+bandsHTML(100,SEG_BANDS)+'<span class="rc-bar" style="left:'+L.a+'%;width:'+(L.b-L.a)+'%"></span><span class="rc-val" style="'+(L.b>80?"right:"+(100-L.a+1)+"%":"left:calc("+L.b+"% + 6px)")+'">'+L.a+'–'+L.b+' t'+(L.pay?" payload":"")+'</span></div>'+
+   '<div class="rc-apps">'+L.t+'</div>';
+  segChart.appendChild(row)});
+const chipsBox=$("#appChips");let app="all";
+APPS.forEach(([id,lab])=>{const c=h("button","chip",lab);c.type="button";c.setAttribute("aria-pressed",id===app);c.addEventListener("click",()=>{app=id;$$(".chip",chipsBox).forEach(x=>x.setAttribute("aria-pressed",x===c));$$(".rc-row:not(.rc-head)",segChart).forEach(r=>r.classList.toggle("dim",app!=="all"&&!r.dataset.apps.split(" ").includes(app)))});chipsBox.appendChild(c)});
+
+/* ---------- India offering ---------- */
+const IND=[
+ {n:"20–22 t crawler excavators",m:"EC210, EC215 “Made in Bharat”, EC220",a:20,b:22,p:1,t:"Highways, irrigation canals, urban infrastructure, stone quarries"},
+ {n:"Heavy crawler excavators",m:"EC300, EC380, EC480",a:30,b:48,t:"Quarrying, mass earthmoving, overburden removal"},
+ {n:"Mining excavators",m:"EC650 (new, Sep 2026), EC750",a:65,b:75,t:"Coal and iron-ore mining"},
+ {n:"Wheel loaders",m:"Premium L-series incl. L120 Electric",a:20,b:56,open:1,t:"Mining, cement, steel plants, ports (about 100 a year)"},
+ {n:"Soil compactors",m:"SD110 / SD110C",a:11,b:11,p:1,t:"Highway embankments, sub-grade compaction"},
+ {n:"Asphalt compactors",m:"DD90C, DD100C; PT220 pneumatic roller",a:9,b:10,t:"Bituminous road surfacing"},
+ {n:"Asphalt pavers (ABG)",m:"P4370D wheeled; P5320D, P7920D, P8820D tracked",note:"Sized by paving width, not weight",p:1,t:"National highways and expressways"}
+];
+const IND_BANDS=[[0,10,""],[10,30,""],[30,50,""],[50,80,""]];
+const ic=$("#indiaChart");
+ic.appendChild(axisRow(80,[0,10,20,30,40,50,60,70,80],"t",IND_BANDS));
+IND.forEach(L=>{
+  const row=h("div","rc-row");let track;
+  if(L.note)track='<span class="rc-note">'+L.note+'</span>';
+  else if(L.a===L.b)track='<span class="rc-dot" style="left:'+(L.a/80*100)+'%"></span><span class="rc-val" style="left:calc('+(L.a/80*100)+'% + 12px)">≈'+L.a+' t</span>';
+  else{const lab=L.open?"≈20 t and above":L.a+"–"+L.b+" t";
+    const pos=(!L.open&&L.b/80>.75)?"right:calc("+(100-L.a/80*100)+"% + 6px)":"left:calc("+(L.b/80*100)+"% + 6px)";
+    track='<span class="rc-bar'+(L.open?" open":"")+'" style="left:'+(L.a/80*100)+'%;width:'+((L.b-L.a)/80*100)+'%"></span><span class="rc-val" style="'+pos+'">'+lab+'</span>'}
+  row.innerHTML='<div class="rc-name"><b>'+L.n+'</b><span>'+L.m+'</span>'+(L.p?'<br><span class="tag-peenya">Built at Peenya</span>':'')+'</div><div class="rc-track" data-tip="'+L.n+': '+L.m+'. '+L.t+'.">'+bandsHTML(80,IND_BANDS)+track+'</div><div class="rc-apps">'+L.t+'</div>';
+  ic.appendChild(row)});
+
+/* ---------- plant flow ---------- */
+const FLOW=[
+ ["Receiving","Steel plate, castings, bought-in parts","Steel plate, castings and purchased parts (engines, hydraulics, cabs, undercarriage parts) are received and inspected."],
+ ["Fabrication","Cutting and welding","Plates are cut and welded into the main structures: boom, arm, upper (revolving) frame and lower frame."],
+ ["Machine shop","Boring, milling, drilling","Our Group 3 focus. Welded structures are machined on horizontal boring mills and machining centres: pin bores to tight tolerances, the swing-bearing face milled flat, bolt holes drilled and tapped. Six operations, OP10 to OP60."],
+ ["Paint shop","Primed and painted","Frames and structures are cleaned, primed and painted before they go to assembly."],
+ ["Assembly line","Paced by the takt board","The excavator is built station by station, paced by the large digital board on the wall showing takt time and cycle time."],
+ ["Test & dispatch","Final inspection","Function testing, final quality inspection, then dispatch to dealers and export customers."]
+];
+const flowEl=$("#flow"),flowDet=$("#flowDetail");let flowSel=2;
+FLOW.forEach((f,i)=>{const li=h("li",i===2?"focus":"");const b=h("button");b.type="button";b.innerHTML='<span class="n">Step '+(i+1)+(i===2?" · Group 3":"")+'</span><b>'+f[0]+'</b><span class="s">'+f[1]+'</span>';b.addEventListener("click",()=>{flowSel=i;renderFlow()});li.appendChild(b);flowEl.appendChild(li)});
+function renderFlow(){$$("button",flowEl).forEach((b,i)=>b.setAttribute("aria-pressed",i===flowSel));flowDet.innerHTML="<b>"+(flowSel+1)+". "+FLOW[flowSel][0]+".</b> "+FLOW[flowSel][2]+(flowSel===2?' <a href="#simulator">Run it below.</a>':"")}
+renderFlow();
+
+/* ======================== SIMULATOR ======================== */
+const AV=420;
+const LEVERS=[
+ {id:"smed",k:"1",n:"SMED quick changeover",sh:"SMED",pl:"Process stability",c:"--c-co",fx:"Changeovers 45 → 15 min"},
+ {id:"tpm",k:"2",n:"Total Productive Maintenance",sh:"TPM",pl:"Process stability",c:"--c-bd",fx:"Breakdowns 25 → 12 min"},
+ {id:"jit",k:"3",n:"JIT flow, Kanban & kitting",sh:"JIT flow",pl:"Just-in-time",c:"--c-wt",fx:"Waiting 20 → 6 min"},
+ {id:"std",k:"4",n:"Standard work & line balancing",sh:"Standard work",pl:"Process stability",c:"--c-su",fx:"Set-up 15 → 6 min; cycle 30 → 29"},
+ {id:"biq",k:"5",n:"Built-in quality",sh:"Built-in quality",pl:"Built-in quality",c:"--c-rw",fx:"Rework 15 → 6 min; FPY 98.4%"},
+ {id:"s5",k:"6",n:"5S, visual management & kaizen",sh:"5S & kaizen",pl:"Continuous improvement",c:"--c-5s",fx:"Keeps every other gain in place"}
+];
+const LOSS=[
+ {id:"co",n:"Changeovers",lv:"smed",t:45,a:15,c:"--c-co",code:"C/O"},
+ {id:"bd",n:"Breakdowns & minor stops",lv:"tpm",t:25,a:12,c:"--c-bd",code:"BD"},
+ {id:"wt",n:"Waiting: crane, parts, QC",lv:"jit",t:20,a:6,c:"--c-wt",code:"W"},
+ {id:"su",n:"Slow set-up (dial gauge)",lv:"std",t:15,a:6,c:"--c-su",code:"S"},
+ {id:"rw",n:"Rework / re-machining",lv:"biq",t:15,a:6,c:"--c-rw",code:"RW"}
+];
+const ST=[
+ {id:"OP10",part:"Boom",mc:"Horizontal boring mill 1",b:39,d:{smed:-2,tpm:-1,std:-3},note:"drilling moved to OP50"},
+ {id:"OP20",part:"Arm",mc:"Horizontal boring mill 2",b:36,d:{smed:-2,tpm:-1,std:-2}},
+ {id:"OP30",part:"Upper frame",mc:"5-face machining centre",b:42,op30:1},
+ {id:"OP40",part:"Lower frame",mc:"Horizontal boring mill 3",b:38,d:{smed:-1,tpm:-1,std:-3},note:"drilling and tapping moved to OP50"},
+ {id:"OP50",part:"Links & pins",mc:"Vertical machining centre",b:27,d:{std:3},note:"takes on the drilling, still under takt"},
+ {id:"OP60",part:"Wash & CMM",mc:"Washer, deburr, CMM",b:30,d:{jit:-1,std:-.5,biq:-.5}}
+];
+const S={on:{smed:false,tpm:false,jit:false,std:false,biq:false,s5:false},plan:12,real:1,relief:false};
+
+function compute(st){
+  const r=st.real,L={};let lossSum=0;
+  LOSS.forEach(l=>{L[l.id]=st.on[l.lv]?l.t-r*(l.t-l.a):l.t;lossSum+=L[l.id]});
+  const cycle=st.on.std?30-r:30, avail=AV+(st.relief?20:0);
+  const good=(avail-lossSum)/cycle, fpy=st.on.biq?95.2+r*3.2:95.2;
+  const oee=good*28/avail, A=(avail-L.co-L.bd)/avail, Q=fpy/100, P=oee/(A*Q);
+  const stations=ST.map(s=>{let eff=s.b;if(s.op30)eff=AV/good;else for(const k in s.d)if(st.on[k])eff+=r*s.d[k];return Object.assign({},s,{eff})});
+  let slow=stations[0];stations.forEach(s=>{if(s.eff>slow.eff+1e-9)slow=s});
+  const ties=stations.filter(s=>Math.abs(s.eff-slow.eff)<.05);
+  const lineCap=AV/slow.eff, takt=AV/st.plan, pace=Math.max(takt,slow.eff);
+  return {L,lossSum,cycle,avail,good,fpy,oee,A,P,Q,stations,slow,ties,lineCap,takt,pace,ok:lineCap>=st.plan-1e-6,co:st.on.smed?15-r*10:15};
+}
+let C=compute(S);
+
+/* levers UI */
+const leversEl=$("#levers");
+LEVERS.forEach(l=>{const b=h("button","lever");b.type="button";b.id="lv-"+l.id;b.style.setProperty("--lc","var("+l.c+")");b.setAttribute("aria-pressed","false");
+  b.innerHTML='<span class="lv-top"><span class="sw" aria-hidden="true"></span><span class="st">OFF</span></span><b>'+l.k+' · '+l.n+'</b><span class="fx">'+l.fx+'</span><span class="pl">VPS · '+l.pl+'</span>';
+  b.addEventListener("click",()=>{stopPlay();toggle(l.id)});leversEl.appendChild(b)});
+function toggle(id,force){S.on[id]=force==null?!S.on[id]:force;const b=$("#lv-"+id);b.classList.remove("flash");void b.offsetWidth;if(S.on[id])b.classList.add("flash");update()}
+
+/* line SVG */
+const svg=$("#lineSvg");const X=i=>140+i*150;const YB=300,YT=140,MAXM=45;const Y=m=>YB-(m/MAXM)*(YB-YT);
+const gGrid=el("g",{},svg);
+[0,10,20,30,40].forEach(m=>{el("line",{x1:60,x2:980,y1:Y(m),y2:Y(m),class:m?"ls-grid":"ls-axis"},gGrid);el("text",{x:52,y:Y(m)+4,"text-anchor":"end",class:"ls-tick"},gGrid,m)});
+el("text",{x:8,y:Y(45)+4,class:"ls-tick"},gGrid,"min");
+el("line",{x1:40,x2:975,y1:100,y2:100,class:"ls-conv"},svg);
+el("path",{d:"M968 95 L976 100 L968 105",class:"ls-conv",fill:"none"},svg);
+el("text",{x:6,y:90,class:"ls-io"},svg,"FROM");el("text",{x:6,y:118,class:"ls-io"},svg,"FAB");
+el("text",{x:968,y:90,"text-anchor":"end",class:"ls-io"},svg,"TO PAINT");
+const SV=ST.map((s,i)=>{const cx=X(i),g=el("g",{},svg);
+  const box=el("rect",{x:cx-62,y:16,width:124,height:62,rx:8,class:"ls-box"},g);
+  el("text",{x:cx-50,y:40,class:"ls-id"},g,s.id);
+  const part=el("text",{x:cx-50,y:58,class:"ls-part"},g,s.part);
+  const light=el("circle",{cx:cx+48,cy:35,r:5,class:"ls-light"},g);
+  el("rect",{x:cx-50,y:66,width:100,height:4,rx:2,class:"ls-prog-t"},g);
+  const prog=el("rect",{x:cx-50,y:66,width:0,height:4,rx:2,class:"ls-prog"},g);
+  const bnG=el("g",{},g);el("rect",{x:cx-44,y:116,width:88,height:16,rx:4,class:"ls-bn-bg"},bnG);el("text",{x:cx,y:128,"text-anchor":"middle",class:"ls-bn-tx"},bnG,"BOTTLENECK");
+  const ghost=el("rect",{x:cx-26,width:22,class:"ls-ghost"},g);
+  const va=el("rect",{x:cx+2,width:24,class:"ls-va"},g);
+  const over=el("rect",{x:cx+2,width:24,class:"ls-over"},g);
+  const val=el("text",{x:cx+14,"text-anchor":"middle",class:"ls-val"},g);
+  const gval=el("text",{x:cx-15,"text-anchor":"middle",class:"ls-tick ls-halo"},g);
+  const hit=el("rect",{x:cx-70,y:10,width:140,height:YB-10,class:"ls-hit"},g);
+  return {cx,box,part,light,prog,bnG,ghost,va,over,val,gval,hit}});
+const taktLine=el("line",{x1:60,x2:980,class:"ls-takt"},svg);
+const taktLab=el("text",{x:978,"text-anchor":"end",class:"ls-takt-lab"},svg);
+const tokG=el("g",{},svg);
+const TOK=[];for(let i=-1;i<=6;i++)TOK.push(el("rect",{width:16,height:16,rx:3,y:92,class:"ls-tok"},tokG));
+function topPath(x,y,w,hh,r){r=Math.min(r,hh,w/2);return "M"+x+" "+(y+hh)+"V"+(y+r)+"Q"+x+" "+y+" "+(x+r)+" "+y+"H"+(x+w-r)+"Q"+(x+w)+" "+y+" "+(x+w)+" "+(y+r)+"V"+(y+hh)+"Z"}
+function drawLine(){
+  const Ct=compute(Object.assign({},S,{on:{},relief:false}));
+  C.stations.forEach((s,i)=>{const v=SV[i],t0=Ct.stations[i].eff;
+    v.ghost.setAttribute("y",Y(t0));v.ghost.setAttribute("height",YB-Y(t0));
+    v.gval.setAttribute("y",Y(t0)-6);v.gval.textContent=Math.abs(t0-s.eff)<.05?"":f1(t0);
+    const under=Math.min(s.eff,C.takt),overM=Math.max(0,s.eff-C.takt);
+    v.va.setAttribute("y",Y(under));v.va.setAttribute("height",YB-Y(under));
+    v.over.setAttribute("y",Y(s.eff));v.over.setAttribute("height",Math.max(0,Y(under)-Y(s.eff)-(overM>0?2:0)));
+    v.over.style.display=overM>0.05?"":"none";
+    v.val.setAttribute("y",Y(s.eff)-7);v.val.textContent=f1(s.eff);v.val.setAttribute("class","ls-val"+(overM>0.05?" bad":""));
+    const isBn=C.ties.includes(C.stations.find(x=>x.id===s.id))&&!C.ok;
+    v.bnG.style.display=isBn?"":"none";v.box.setAttribute("class","ls-box"+(isBn?" bn":""));
+    v.hit.dataset.tip=s.id+" · "+s.part+" on "+s.mc+". Today "+f1(t0)+" min, now "+f1(s.eff)+" min against a "+f1(C.takt)+"-min takt."+(s.note&&Math.abs(s.eff-t0)>.01?" Note: "+s.note+".":"")+(s.op30?" Its losses are shown in the OP30 timeline below.":"");
+  });
+  taktLine.setAttribute("y1",Y(C.takt));taktLine.setAttribute("y2",Y(C.takt));
+  taktLab.setAttribute("y",Y(C.takt)-7);taktLab.textContent="Takt "+f1(C.takt)+" min";
+}
+
+/* OP30 gantt */
+function buildGantt(c){
+  const N=Math.ceil(c.good-1e-9),segs=[],at=f=>Math.min(N-1,Math.max(0,Math.round(f*N)));
+  const ev={};const add=(k,o)=>{(ev[k]=ev[k]||[]).push(o)};
+  const models=k=>k<at(.4)?"EC210":k<at(.7)?"EC215":"EC220";
+  add(0,{t:"co",d:c.L.co/3,lab:"Changeover to EC210"});add(at(.4),{t:"co",d:c.L.co/3,lab:"Changeover to EC215"});add(at(.7),{t:"co",d:c.L.co/3,lab:"Changeover to EC220"});
+  [.12,.35,.62,.9].forEach(f=>add(at(f),{t:"wt",d:c.L.wt/4,lab:"Waiting for crane, parts or QC sign-off"}));
+  add(at(.22),{t:"bd",d:c.L.bd*.2,lab:"Minor stop"});add(at(.55),{t:"bd",d:c.L.bd*.6,lab:"Breakdown: spindle / hydraulic clamp fault"});add(at(.85),{t:"bd",d:c.L.bd*.2,lab:"Minor stop"});
+  const rwAt=at(.5);const full=Math.floor(c.good+1e-9);
+  for(let k=0;k<N;k++){
+    (ev[k]||[]).forEach(e=>segs.push(e));
+    segs.push({t:"su",d:c.L.su/N,lab:"Dial-gauge alignment of frame "+(k+1)});
+    const cut=k<full?c.cycle:(c.good-full)*c.cycle;
+    if(cut>0.01)segs.push({t:"va",d:cut,lab:"Machining "+models(k)+" upper frame #"+(k+1)+(k>=full?" (carries into next shift)":"")});
+    if(k===rwAt)segs.push({t:"rw",d:c.L.rw,lab:"Re-machining bores pushed out by weld distortion"});
+  }
+  return segs;
+}
+const gantt=$("#gantt"),gAxis=$("#gAxis"),gLegend=$("#gLegend");
+let SEGS=[];
+const NAMES={va:"Machining",co:"Changeover",bd:"Breakdown",wt:"Waiting",su:"Set-up",rw:"Rework"};
+function drawGantt(){
+  SEGS=buildGantt(C);gantt.innerHTML="";const tot=C.avail;let acc=0;
+  const w=gantt.clientWidth||900;
+  SEGS.forEach(s=>{const d=h("div","gseg"+(s.t==="va"?" va":""));d.style.flex="0 0 calc("+(s.d/tot*100)+"% - 2px)";
+    if(s.t!=="va")d.style.background="var("+LOSS.find(l=>l.id===s.t).c+")";
+    const px=s.d/tot*w;if(s.t!=="va"&&s.t!=="su"&&px>30)d.textContent=LOSS.find(l=>l.id===s.t).code;
+    if(s.t==="va"&&px>52)d.textContent=s.lab.match(/EC\d+/)[0];
+    d.dataset.tip=s.lab+" · "+f1(s.d)+" min (minute "+Math.round(acc)+"–"+Math.round(acc+s.d)+")";acc+=s.d;gantt.appendChild(d)});
+  const ticks=[0,60,120,180,240,300,360,420];if(tot>420)ticks.push(tot);
+  gAxis.innerHTML=ticks.map(t=>'<span style="left:'+(t/tot*100)+'%">'+t+(t===tot?" min":"")+'</span>').join("");
+  $("#ganttNote").textContent=tot>420?"440 minutes: the relief operator covers both tea breaks":"420 available minutes, in time order";
+  const va=C.good*C.cycle;
+  gLegend.innerHTML='<div><span class="sw" style="background:var(--va)"></span><span>Machining good frames<span class="lv">value-adding</span></span><span class="mins">'+Math.round(va)+' min</span></div>'+
+   LOSS.map(l=>{const lv=LEVERS.find(x=>x.id===l.lv);return '<div><span class="sw" style="background:var('+l.c+')"></span><span>'+l.n+'<span class="lv">fixed by '+lv.sh+(S.on[l.lv]?" · on":"")+'</span></span><span class="mins">'+Math.round(C.L[l.id])+' min</span></div>'}).join("");
+}
+function ganttStateAt(tau){let acc=0;for(const s of SEGS){if(tau<acc+s.d)return s;acc+=s.d}return SEGS[SEGS.length-1]}
+
+/* bridge */
+const bsvg=$("#bridgeSvg");
+function drawBridge(){
+  while(bsvg.lastChild&&bsvg.lastChild.tagName!=="title")bsvg.removeChild(bsvg.lastChild);
+  const W=560,top=24,bot=226,lo=8,hi=14,y=v=>bot-(v-lo)/(hi-lo)*(bot-top),x0=36;
+  for(let v=lo;v<=hi;v++){el("line",{x1:x0,x2:W-4,y1:y(v),y2:y(v),class:"br-grid"},bsvg);el("text",{x:x0-6,y:y(v)+4,"text-anchor":"end",class:"br-tick"},bsvg,v)}
+  const cols=[{lab:"Today",tot:1}];const cur={smed:false,tpm:false,jit:false,std:false,biq:false,s5:S.on.s5};
+  let prev=compute(Object.assign({},S,{on:cur,relief:false})).good;cols[0].v=prev;
+  ["smed","tpm","jit","std","biq"].forEach(id=>{const lv=LEVERS.find(l=>l.id===id);if(S.on[id]){cur[id]=true;const g=compute(Object.assign({},S,{on:Object.assign({},cur),relief:false})).good;cols.push({lab:lv.sh,c:lv.c,from:prev,v:g});prev=g}else cols.push({lab:lv.sh,off:1})});
+  if(S.relief){const g=compute(Object.assign({},S,{on:Object.assign({},cur),relief:true})).good;cols.push({lab:"Relief",c:"--machine",from:prev,v:g});prev=g}
+  cols.push({lab:"Now",tot:1,v:prev});
+  const step=(W-x0-8)/cols.length,bw=Math.min(24,step*.5);
+  let lastTop=null;
+  cols.forEach((c,i)=>{const cx=x0+step*(i+.5);
+    const words=c.lab.split(" ");words.forEach((w,j)=>el("text",{x:cx,y:bot+16+j*13,"text-anchor":"middle",class:"br-lab"},bsvg,w));
+    if(c.off){el("text",{x:cx,y:bot-8,"text-anchor":"middle",class:"br-off"},bsvg,"off");return}
+    if(c.tot){el("path",{d:topPath(cx-bw/2,y(c.v),bw,bot-y(c.v),4),class:"br-total"},bsvg);el("text",{x:cx,y:y(c.v)-6,"text-anchor":"middle",class:"br-val"},bsvg,f1(c.v));}
+    else{const yt=y(c.v),yb=y(c.from);const r=el("rect",{x:cx-bw/2,y:yt,width:bw,height:Math.max(1.5,yb-yt),rx:3},bsvg);r.style.fill="var("+c.c+")";el("text",{x:cx,y:yt-6,"text-anchor":"middle",class:"br-val"},bsvg,"+"+f1(c.v-c.from));
+      if(lastTop!=null)el("line",{x1:lastTop.x,x2:cx-bw/2,y1:y(c.from),y2:y(c.from),class:"br-conn"},bsvg)}
+    lastTop={x:cx+bw/2};
+  });
+  el("line",{x1:x0,x2:W-4,y1:y(S.plan),y2:y(S.plan),class:"br-plan"},bsvg);
+  el("text",{x:x0+4,y:y(S.plan)-6,class:"br-plan-lab"},bsvg,"Plan "+S.plan);
+}
+
+/* board + insight */
+function setVal(id,html,cls){const e=$(id);if(e.dataset.v!==html){e.innerHTML=html;e.dataset.v=html;e.classList.remove("tick");void e.offsetWidth;e.classList.add("tick")}e.classList.toggle("bad",cls==="bad");e.classList.toggle("good",cls==="good")}
+function nextLeverFor(st){
+  if(st.op30){for(const id of ["smed","tpm","jit","std","biq"])if(!S.on[id])return id;return null}
+  for(const id of ["std","smed","tpm","jit","biq"])if(st.d&&st.d[id]<0&&!S.on[id])return id;return null}
+function updateBoard(){
+  setVal("#bTakt",f1(C.takt)+"<small>min</small>");$("#bTaktSub").textContent="420 min ÷ "+S.plan+" planned";
+  setVal("#bCycle",f1(C.slow.eff)+"<small>min</small>",C.slow.eff>C.takt+.05?"bad":"good");
+  $("#bCycleSub").textContent=C.ties.map(s=>s.id).join(" & ")+" "+(C.ties.length>1?"tied":C.slow.part.toLowerCase());
+  setVal("#bCap",f1(C.lineCap),C.ok?"good":"bad");
+  $("#bCapSub").textContent="plan "+S.plan+(C.ok?" · spare "+Math.round((C.lineCap/S.plan-1)*100)+"%":" · short "+f1(S.plan-C.lineCap));
+  setVal("#bOee",f1(C.oee*100)+"<small>%</small>",C.oee>=.85?"good":"");
+  setVal("#bFpy",f1(C.fpy)+"<small>%</small>",C.fpy>=98?"good":"");
+  setVal("#bCo",(Math.round(C.co*10)/10)+"<small>min</small>",C.co<=5.01?"good":"");
+  setVal("#bOp30",f1(C.good));
+  $("#bSustain").textContent="5S & kaizen: "+(S.on.s5?"on, gains sustained":"off, gains at risk");
+  const bs=$("#bStatus");bs.textContent=C.ok?"ON TAKT":"BEHIND TAKT";bs.className="b-status "+(C.ok?"good":"bad");
+  $("#bOutOf").textContent="/ "+S.plan;
+  // OEE panel
+  $("#oA").textContent=f1(C.A*100)+"%";$("#oP").textContent=f1(C.P*100)+"%";$("#oQ").textContent=f1(C.Q*100)+"%";
+  $("#oOee").textContent=f1(C.oee*100)+"%";$("#oMeter").style.width=Math.min(100,C.oee*100)+"%";
+  const lost=Math.round(C.lossSum);
+  $("#oeeNote").textContent=lost>=119?"120 minutes are lost every shift: four excavators' worth of OP30 time. Winning back about 60 of them is enough for two more machines.":lost+" minutes are lost at OP30 now, down from 120. That frees "+(120-lost)+" minutes a shift for extra frames.";
+  // insight
+  const ins=$("#insight"),it=$("#insightText");let msg;
+  const anyOn=Object.values(S.on).some(Boolean);
+  if(!C.ok){
+    const b=C.slow,nl=nextLeverFor(b),nlv=nl&&LEVERS.find(l=>l.id===nl);
+    const moved=!b.op30&&anyOn;
+    msg=(moved?"<b>The bottleneck has moved to "+C.ties.map(s=>s.id).join(" and ")+".</b> Theory of Constraints step 5: go back and repeat. ":"<b>Short by "+f1(S.plan-C.lineCap)+" excavators.</b> ")+
+      b.id+" ("+b.part.toLowerCase()+") takes "+f1(b.eff)+" min against a "+f1(C.takt)+"-min takt, so the whole shop can only make "+f1(C.lineCap)+" a shift."+
+      (nlv?" Try <b>"+nlv.sh+"</b> next (key "+nlv.k+").":(S.real<1?" Raise the gains that hold.":""));
+  } else {
+    const spare=Math.round((C.lineCap/S.plan-1)*100);
+    msg=(anyOn?"<b>Every operation is inside the "+f1(C.takt)+"-min takt.</b> ":"<b>Today the shop just keeps up.</b> ")+
+      "Capacity is "+f1(C.lineCap)+" a shift for a plan of "+S.plan+(spare>0?", which leaves "+spare+"% spare for model-mix swings.":anyOn?". The plan still holds with only "+Math.round(S.real*100)+"% of the gains, but with almost no margin.":", with no spare capacity at all: one bad hour at OP30 and the day is lost.")+
+      (anyOn&&C.ties.length&&!C.slow.op30?" OP30 alone could now make "+f1(C.good)+"; "+C.ties.map(s=>s.id).join(" and ")+" now set the pace.":"")+
+      (anyOn&&!S.on.s5?" Switch on <b>5S &amp; kaizen</b> (key 6) or these gains will slide back.":"");
+  }
+  it.innerHTML=msg;ins.className="insight "+(C.ok?"good":"bad");ins.querySelector(".ic").textContent=C.ok?"✓":"!";
+  // levers UI
+  LEVERS.forEach(l=>{const b=$("#lv-"+l.id);b.setAttribute("aria-pressed",S.on[l.id]);b.querySelector(".st").textContent=S.on[l.id]?"ON":"OFF"});
+  $("#plan10").setAttribute("aria-checked",S.plan===10);$("#plan12").setAttribute("aria-checked",S.plan===12);
+}
+function update(){C=compute(S);drawLine();drawGantt();drawBridge();updateBoard();drawRun()}
+
+/* run */
+const RUN={on:false,t:0,units:0,lastK:0,beatAt:-1e9,last:0,speed:1};
+const MIN_PER_SEC=12;
+const runBtn=$("#runBtn"),speedBtn=$("#speedBtn"),playhead=$("#playhead"),phLab=$("#playheadLab");
+function drawRun(){
+  const now=performance.now();const k=Math.floor(RUN.units+1e-6);
+  const started=RUN.t>0;
+  const phase=(RUN.units-k)*C.pace;
+  const s=reduce?1:Math.min(1,(now-RUN.beatAt)/450),e=1-Math.pow(1-s,3);
+  TOK.forEach((t,j)=>{const i=j-1;let x;
+    if(i===-1){x=-30;t.style.opacity=0}
+    else if(i===6){x=X(5)+150*e;t.style.opacity=started&&s<1?1-s:0}
+    else{x=X(i)-(1-e)*150;t.style.opacity=(i===0&&!started)?1:1}
+    if(i===0&&started&&s<1){x=X(0)-(1-e)*110}
+    t.setAttribute("x",x-8)});
+  C.stations.forEach((st,i)=>{const v=SV[i];
+    const busy=RUN.on&&(phase<st.eff-1e-6||Math.abs(st.eff-C.pace)<1e-6);
+    v.light.setAttribute("class","ls-light"+(busy?" busy":""));
+    v.prog.setAttribute("width",started?100*Math.min(1,phase/st.eff):0);
+    if(st.op30&&started&&RUN.t<AV){const seg=ganttStateAt(RUN.t*(C.avail/AV));const nm=seg.t==="va"?"Machining "+seg.lab.match(/EC\d+/)[0]:NAMES[seg.t];v.part.textContent=nm;v.part.setAttribute("class","ls-part"+(seg.t!=="va"?" state":""))}
+    else{v.part.textContent=st.part;v.part.setAttribute("class","ls-part")}
+  });
+  if(started){playhead.hidden=false;const p=RUN.t/AV;playhead.style.left="calc("+(p*100)+"% - 1px)";phLab.textContent="min "+Math.round(RUN.t*(C.avail/AV));
+    phLab.style.left=p>.92?"auto":p<.08?"0":"50%";phLab.style.right=p>.92?"0":"auto";phLab.style.transform=p>.92||p<.08?"none":"translateX(-50%)"}
+  else playhead.hidden=true;
+  const out=Math.min(k,99);const outEl=$("#bOut");if(outEl.firstChild&&outEl.firstChild.nodeType===3){if(outEl.firstChild.nodeValue!==String(out)){outEl.firstChild.nodeValue=String(out);outEl.classList.remove("tick");void outEl.offsetWidth;outEl.classList.add("tick")}}
+  outEl.classList.toggle("good",RUN.t>=AV&&out>=S.plan);outEl.classList.toggle("bad",RUN.t>=AV&&out<S.plan);
+  $("#bClock").textContent="clock "+String(Math.round(RUN.t)).padStart(3,"0")+" / 420 min";
+}
+function frame(ts){
+  if(!RUN.on)return;
+  const dt=Math.min(.1,(ts-RUN.last)/1000);RUN.last=ts;
+  const dm=Math.min(AV-RUN.t,dt*MIN_PER_SEC*RUN.speed);
+  RUN.t+=dm;RUN.units+=dm/C.pace;
+  const k=Math.floor(RUN.units+1e-6);if(k>RUN.lastK){RUN.lastK=k;RUN.beatAt=performance.now()}
+  if(RUN.t>=AV-1e-9){RUN.t=AV;RUN.on=false;RUN.beatAt=-1e9;drawRun();runBtn.textContent="↻ Run again";
+    const out=Math.floor(RUN.units+1e-6);const it=$("#insightText");
+    it.innerHTML="<b>Shift complete: "+out+" excavator sets machined"+(out>=S.plan?", plan met.":", "+(S.plan-out)+" short of the plan of "+S.plan+".")+"</b> "+it.innerHTML.replace(/^<b>Shift complete:.*?<\/b> /,"");
+    return}
+  drawRun();requestAnimationFrame(frame);
+}
+function startRun(){if(RUN.t>=AV){RUN.t=0;RUN.units=0;RUN.lastK=0;RUN.beatAt=-1e9}RUN.on=true;RUN.last=performance.now();runBtn.textContent="❚❚ Pause";requestAnimationFrame(frame)}
+function pauseRun(){RUN.on=false;runBtn.textContent="▶ Resume"}
+function resetRun(){RUN.on=false;RUN.t=0;RUN.units=0;RUN.lastK=0;RUN.beatAt=-1e9;runBtn.textContent="▶ Run shift";drawRun()}
+runBtn.addEventListener("click",()=>RUN.on?pauseRun():startRun());
+speedBtn.addEventListener("click",()=>{RUN.speed=RUN.speed===1?3:1;speedBtn.textContent=RUN.speed+"×"});
+
+/* controls */
+$$("#planSeg button").forEach(b=>b.addEventListener("click",()=>{S.plan=+b.dataset.plan;update()}));
+const real=$("#real"),realOut=$("#realOut");
+real.addEventListener("input",()=>{S.real=real.value/100;realOut.textContent=real.value+"%";update()});
+$("#relief").addEventListener("change",e=>{S.relief=e.target.checked;update()});
+let playTimer=null;
+function stopPlay(){if(playTimer){clearTimeout(playTimer);playTimer=null;$("#playBtn").textContent="Play the plan"}}
+function resetAll(){stopPlay();Object.keys(S.on).forEach(k=>S.on[k]=false);S.plan=12;S.real=1;S.relief=false;real.value=100;realOut.textContent="100%";$("#relief").checked=false;resetRun();update()}
+$("#resetBtn").addEventListener("click",resetAll);
+function play(){
+  if(playTimer){stopPlay();return}
+  resetAll();const ids=LEVERS.map(l=>l.id);let i=0;$("#playBtn").textContent="Stop";
+  const stepFn=()=>{toggle(ids[i],true);i++;playTimer=i<ids.length?setTimeout(stepFn,2200):null;if(!playTimer)$("#playBtn").textContent="Play the plan"};
+  playTimer=setTimeout(stepFn,900);
+}
+$("#playBtn").addEventListener("click",play);
+let simVisible=false;
+if("IntersectionObserver" in window)new IntersectionObserver(es=>{simVisible=es[0].isIntersecting},{threshold:.15}).observe($("#simulator"));
+document.addEventListener("keydown",e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey)return;const tg=e.target;if(tg.matches&&tg.matches("input,textarea,select"))return;
+  const lv=LEVERS.find(l=>l.k===e.key);
+  if(lv){stopPlay();toggle(lv.id);return}
+  if(e.key===" "&&simVisible&&!(tg.matches&&tg.matches("button,a"))){e.preventDefault();RUN.on?pauseRun():startRun();return}
+  if(e.key==="p"||e.key==="P"){play();return}
+  if(e.key==="r"||e.key==="R"){resetAll()}
+});
+
+/* lever detail cards */
+const CARDS=[
+ {id:"smed",idea:"Split set-up into internal work (machine stopped) and external work (done while the machine is still cutting), then move as much as possible outside.",peenya:["Next model's fixture pre-assembled on a cart and tools preset while the current frame is cut","Zero-point quick clamps plus a probe that sets the datum automatically","Frames sequenced by family: EC210 → EC215 → EC220"],impact:"30 min a shift freed at the bottleneck: about +1.0 excavator",smed:true},
+ {id:"tpm",idea:"Operators and maintenance share ownership of the machine, aiming for zero breakdowns, zero defects and zero accidents.",peenya:["10-minute clean–lubricate–inspect–tighten check inside the start-up slot","Planned maintenance calendar and spindle-vibration trending","Critical spares kit kept at OP30; MTBF and MTTR on the board"],impact:"Breakdowns 25 → 12 min a shift: about +0.4 excavator"},
+ {id:"jit",idea:"The right part at the right time. With drum–buffer–rope, the bottleneck is protected by a small buffer and work is released at its pace.",peenya:["FIFO lane holding two welded frames so OP30 is never starved","Kanban pull of weldments from fabrication; model-wise tool kits","Dedicated jib crane at OP30; probe report replaces waiting for first-off sign-off"],impact:"Waiting 20 → 6 min a shift: about +0.5 excavator"},
+ {id:"std",idea:"Write down the current best method, time and sequence, then balance work so no station exceeds takt (a Yamazumi view).",peenya:["Time studies over ten cycles feed standard work charts","Probing replaces manual dial-gauge alignment; CNC paths cut air-cutting","Non-critical drilling moved from OP10 and OP40 to the under-used OP50"],impact:"Set-up 15 → 6 min and cycle 30 → 29 min: about +0.7 excavator"},
+ {id:"biq",idea:"Build it right first time instead of inspecting defects out later: poka-yoke, jidoka and SPC.",peenya:["Locating pins make it impossible to clamp a frame the wrong way round","SPC on bore position and diameter, target Cpk ≥ 1.33","Machine stops itself on tool wear; DMAIC with fabrication on weld distortion"],impact:"Rework 15 → 6 min, FPY 95.2% → 98.4%: about +0.3 excavator"},
+ {id:"s5",idea:"Sort, Set in order, Shine, Standardise, Sustain, plus visual boards and daily kaizen so problems show up early.",peenya:["Shadow boards for tools and gauges; floor marking for the FIFO lane","Hour-by-hour output, OEE and Andon calls on the digital board","Daily tier meetings, suggestion scheme and an operator skill matrix"],impact:"No capacity claimed: it keeps the other five gains in place"}
+];
+const lcBox=$("#leverCards");
+CARDS.forEach(cd=>{const l=LEVERS.find(x=>x.id===cd.id);const c=h("article","lc");
+  c.innerHTML='<div class="lc-top"><span class="sw" style="background:var('+l.c+')"></span><div><span class="pl">Lever '+l.k+' · VPS '+l.pl+'</span><h3>'+l.n+'</h3></div></div><p>'+cd.idea+'</p><div><span class="label">At Peenya</span><ul style="margin-top:6px">'+cd.peenya.map(x=>"<li>"+x+"</li>").join("")+'</ul></div>'+
+   (cd.smed?'<div class="smed-mini" aria-label="Changeover time per model change: 15 minutes before, 5 minutes after"><div class="r"><span>Before</span><span class="t"><span class="b before" style="width:100%"></span></span><b class="num">15 min</b></div><div class="r"><span>After</span><span class="t"><span class="b" style="width:33.3%"></span></span><b class="num">5 min</b></div><span class="muted">per changeover, × 3 a shift: 45 → 15 min</span></div>':"")+
+   '<div class="impact">'+cd.impact+'</div>';
+  lcBox.appendChild(c)});
+
+/* investment */
+const INV=[["Zero-point clamps and two fixture pallets",30],["Tool presetter",12],["In-machine probe and software",10],["Dedicated jib crane at OP30",8],["Poka-yoke locators, shadow and visual boards",6],["Training, kaizen events, TPM start-up",6]];
+$("#inv").innerHTML=INV.map(([n,v])=>'<div class="r"><span>'+n+'</span><span class="t"><span class="b" style="width:'+(v/30*100)+'%"></span></span><span class="v">'+v+'</span></div>').join("")+'<div class="r tot"><span>Total, ₹ lakh</span><span></span><span class="v">72</span></div>';
+
+/* roadmap step chart */
+(function(){const s=$("#stepSvg"),W=900,L=48,R=880,T=20,B=180,lo=9.5,hi=12.5;const x=w=>L+(w/12)*(R-L),y=v=>B-(v-lo)/(hi-lo)*(B-T);
+  [10,11,12].forEach(v=>{el("line",{x1:L,x2:R,y1:y(v),y2:y(v),class:"br-grid"},s);el("text",{x:L-8,y:y(v)+4,"text-anchor":"end",class:"br-tick"},s,v)});
+  el("line",{x1:L,x2:R,y1:B,y2:B,class:"ls-axis"},s);
+  [0,2,4,6,8,10,12].forEach(w=>el("text",{x:x(w),y:B+18,"text-anchor":"middle",class:"br-tick"},s,w===0?"Week 0":"Wk "+w));
+  const P=[[0,10],[2,10],[6,11],[10,11.6],[12,12]];
+  let d="M"+x(0)+" "+y(10);for(let i=1;i<P.length;i++)d+=" L"+x(P[i][0])+" "+y(P[i-1][1])+" L"+x(P[i][0])+" "+y(P[i][1]);
+  const ar=el("path",{d:d+" L"+x(12)+" "+B+" L"+x(0)+" "+B+" Z"},s);ar.style.fill="var(--data)";ar.style.opacity=".1";
+  const pl=el("path",{d,fill:"none"},s);pl.style.stroke="var(--data)";pl.style.strokeWidth="2";pl.style.strokeLinejoin="round";
+  P.slice(1).forEach(([w,v])=>{const c=el("circle",{cx:x(w),cy:y(v),r:5},s);c.style.fill="var(--data)";c.style.stroke="var(--surface)";c.style.strokeWidth="2";
+    el("text",{x:x(w)-(w===12?0:8),y:y(v)-10,"text-anchor":w===12?"end":"end",class:"br-val"},s,v.toFixed(1))});
+})();
+
+/* theme + resize */
+let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>{drawMap();drawGantt()},120)});
+const mq=matchMedia("(prefers-color-scheme: dark)");(mq.addEventListener?mq.addEventListener("change",drawMap):mq.addListener(drawMap));
+new MutationObserver(drawMap).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme","class","style"]});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{drawGantt()});
+
+drawMap();update();
+})();
+</script>
